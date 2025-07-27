@@ -30,6 +30,7 @@
 
 .fp-overflow {
   width: 100%;
+  max-height: 100vh !important;
 }
 
 @media (prefers-color-scheme: dark) {
