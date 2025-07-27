@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Easing, motion } from "framer-motion";
 import React from "react";
 import { deeplinkToApp } from "@/app/_lib/utils";
+import { sendGTMEvent } from '@next/third-parties/google';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -60,7 +61,10 @@ export default function First() {
           custom={3}
           variants={fadeUp}
           whileHover={{ scale: 1.05 }}
-          onClick={() => deeplinkToApp("")}
+          onClick={() => {
+            sendGTMEvent({ event: 'click_download' });
+            deeplinkToApp("");
+          }}
           whileTap={{ scale: 0.95 }}
           className="w-[144px] mb-24 h-[38px] flex items-center justify-center bg-[#D9C7FF] rounded-[12px] z-10 text-white font-semibold leading-[14px] text-[16px]"
         >

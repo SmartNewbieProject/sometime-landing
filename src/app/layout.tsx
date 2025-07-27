@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
 import FloatingButton from "./_components/FloatingButton";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const pretendard = localFont({
   src: "../font/PretendardVariable.woff2",
@@ -29,7 +30,7 @@ export const metadata = {
     siteName: "썸타임",
     images: [
       {
-        url: "https://some-in-univ.com/images/logo.png",
+        url: "https://some-in-univ.com/preview_title.png",
         width: 1200,
         height: 630,
         alt: "썸타임 - 대학생 소개팅 서비스",
@@ -65,6 +66,7 @@ export default function RootLayout({
       <body className={`${pretendard.variable} ${wnatedSans.variable} antialiased relative`}>
         {children} <FloatingButton />
       </body>
+    <GoogleAnalytics gaId="G-VZ7HHRS8QF" />
     </html>
   );
 }
