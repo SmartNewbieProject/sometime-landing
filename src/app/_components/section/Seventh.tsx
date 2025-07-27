@@ -4,6 +4,7 @@ import { motion, Easing } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { sendGTMEvent } from '@next/third-parties/google';
 
 const fadeInUpVariant = {
   hidden: { opacity: 0, y: 20 },
@@ -60,12 +61,20 @@ export default function Seventh() {
 
       <motion.div variants={fadeInUpVariant} className="flex items-center gap-[20px] z-10">
         <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 200 }}>
-          <Link target="_blank" href="https://apps.apple.com/kr/app/썸타임-지역-대학생-소개팅/id6746120889">
+          <Link 
+            target="_blank" 
+            href="https://apps.apple.com/kr/app/썸타임-지역-대학생-소개팅/id6746120889"
+            onClick={() => sendGTMEvent({ event: 'click_download', platform: 'app_store' })}
+          >
             <Image src="/images/app-store.png" width={120} height={50} alt="앱스토어 링크 버튼" />
           </Link>
         </motion.div>
         <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 200 }}>
-          <Link target="_blank" href="https://play.google.com/store/apps/details?id=com.smartnewb.sometimes">
+          <Link 
+            target="_blank" 
+            href="https://play.google.com/store/apps/details?id=com.smartnewb.sometimes"
+            onClick={() => sendGTMEvent({ event: 'click_download', platform: 'google_play' })}
+          >
             <Image src="/images/google-play.png" width={120} height={50} alt="구글 플레이 링크 버튼" />
           </Link>
         </motion.div>
