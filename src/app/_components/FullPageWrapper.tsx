@@ -10,7 +10,7 @@ export default function FullPageWrapper({ children }: { children: React.ReactNod
         enabled: false,
         label: "",
       }}
-      anchors={["title", "area", "verify", "area-based", "story", "landing", "info"]}
+      anchors={["title", "area", "verify", "story", "landing", "info"]}
       render={() => {
         return (
           <div className="bg-white" id="fullpage-wrapper">

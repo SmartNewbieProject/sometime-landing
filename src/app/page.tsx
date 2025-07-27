@@ -12,7 +12,7 @@ import FloatingButton from "./_components/FloatingButton";
 export default function Home() {
   return (
     <FullPageWrapper>
-      {[First, Second, Third, Fourth, Fifth, Sixth, Seventh].map((Item, index) => (
+      {[First, Second, Third, Fifth, Sixth, Seventh].map((Item, index) => (
         <Section key={index}>
           <Item />
         </Section>
