@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
 import FloatingButton from "./_components/FloatingButton";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const pretendard = localFont({
   src: "../font/PretendardVariable.woff2",
@@ -65,6 +66,7 @@ export default function RootLayout({
       <body className={`${pretendard.variable} ${wnatedSans.variable} antialiased relative`}>
         {children} <FloatingButton />
       </body>
+    <GoogleAnalytics gaId="G-VZ7HHRS8QF" />
     </html>
   );
 }
