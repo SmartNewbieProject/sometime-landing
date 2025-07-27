@@ -30,7 +30,7 @@ export const metadata = {
     siteName: "썸타임",
     images: [
       {
-        url: "https://some-in-univ.com/images/logo.png",
+        url: "https://some-in-univ.com/preview_title.png",
         width: 1200,
         height: 630,
         alt: "썸타임 - 대학생 소개팅 서비스",
