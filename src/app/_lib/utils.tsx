@@ -7,7 +7,7 @@ export function deeplinkToApp(deepLinkValue: string) {
   const isIOS = /iphone|ipad|ipod/.test(userAgent);
   const isMobile = isAndroid || isIOS;
 
-  const schemeUrl = `myapp://main?deep_link_value=${deepLinkValue}`;
+  const schemeUrl = `myapp://?deep_link_value=${deepLinkValue}`;
   const fallbackUrl = getFallbackUrl();
 
   if (!isMobile) {
