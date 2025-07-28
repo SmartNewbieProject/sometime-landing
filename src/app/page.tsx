@@ -14,5 +14,5 @@ export default function Home() {
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
-  return <MobileIndex />;
+  return isMobile ? <MobileIndex /> : <DesktopIndex />;
 }

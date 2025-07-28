@@ -4,31 +4,22 @@ import RightArrow from "../icon/RightArrow";
 import { motion } from "framer-motion";
 import { arrowRightVariants, floatVariants } from "@/app/_lib/motion";
 import DesktopArrowBottom from "../icon/DesktopArrowBottom";
+import Link from "next/link";
+import { sendGTMEvent } from "@next/third-parties/google";
 export default function TopSection() {
   return (
     <>
       <section className="h-[600px] bg-[url('/images/desktop-bg.png')] overflow-hidden w-full  bg-cover bg-center bg-no-repeat relative font-wantedSans">
         <div className="absolute w-full h-full  bottom-0">
           <div className="absolute bottom-0   -translate-x-1/2 left-1/2 z-10">
-            <Image
-              src="/images/phone-frame.png"
-              height={413}
-              width={430}
-              alt="phone frame"
-              className=" z-10  "
-            />
+            <Image src="/images/phone-frame.png" height={413} width={430} alt="phone frame" className=" z-10  " />
             <motion.div
               variants={floatVariants}
               animate="animate"
               whileHover={{ scale: 1.1 }}
               className="absolute top-[80px] -right-[72px]"
             >
-              <Image
-                src={"/images/send-letter.png"}
-                width={118}
-                height={118}
-                alt=""
-              />
+              <Image src={"/images/send-letter.png"} width={118} height={118} alt="" />
             </motion.div>
           </div>
           <Image
@@ -49,20 +40,22 @@ export default function TopSection() {
           </motion.button>
           <div className="absolute bottom-[32px] flex flex-col items-center gap-[10px] -translate-x-1/2 left-[calc(50%+340px)]">
             <motion.button whileHover={{ scale: 1.1 }}>
-              <Image
-                src={"/images/app-store.png"}
-                width={104}
-                height={32}
-                alt="앱스토어 링크"
-              />
+              <Link
+                target="_blank"
+                href="https://apps.apple.com/kr/app/썸타임-지역-대학생-소개팅/id6746120889"
+                onClick={() => sendGTMEvent({ event: "click_download", platform: "app_store" })}
+              >
+                <Image src={"/images/app-store.png"} width={104} height={32} alt="앱스토어 링크" />
+              </Link>
             </motion.button>
             <motion.button whileHover={{ scale: 1.1 }}>
-              <Image
-                src={"/images/google-play.png"}
-                width={104}
-                height={32}
-                alt="구글플레이 링크"
-              />
+              <Link
+                target="_blank"
+                href="https://play.google.com/store/apps/details?id=com.smartnewb.sometimes"
+                onClick={() => sendGTMEvent({ event: "click_download", platform: "google_play" })}
+              >
+                <Image src={"/images/google-play.png"} width={104} height={32} alt="구글플레이 링크" />
+              </Link>
             </motion.button>
           </div>
           <div className="absolute bottom-[32px] flex flex-col items-start gap-[12px] -translate-x-1/2 left-[calc(50%-350px)]">
@@ -83,19 +76,14 @@ export default function TopSection() {
             whileHover={{ scale: 1.1 }}
             className="absolute -scale-x-100 bottom-[100px]  flex flex-col items-start gap-[12px] -translate-x-1/2 left-[calc(50%-270px)]"
           >
-            <Image
-              src={"/images/heart-balloon.png"}
-              width={66}
-              height={66}
-              alt=""
-            />
+            <Image src={"/images/heart-balloon.png"} width={66} height={66} alt="" />
           </motion.div>
 
           <div className="w-[794px] h-[556px] rounded-[794px] blur-[100px] bg-[rgba(122,74,226,0.10)] absolute top-[136px] -left-[264px] " />
           <div className="w-[423px] h-[423px] rounded-[423px] blur-[100px] bg-[rgba(122,74,226,0.15)] absolute top-[100px] right-[112px] " />
         </div>
       </section>
-      <div className="pt-[30px] flex items-center justify-center ">
+      <div className="pt-[0px] flex items-center justify-center ">
         <motion.div
           initial={{ y: 0 }}
           animate={{ y: [0, 12, 0], scale: [1, 1.05, 1] }}
