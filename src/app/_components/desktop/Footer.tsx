@@ -31,7 +31,7 @@ export default function Footer() {
             ))}
           </div>
           <Link href="https://www.instagram.com/sometime.in.univ?igsh=MTdxMWJjYmFrdGc3Ng==" target="_blank">
-            <Image src={"/images/instagram.png"} width={42} height={42} alt="인스타그램 링크" />
+            <Image src={"/images/instagram2.png"} width={42} height={42} alt="인스타그램 링크" />
           </Link>
         </div>
 

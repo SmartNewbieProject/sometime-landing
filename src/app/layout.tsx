@@ -58,9 +58,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
+      <head>
         <meta name="google-site-verification" content="zvx72K3s6z5oR8P23QUXqtYP-CjGML5PTs3-B-a058Q" />
-      </Head>
+      </head>
       <body className={`${pretendard.variable} ${wnatedSans.variable} antialiased relative`}>{children}</body>
       <GoogleAnalytics gaId="G-VZ7HHRS8QF" />
     </html>
