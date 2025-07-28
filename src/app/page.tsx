@@ -1,22 +1,18 @@
-import FullPageWrapper from "@/app/_components/FullPageWrapper";
-import Section from "@/app/_components/Section";
-import First from "./_components/section/First";
-import Second from "./_components/section/Second";
-import Third from "./_components/section/Third";
-import Fourth from "./_components/section/Fourth";
-import Fifth from "./_components/section/Fifth";
-import Sixth from "./_components/section/Sixth";
-import Seventh from "./_components/section/Seventh";
-import FloatingButton from "./_components/FloatingButton";
+"use client";
+import { useEffect, useState } from "react";
+import DesktopIndex from "./_components/desktop/DesktopIndex";
+import MobileIndex from "./_components/mobile";
 
 export default function Home() {
-  return (
-    <FullPageWrapper>
-      {[First, Second, Third, Fifth, Sixth, Seventh].map((Item, index) => (
-        <Section key={index}>
-          <Item />
-        </Section>
-      ))}
-    </FullPageWrapper>
-  );
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return <MobileIndex />;
 }

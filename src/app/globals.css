@@ -28,6 +28,10 @@
   --font-mono: var(--font-geist-mono);
 }
 
+button {
+  cursor: pointer;
+}
+
 .fp-overflow {
   width: 100%;
   height: 100dvh;
