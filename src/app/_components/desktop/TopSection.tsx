@@ -6,7 +6,9 @@ import { arrowRightVariants, floatVariants } from "@/app/_lib/motion";
 import DesktopArrowBottom from "../icon/DesktopArrowBottom";
 import Link from "next/link";
 import { sendGTMEvent } from "@next/third-parties/google";
+import { useRouter } from "next/navigation";
 export default function TopSection() {
+  const router = useRouter();
   return (
     <>
       <section className="h-[600px] bg-[url('/images/desktop-bg.png')] overflow-hidden w-full  bg-cover bg-center bg-no-repeat relative font-wantedSans">
@@ -31,6 +33,10 @@ export default function TopSection() {
           />
           <motion.button
             whileHover={{ scale: 1.1 }}
+            onClick={() => {
+              sendGTMEvent({ event: "click_page" });
+              router.push("https://some-in-univ.com");
+            }}
             className="bg-[#7A4AE2] z-30 absolute  leading-[15px] bottom-[30px] -translate-x-1/2 left-1/2 flex gap-[10px] items-center gap py-[18px] px-[44px] text-white text-[18px] font-semibold  font-wantedSans rounded-[30px]"
           >
             <div>매칭하러 가기</div>

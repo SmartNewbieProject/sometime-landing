@@ -24,7 +24,7 @@ const containerVariants = {
 
 export default function IntroduceSection() {
   return (
-    <div className="font-wantedSans overflow-x-hidden relative mx-auto mb-[180px]">
+    <div className="font-wantedSans overflow-x-hidden overflow-y-hidden pt-[60px] relative mx-auto mb-[180px]">
       <motion.div
         className="flex mb-[120px] relative w-fit mx-auto flex-col gap-0 font-bold text-[40px] leading-[60px] text-center"
         variants={containerVariants}
@@ -47,7 +47,6 @@ export default function IntroduceSection() {
       </motion.div>
 
       <div className="max-w-[850px] mx-auto">
-        {/* Section 1 */}
         <motion.div
           className="flex items-start justify-between"
           initial="hidden"
@@ -64,7 +63,6 @@ export default function IntroduceSection() {
           </div>
         </motion.div>
 
-        {/* Section 2 */}
         <motion.div
           className="flex items-center mt-[24px] justify-between"
           initial="hidden"
@@ -89,7 +87,6 @@ export default function IntroduceSection() {
           </motion.div>
         </motion.div>
 
-        {/* Section 3 */}
         <motion.div
           className="flex items-center mt-[72px] justify-between"
           initial="hidden"

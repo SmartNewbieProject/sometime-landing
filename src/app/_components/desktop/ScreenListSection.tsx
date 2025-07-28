@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React from "react";
 import { Easing, motion } from "framer-motion";
+import { floatVariants } from "@/app/_lib/motion";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -51,6 +52,18 @@ export default function ScreenListSection() {
       </motion.div>
 
       <div className="flex relative items-center justify-center mt-[100px] gap-[18px]">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="absolute top-10 -scale-x-100 z-30 -left-[40px]"
+          variants={fadeUp}
+        >
+          <motion.div variants={floatVariants} animate="animate" whileHover={{ scale: 1.1 }}>
+            <Image src={"/images/heart-balloon.png"} alt="말풍선 아이콘" width={77} height={77} />
+          </motion.div>
+        </motion.div>
+
         {[5, 6, 7].map((num, i) => (
           <motion.div
             key={num}
@@ -60,7 +73,7 @@ export default function ScreenListSection() {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <Image src={`/images/${num}.png`} width={255} height={500} alt={`screen ${num}`} />
+            <Image src={`/images/${num}.png`} width={255} height={550} alt={`screen ${num}`} />
           </motion.div>
         ))}
 

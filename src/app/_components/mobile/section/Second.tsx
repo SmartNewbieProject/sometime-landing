@@ -63,27 +63,15 @@ export default function Second() {
         whileHover={{ scale: 1.03 }}
         className="z-10 relative"
       >
-        <Image
-          src="/images/korea-map3.png"
-          width={310}
-          height={300}
-          className="z-0"
-          alt="sometime 서비스 지도"
-        />
+        <Image src="/images/korea-map3.png" width={310} height={300} className="z-0" alt="sometime 서비스 지도" />
 
-        {/* 풍선 */}
         <motion.div
           variants={floatVariants}
           animate="animate"
           whileHover={{ scale: 1.1 }}
           className="absolute top-10 -left-[20px]"
         >
-          <Image
-            src={"/images/heart-balloon.png"}
-            alt="말풍선 아이콘"
-            width={48}
-            height={46}
-          />
+          <Image src={"/images/heart-balloon.png"} alt="말풍선 아이콘" width={48} height={46} />
         </motion.div>
         <motion.div
           variants={floatVariants}
@@ -91,15 +79,9 @@ export default function Second() {
           whileHover={{ scale: 1.1 }}
           className="absolute bottom-10 -right-[35px]"
         >
-          <Image
-            src={"/images/heart-arrow.png"}
-            alt="말풍선 아이콘"
-            width={100}
-            height={100}
-          />
+          <Image src={"/images/heart-arrow.png"} alt="말풍선 아이콘" width={100} height={100} />
         </motion.div>
 
-        {/* 퍼지는 하트 */}
         <div className="absolute top-[200px] left-[110px] z-30 pointer-events-none">
           <HeartPulse />
           <motion.div
@@ -124,7 +106,6 @@ export default function Second() {
         </div>
       </motion.div>
 
-      {/* 보라색 그라데이션 블러 */}
       <motion.div
         variants={{
           hidden: { opacity: 0 },
@@ -134,7 +115,6 @@ export default function Second() {
         className="w-[316px] h-[873px] right-[-158px] bottom-[-660px] rounded-full blur-[100px] bg-[rgba(122,74,226,0.10)] absolute z-0"
       />
 
-      {/* 아래 화살표 */}
       <motion.div
         initial={{ y: 0 }}
         animate={{ y: [0, 12, 0], scale: [1, 1.05, 1] }}
@@ -151,11 +131,7 @@ export default function Second() {
           stroke="currentColor"
           className="w-6 h-6 text-black opacity-70"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19 9l-7 7-7-7"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </motion.div>
     </motion.div>
