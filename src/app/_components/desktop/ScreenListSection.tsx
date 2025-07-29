@@ -31,7 +31,7 @@ const float = {
 
 export default function ScreenListSection() {
   return (
-    <div className="relative flex flex-col items-center font-wantedSans mb-[204px] mt-[100px]">
+    <div className="relative flex flex-col items-center font-wantedSans pb-[320px] mt-[100px]">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -39,7 +39,8 @@ export default function ScreenListSection() {
         transition={{ duration: 0.7 }}
         className="text-black leading-[60px] font-bold text-[40px] text-center"
       >
-        <span className="text-[#7A4AE2]">썸타임</span>으로 시작된 대학생들의 이야기
+        <span className="text-[#7A4AE2]">썸타임</span>으로 시작된 대학생들의
+        이야기
       </motion.div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -59,8 +60,17 @@ export default function ScreenListSection() {
           className="absolute top-10 -scale-x-100 z-30 -left-[40px]"
           variants={fadeUp}
         >
-          <motion.div variants={floatVariants} animate="animate" whileHover={{ scale: 1.1 }}>
-            <Image src={"/images/heart-balloon.png"} alt="말풍선 아이콘" width={77} height={77} />
+          <motion.div
+            variants={floatVariants}
+            animate="animate"
+            whileHover={{ scale: 1.1 }}
+          >
+            <Image
+              src={"/images/heart-balloon.png"}
+              alt="말풍선 아이콘"
+              width={77}
+              height={77}
+            />
           </motion.div>
         </motion.div>
 
@@ -73,14 +83,35 @@ export default function ScreenListSection() {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <Image src={`/images/${num}.png`} width={255} height={550} alt={`screen ${num}`} />
+            <Image
+              src={`/images/${num}.png`}
+              width={255}
+              height={550}
+              alt={`screen ${num}`}
+            />
           </motion.div>
         ))}
 
-        <motion.div className="absolute -bottom-[120px] -right-[44px]" variants={float} animate="animate">
-          <Image src="/images/pick-some.png" width={289} height={133} alt="pick some" />
+        <motion.div
+          className="absolute -bottom-[120px] -right-[44px]"
+          variants={float}
+          animate="animate"
+        >
+          <Image
+            src="/images/pick-some.png"
+            width={289}
+            height={133}
+            alt="pick some"
+          />
         </motion.div>
       </div>
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1.2 }}
+        className="w-[457px] h-[310px] right-[-80px] rounded-[457px] bottom-[74px] blur-[100px] bg-[rgba(122,74,226,0.2)] absolute z-0"
+        viewport={{ once: true }}
+      />
     </div>
   );
 }
