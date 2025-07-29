@@ -84,6 +84,7 @@ export default function ScreenListSection() {
             variants={fadeUp}
           >
             <Image
+              priority
               src={`/images/${num}.png`}
               width={255}
               height={550}
