@@ -105,13 +105,8 @@ export default function ScreenListSection() {
           />
         </motion.div>
       </div>
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        whileInView={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.2 }}
-        className="w-[457px] h-[310px] right-[-80px] rounded-[457px] bottom-[74px] blur-[100px] bg-[rgba(122,74,226,0.2)] absolute z-0"
-        viewport={{ once: true }}
-      />
+      <motion.div className="w-[457px] h-[310px] right-[-80px] rounded-[457px] bottom-[74px] blur-[150px] bg-[rgba(122,74,226,0.2)] absolute z-0" />
+      <motion.div className="w-[645px] h-[55px] right-[-80px] rounded-[645px] top-[180px] left-[48px] blur-[125px] bg-[rgba(122,74,226,0.4)] absolute z-0" />
     </div>
   );
 }
