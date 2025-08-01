@@ -7,7 +7,7 @@ export function deeplinkToApp(deepLinkValue: string) {
   const isIOS = /iphone|ipad|ipod/.test(userAgent);
   const isMobile = isAndroid || isIOS;
 
-  const schemeUrl = `myapp://?deep_link_value=${deepLinkValue}`;
+  // const schemeUrl = `myapp://?deep_link_value=${deepLinkValue}`;
   const fallbackUrl = getFallbackUrl();
 
   if (!isMobile) {
@@ -19,7 +19,7 @@ export function deeplinkToApp(deepLinkValue: string) {
   }
 
   // 앱 이동 시도
-  window.location.href = schemeUrl;
+  // window.location.href = schemeUrl;
 
   // 앱으로 이동했는지 감지
   window.onblur = () => {
