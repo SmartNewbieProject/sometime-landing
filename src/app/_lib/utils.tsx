@@ -1,33 +1,56 @@
 "use client";
 
 export function deeplinkToApp(deepLinkValue: string) {
+  let didRedirect = false;
   const userAgent = navigator.userAgent.toLowerCase();
   const isAndroid = /android/.test(userAgent);
   const isIOS = /iphone|ipad|ipod/.test(userAgent);
   const isMobile = isAndroid || isIOS;
 
-  const encodedValue = encodeURIComponent(deepLinkValue);
+  const schemeUrl = `myapp://?deep_link_value=${deepLinkValue}`;
   const fallbackUrl = getFallbackUrl();
 
   if (!isMobile) {
     alert("모바일 기기에서만 실행 가능한 기능입니다. 모바일로 접속해주세요.");
-    window.open(fallbackUrl, "_blank");
+
+    window.location.href =
+      "https://apps.apple.com/kr/app/썸타임-지역-대학생-소개팅/id6746120889";
     return;
   }
 
-  if (isIOS) {
-    const universalLink = `https://sometime.page.link/?deep_link_value=${encodedValue}`;
-    window.location.href = universalLink;
+  // 앱 이동 시도
+  window.location.href = schemeUrl;
 
+  // 앱으로 이동했는지 감지
+  window.onblur = () => {
+    didRedirect = true;
+  };
+
+  window.onfocus = () => {
+    if (!didRedirect) {
+      window.location.href = fallbackUrl;
+    }
+  };
+
+  if (isAndroid) {
+    setTimeout(() => {
+      if (!didRedirect) {
+        window.location.href = fallbackUrl;
+      }
+    }, 100);
+  }
+
+  if (isIOS) {
+    const interval = setInterval(() => {
+      if (!didRedirect) {
+        window.location.href = fallbackUrl;
+        clearInterval(interval);
+      }
+    }, 2000);
     // Universal link가 실패할 경우 fallback (iOS는 최소 2~3초 필요)
     setTimeout(() => {
       window.location.href = fallbackUrl;
     }, 3000);
-  } else if (isAndroid) {
-    const intentUrl = `intent://open?deep_link_value=${encodedValue}#Intent;scheme=myapp;package=com.smartnewb.sometimes;end;`;
-    window.location.href = intentUrl;
-
-    // intent://는 자체 fallback을 지원하므로 별도 fallback 처리 필요 없음
   }
 }
 
