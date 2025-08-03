@@ -69,6 +69,38 @@ export default function RootLayout({
         <meta name="google-site-verification" content="zvx72K3s6z5oR8P23QUXqtYP-CjGML5PTs3-B-a058Q" />
         <meta name="google-site-verification" content="ecsgQ3pQGNVL8u-cOqqvNC4jrddHCtnSJR1QhfBex5E" />
         <meta name="google-site-verification" content="mMaF6ssWvuNzoDifNcxgtIBL4PsHrTdsTJdsRRGBOy4" />
+        
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  !function(f,b,e,v,n,t,s)
+                  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                  n.queue=[];t=b.createElement(e);t.async=!0;
+                  t.src=v;s=b.getElementsByTagName(e)[0];
+                  s.parentNode.insertBefore(t,s)}(window, document,'script',
+                  'https://connect.facebook.net/en_US/fbevents.js');
+                  fbq('init', '1573718343258587');
+                  fbq('track', 'PageView');
+                } catch (error) {
+                  console.warn('Facebook Pixel could not be loaded:', error);
+                }
+              })();
+            `,
+          }}
+        />
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{display:'none'}}
+            src="https://www.facebook.com/tr?id=1573718343258587&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
       </head>
       <body className={`${pretendard.variable} ${wnatedSans.variable} antialiased relative`}>{children}</body>
       <GoogleAnalytics gaId="G-VZ7HHRS8QF" />
