@@ -1,5 +1,7 @@
 "use client";
 
+import { track } from "@amplitude/analytics-browser";
+
 export function deeplinkToApp(deepLinkValue: string) {
   let didRedirect = false;
   const userAgent = navigator.userAgent.toLowerCase();
@@ -33,6 +35,11 @@ export function deeplinkToApp(deepLinkValue: string) {
   };
 
   if (isAndroid) {
+    track("Click_Download", {
+      platform: "google_play",
+      type: "Mobile",
+      location: "Top_Sectoin",
+    });
     setTimeout(() => {
       if (!didRedirect) {
         window.location.href = fallbackUrl;
@@ -41,6 +48,11 @@ export function deeplinkToApp(deepLinkValue: string) {
   }
 
   if (isIOS) {
+    track("Click_Download", {
+      platform: "app_store",
+      type: "Mobile",
+      location: "Top_Sectoin",
+    });
     const interval = setInterval(() => {
       if (!didRedirect) {
         window.location.href = fallbackUrl;

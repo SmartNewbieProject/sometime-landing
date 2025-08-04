@@ -7,6 +7,7 @@ import DesktopArrowBottom from "../icon/DesktopArrowBottom";
 import Link from "next/link";
 import { sendGTMEvent } from "@next/third-parties/google";
 import { useRouter } from "next/navigation";
+import { track } from "@amplitude/analytics-browser";
 export default function TopSection() {
   const router = useRouter();
   return (
@@ -14,14 +15,25 @@ export default function TopSection() {
       <section className="h-[600px] bg-[url('/images/desktop-bg.png')] overflow-hidden w-full  bg-cover bg-center bg-no-repeat relative font-wantedSans">
         <div className="absolute w-full h-full  bottom-0">
           <div className="absolute bottom-0   -translate-x-1/2 left-1/2 z-10">
-            <Image src="/images/phone-frame.png" height={413} width={430} alt="phone frame" className=" z-10  " />
+            <Image
+              src="/images/phone-frame.png"
+              height={413}
+              width={430}
+              alt="phone frame"
+              className=" z-10  "
+            />
             <motion.div
               variants={floatVariants}
               animate="animate"
               whileHover={{ scale: 1.1 }}
               className="absolute top-[80px] -right-[72px]"
             >
-              <Image src={"/images/send-letter.png"} width={118} height={118} alt="" />
+              <Image
+                src={"/images/send-letter.png"}
+                width={118}
+                height={118}
+                alt=""
+              />
             </motion.div>
           </div>
           <Image
@@ -34,6 +46,7 @@ export default function TopSection() {
           <motion.button
             whileHover={{ scale: 1.1 }}
             onClick={() => {
+              track("Click_Sometime", { type: "Desktop" });
               sendGTMEvent({ event: "click_page" });
               router.push("https://some-in-univ.com");
             }}
@@ -49,18 +62,48 @@ export default function TopSection() {
               <Link
                 target="_blank"
                 href="https://apps.apple.com/kr/app/썸타임-지역-대학생-소개팅/id6746120889"
-                onClick={() => sendGTMEvent({ event: "click_download", platform: "app_store" })}
+                onClick={() => {
+                  track("Click_Download", {
+                    platform: "app_store",
+                    type: "Desktop",
+                    location: "Top_Sectoin",
+                  });
+                  sendGTMEvent({
+                    event: "click_download",
+                    platform: "app_store",
+                  });
+                }}
               >
-                <Image src={"/images/app-store.png"} width={104} height={32} alt="앱스토어 링크" />
+                <Image
+                  src={"/images/app-store.png"}
+                  width={104}
+                  height={32}
+                  alt="앱스토어 링크"
+                />
               </Link>
             </motion.button>
             <motion.button whileHover={{ scale: 1.1 }}>
               <Link
                 target="_blank"
                 href="https://play.google.com/store/apps/details?id=com.smartnewb.sometimes"
-                onClick={() => sendGTMEvent({ event: "click_download", platform: "google_play" })}
+                onClick={() => {
+                  track("Click_Download", {
+                    platform: "google_play",
+                    type: "Desktop",
+                    location: "Top_Sectoin",
+                  });
+                  sendGTMEvent({
+                    event: "click_download",
+                    platform: "google_play",
+                  });
+                }}
               >
-                <Image src={"/images/google-play.png"} width={104} height={32} alt="구글플레이 링크" />
+                <Image
+                  src={"/images/google-play.png"}
+                  width={104}
+                  height={32}
+                  alt="구글플레이 링크"
+                />
               </Link>
             </motion.button>
           </div>
@@ -82,7 +125,12 @@ export default function TopSection() {
             whileHover={{ scale: 1.1 }}
             className="absolute -scale-x-100 bottom-[100px]  flex flex-col items-start gap-[12px] -translate-x-1/2 left-[calc(50%-270px)]"
           >
-            <Image src={"/images/heart-balloon.png"} width={66} height={66} alt="" />
+            <Image
+              src={"/images/heart-balloon.png"}
+              width={66}
+              height={66}
+              alt=""
+            />
           </motion.div>
 
           <div className="w-[794px] h-[556px] rounded-[794px] blur-[100px] bg-[rgba(122,74,226,0.10)] absolute top-[136px] -left-[264px] " />

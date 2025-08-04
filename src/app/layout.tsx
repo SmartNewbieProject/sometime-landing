@@ -3,7 +3,9 @@ import "./globals.css";
 import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Head from "next/head";
-
+import * as amplitude from "@amplitude/analytics-browser";
+import { autocapturePlugin } from "@amplitude/plugin-autocapture-browser";
+import AmplitudeProvider from "./_provider/AmplitudeProvider";
 const pretendard = localFont({
   src: "../font/PretendardVariable.woff2",
   variable: "--font-pretendard",
@@ -58,6 +60,7 @@ export const metadata = {
     },
   },
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -66,10 +69,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="google-site-verification" content="zvx72K3s6z5oR8P23QUXqtYP-CjGML5PTs3-B-a058Q" />
-        <meta name="google-site-verification" content="ecsgQ3pQGNVL8u-cOqqvNC4jrddHCtnSJR1QhfBex5E" />
-        <meta name="google-site-verification" content="mMaF6ssWvuNzoDifNcxgtIBL4PsHrTdsTJdsRRGBOy4" />
-        
+        <meta
+          name="google-site-verification"
+          content="zvx72K3s6z5oR8P23QUXqtYP-CjGML5PTs3-B-a058Q"
+        />
+        <meta
+          name="google-site-verification"
+          content="ecsgQ3pQGNVL8u-cOqqvNC4jrddHCtnSJR1QhfBex5E"
+        />
+        <meta
+          name="google-site-verification"
+          content="mMaF6ssWvuNzoDifNcxgtIBL4PsHrTdsTJdsRRGBOy4"
+        />
+
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -96,13 +108,18 @@ export default function RootLayout({
           <img
             height="1"
             width="1"
-            style={{display:'none'}}
+            style={{ display: "none" }}
             src="https://www.facebook.com/tr?id=1573718343258587&ev=PageView&noscript=1"
             alt=""
           />
         </noscript>
       </head>
-      <body className={`${pretendard.variable} ${wnatedSans.variable} antialiased relative`}>{children}</body>
+      <body
+        className={`${pretendard.variable} ${wnatedSans.variable} antialiased relative`}
+      >
+        {children}
+      </body>
+      <AmplitudeProvider />
       <GoogleAnalytics gaId="G-VZ7HHRS8QF" />
     </html>
   );

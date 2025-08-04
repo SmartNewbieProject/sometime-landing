@@ -10,6 +10,8 @@ import {
   fadeInUpVariant,
   scaleInVariant,
 } from "@/app/_lib/motion";
+import { track } from "@amplitude/analytics-browser";
+import { platform } from "os";
 
 const footerList = [
   {
@@ -69,9 +71,17 @@ export default function Seventh() {
           <Link
             target="_blank"
             href="https://apps.apple.com/kr/app/썸타임-지역-대학생-소개팅/id6746120889"
-            onClick={() =>
-              sendGTMEvent({ event: "click_download", platform: "app_store" })
-            }
+            onClick={() => {
+              track("Click_Download", {
+                platform: "app_store",
+                type: "Mobile",
+                location: "Bottom_Section",
+              });
+              sendGTMEvent({
+                event: "click_download",
+                platform: "app_store",
+              });
+            }}
           >
             <Image
               src="/images/app-store.png"
@@ -88,9 +98,17 @@ export default function Seventh() {
           <Link
             target="_blank"
             href="https://play.google.com/store/apps/details?id=com.smartnewb.sometimes"
-            onClick={() =>
-              sendGTMEvent({ event: "click_download", platform: "google_play" })
-            }
+            onClick={() => {
+              track("Click_Download", {
+                platform: "google_play",
+                type: "Mobile",
+                location: "Bottom_Section",
+              });
+              sendGTMEvent({
+                event: "click_download",
+                platform: "google_play",
+              });
+            }}
           >
             <Image
               src="/images/google-play.png"

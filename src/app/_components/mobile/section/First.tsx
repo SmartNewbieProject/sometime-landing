@@ -6,6 +6,7 @@ import React from "react";
 import { deeplinkToApp } from "@/app/_lib/utils";
 import { sendGTMEvent } from "@next/third-parties/google";
 import { fadeUp } from "@/app/_lib/motion";
+import { track } from "@amplitude/analytics-browser";
 
 export default function First() {
   return (
