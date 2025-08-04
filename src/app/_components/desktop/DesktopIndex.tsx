@@ -8,6 +8,7 @@ import OverviewSection from "./OverviewSection";
 import ScreenListSection from "./ScreenListSection";
 import Title from "./Title";
 import TopSection from "./TopSection";
+import QueryParamHandler from "@/app/_components/QueryParamHandler";
 
 export default function DesktopIndex() {
   return (
@@ -22,6 +23,7 @@ export default function DesktopIndex() {
       <ScreenListSection />
       <DownloadSection />
       <Footer />
+      <QueryParamHandler />
     </div>
   );
 }
