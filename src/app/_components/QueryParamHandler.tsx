@@ -25,6 +25,8 @@ export default function QueryParamHandler() {
       amplitude.track("BusMarketing_Traffic", {
         region: propertyMap[external as RegionType],
       });
+      
+      amplitude.flush();
 
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.delete('external');
