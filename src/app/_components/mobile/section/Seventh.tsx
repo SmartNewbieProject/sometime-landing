@@ -5,13 +5,30 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { sendGTMEvent } from "@next/third-parties/google";
-import {
-  containerVariants,
-  fadeInUpVariant,
-  scaleInVariant,
-} from "@/app/_lib/motion";
-import { track } from "@amplitude/analytics-browser";
-import { platform } from "os";
+import * as amplitude from "@amplitude/analytics-browser";
+
+const fadeInUpVariant = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const scaleInVariant = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.9, ease: "easeInOut" as Easing },
+  },
+};
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 const footerList = [
   {
@@ -72,15 +89,13 @@ export default function Seventh() {
             target="_blank"
             href="https://apps.apple.com/kr/app/썸타임-지역-대학생-소개팅/id6746120889"
             onClick={() => {
-              track("Click_Download", {
+              amplitude.track("Click_Download", {
                 platform: "app_store",
                 type: "Mobile",
                 location: "Bottom_Section",
               });
-              sendGTMEvent({
-                event: "click_download",
-                platform: "app_store",
-              });
+
+              sendGTMEvent({ event: "click_download", platform: "app_store" });
             }}
           >
             <Image
@@ -99,11 +114,12 @@ export default function Seventh() {
             target="_blank"
             href="https://play.google.com/store/apps/details?id=com.smartnewb.sometimes"
             onClick={() => {
-              track("Click_Download", {
+              amplitude.track("Click_Download", {
                 platform: "google_play",
                 type: "Mobile",
                 location: "Bottom_Section",
               });
+
               sendGTMEvent({
                 event: "click_download",
                 platform: "google_play",

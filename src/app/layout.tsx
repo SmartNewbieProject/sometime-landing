@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Head from "next/head";
 import * as amplitude from "@amplitude/analytics-browser";
 import { autocapturePlugin } from "@amplitude/plugin-autocapture-browser";
-import AmplitudeProvider from "./_provider/AmplitudeProvider";
+import { AmplitudeProvider } from "./_components/AmplitudeProvider";
 const pretendard = localFont({
   src: "../font/PretendardVariable.woff2",
   variable: "--font-pretendard",
@@ -119,8 +118,9 @@ export default function RootLayout({
       >
         {children}
       </body>
-      <AmplitudeProvider />
+
       <GoogleAnalytics gaId="G-VZ7HHRS8QF" />
+      <AmplitudeProvider />
     </html>
   );
 }

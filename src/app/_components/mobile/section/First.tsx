@@ -5,8 +5,16 @@ import { Easing, motion } from "framer-motion";
 import React from "react";
 import { deeplinkToApp } from "@/app/_lib/utils";
 import { sendGTMEvent } from "@next/third-parties/google";
-import { fadeUp } from "@/app/_lib/motion";
-import { track } from "@amplitude/analytics-browser";
+import * as amplitude from "@amplitude/analytics-browser";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.2, duration: 0.8, ease: "easeOut" as Easing },
+  }),
+};
 
 export default function First() {
   return (
@@ -62,6 +70,7 @@ export default function First() {
           whileHover={{ scale: 1.05 }}
           onClick={() => {
             sendGTMEvent({ event: "click_download" });
+
             deeplinkToApp("");
           }}
           whileTap={{ scale: 0.95 }}
