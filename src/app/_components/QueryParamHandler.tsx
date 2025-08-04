@@ -5,13 +5,14 @@ import { useEffect } from 'react';
 import * as amplitude from "@amplitude/analytics-browser";
 
 
-type RegionType = 'GalleriaDepartmentStore' | 'CNU' | 'OnCheonBridge';
-const REGIONS = ['GalleriaDepartmentStore', 'CNU', 'OnCheonBridge'] as RegionType[];
+type RegionType = 'GalleriaDepartmentStore' | 'CNU' | 'OnCheonBridge' | 'Instagram';
+const REGIONS = ['GalleriaDepartmentStore', 'CNU', 'OnCheonBridge', 'Instagram'] as RegionType[];
 
 const propertyMap: Record<RegionType, string> = {
   GalleriaDepartmentStore: '갤러리아타임월드 앞',
   CNU: '충남대학교 앞',
   OnCheonBridge: '온천교 앞',
+  Instagram: '인스타그램 유입',
 };
 
 export default function QueryParamHandler() {
