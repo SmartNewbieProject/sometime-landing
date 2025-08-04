@@ -30,15 +30,23 @@ export default function Footer() {
               </Link>
             ))}
           </div>
-          <Link href="https://www.instagram.com/sometime.in.univ?igsh=MTdxMWJjYmFrdGc3Ng==" target="_blank">
-            <Image src={"/images/instagram2.png"} width={42} height={42} alt="인스타그램 링크" />
+          <Link
+            href="https://www.instagram.com/sometime.in.univ?igsh=MTdxMWJjYmFrdGc3Ng=="
+            target="_blank"
+          >
+            <Image
+              src={"/images/instagram2.png"}
+              width={42}
+              height={42}
+              alt="인스타그램 링크"
+            />
           </Link>
         </div>
 
         <div className="text-[#7A4AE2] mb-[120px] font-medium text-[16px] leading-[29px] mt-[100px]">
           상호명 ㅣ 스마트뉴비
           <br /> 사업자 등록 번호 ㅣ 498-05-02914 <br />
-          사업장 소재지 ㅣ 대전광역시 서구 갈마중로 7번길 42, 4동 1407호
+          사업장 소재지 ㅣ 대전광역시 서구 갈마중로 7번길 42, 4동 407호
           <br /> 대표 ㅣ 전준영
           <br /> 문의 메일 ㅣ notify@smartnewb.com <br />
           통신판매업신고 ㅣ 제 2025-대전유성-0530호
