@@ -18,11 +18,10 @@ export default function usePageViewTracking() {
       if (seconds <= 60) return "31-60s";
       return "61s+";
     };
-
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
+      if (document.visibilityState === "hidden" && enterTimeRef?.current) {
         const staySeconds = Math.round(
-          (Date.now() - enterTimeRef?.current!) / 1000
+          (Date.now() - enterTimeRef.current) / 1000
         );
         const stayTimeBucket = getStayTimeBucket(staySeconds);
         track("page_stay", {
@@ -33,8 +32,10 @@ export default function usePageViewTracking() {
     };
 
     const handlePageHide = () => {
+      if (!enterTimeRef?.current) return;
+
       const staySeconds = Math.round(
-        (Date.now() - enterTimeRef?.current!) / 1000
+        (Date.now() - enterTimeRef.current) / 1000
       );
       const stayTimeBucket = getStayTimeBucket(staySeconds);
       track("page_stay", { stayTime: stayTimeBucket, rawSeconds: staySeconds });
