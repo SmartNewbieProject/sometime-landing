@@ -1,10 +1,15 @@
 "use client";
 import ReactFullpage from "@fullpage/react-fullpage";
 
-export default function FullPageWrapper({ children }: { children: React.ReactNode }) {
+export default function FullPageWrapper({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <ReactFullpage
       scrollingSpeed={700}
+      autoScrolling={true}
       licenseKey={process.env.NEXT_PUBLIC_FULLPAGE_LICENSE_KEY}
       credits={{
         enabled: false,
