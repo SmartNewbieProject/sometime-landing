@@ -1,3 +1,4 @@
+"use client";
 import { Suspense } from "react";
 import FloatingButton from "./FloatingButton";
 import FullPageWrapper from "./FullPageWrapper";
@@ -9,12 +10,14 @@ import Seventh from "./section/Seventh";
 import Sixth from "./section/Sixth";
 import Third from "./section/Third";
 import QueryParamHandler from "@/app/_components/QueryParamHandler";
+import usePageViewTracking from "@/app/_hooks/usePageViewTracking";
 
 export default function MobileIndex() {
+  usePageViewTracking();
   return (
     <>
       <Suspense fallback={null}>
-        <QueryParamHandler/>
+        <QueryParamHandler />
       </Suspense>
       <FullPageWrapper>
         {[First, Second, Third, Fifth, Sixth, Seventh].map((Item, index) => (
