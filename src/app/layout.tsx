@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import Head from "next/head";
+import FloatingButton from "./_components/FloatingButton";
+import { GoogleAnalytics } from '@next/third-parties/google'
+import { AmplitudeProvider } from "@/app/_components/AmplitudeProvider";
+
 
 const pretendard = localFont({
   src: "../font/PretendardVariable.woff2",
@@ -63,6 +64,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <head>
