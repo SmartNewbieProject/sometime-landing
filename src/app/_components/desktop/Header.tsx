@@ -4,6 +4,7 @@ import HeaderButton from "./HeaderButton";
 import { deeplinkToApp } from "@/app/_lib/utils";
 import { useRouter } from "next/navigation";
 import { sendGTMEvent } from "@next/third-parties/google";
+import * as amplitude from "@amplitude/analytics-browser";
 
 export default function Header() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function Header() {
           <HeaderButton
             text="앱으로 이동"
             onClick={() => {
+              amplitude.track("Redirect_App");
               sendGTMEvent({ event: "click_app" });
 
               deeplinkToApp("");
@@ -24,6 +26,7 @@ export default function Header() {
           <HeaderButton
             text="로그인 및 회원가입"
             onClick={() => {
+              amplitude.track("Redirect_App");
               sendGTMEvent({ event: "click_login_page" });
               router.push("https://some-in-univ.com/auth/login");
             }}
