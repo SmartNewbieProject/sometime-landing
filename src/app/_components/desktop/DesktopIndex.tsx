@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import BackgroundSection from "./BackgroundSection";
 import DownloadSection from "./DownloadSection";
 import Footer from "./Footer";
@@ -23,7 +24,9 @@ export default function DesktopIndex() {
       <ScreenListSection />
       <DownloadSection />
       <Footer />
-      <QueryParamHandler />
+      <Suspense fallback={null}>
+        <QueryParamHandler />
+      </Suspense>
     </div>
   );
 }

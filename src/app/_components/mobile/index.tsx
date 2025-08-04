@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import FloatingButton from "./FloatingButton";
 import FullPageWrapper from "./FullPageWrapper";
 import Section from "./Section";
@@ -12,7 +13,9 @@ import QueryParamHandler from "@/app/_components/QueryParamHandler";
 export default function MobileIndex() {
   return (
     <>
-      <QueryParamHandler/>
+      <Suspense fallback={null}>
+        <QueryParamHandler/>
+      </Suspense>
       <FullPageWrapper>
         {[First, Second, Third, Fifth, Sixth, Seventh].map((Item, index) => (
           <Section key={index}>
