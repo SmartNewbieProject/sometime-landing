@@ -27,16 +27,7 @@ const staggerContainer = {
   },
 };
 
-const floatVariants = {
-  animate: {
-    y: [0, -10, 0],
-    transition: {
-      duration: 2.5,
-      repeat: Infinity,
-      ease: "easeInOut",
-    },
-  },
-};
+
 
 export default function EventPage() {
   useEffect(() => {
@@ -192,8 +183,8 @@ export default function EventPage() {
                     variants={fadeUp}
                   >
                     <motion.div
-                      variants={floatVariants}
-                      animate="animate"
+                      animate={{ y: [0, -10, 0] }}
+                      transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                       whileHover={{ scale: 1.1 }}
                       className="absolute -top-4 -left-4"
                     >
@@ -206,8 +197,8 @@ export default function EventPage() {
                     </motion.div>
 
                     <motion.div
-                      variants={floatVariants}
-                      animate="animate"
+                      animate={{ y: [0, -10, 0] }}
+                      transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
                       whileHover={{ scale: 1.1 }}
                       className="absolute -bottom-4 -right-4"
                     >
