@@ -344,28 +344,29 @@ export default function EventPage() {
                   variants={staggerContainer}
                 >
                   <motion.div
-                    className="flex justify-center mb-6"
+                    className="flex justify-center mb-4"
                     variants={fadeUp}
                   >
                     <motion.div
                       animate={{ scale: [1, 1.05, 1] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="w-32 h-32 sm:w-40 sm:h-40 relative"
                     >
                       <Image
                         src="/images/pick-some.png"
                         alt="썸타임 픽썸"
-                        width={300}
-                        height={300}
+                        fill
+                        className="object-contain"
                       />
                     </motion.div>
                   </motion.div>
 
                   <motion.div
-                    className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-3xl p-6 shadow-xl border-2 border-white/50 relative"
+                    className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border-2 border-white/50 relative"
                     variants={fadeUp}
                   >
-                    <div className="text-[15px] leading-[1.8] text-gray-800 space-y-3">
-                      <p className="font-semibold text-[17px] text-purple-700">
+                    <div className="text-[14px] sm:text-[15px] leading-[1.7] sm:leading-[1.8] text-gray-800 space-y-2 sm:space-y-3">
+                      <p className="font-semibold text-[15px] sm:text-[17px] text-purple-700">
                         단순한 소개팅 앱이 아니에요.
                       </p>
                       <p>
@@ -446,34 +447,36 @@ export default function EventPage() {
                     className="flex justify-center mb-4"
                     variants={fadeUp}
                   >
-                    <Image
-                      src="/images/big-univ-verify.png"
-                      alt="대학 인증"
-                      width={200}
-                      height={200}
-                    />
+                    <div className="w-28 h-28 sm:w-32 sm:h-32 relative">
+                      <Image
+                        src="/images/big-univ-verify.png"
+                        alt="대학 인증"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
                   </motion.div>
 
                   <motion.h2
-                    className="text-[22px] font-bold text-center mb-8 text-gray-900"
+                    className="text-[18px] sm:text-[20px] font-bold text-center mb-6 sm:mb-8 text-gray-900"
                     variants={fadeUp}
                   >
                     그래서 썸타임은 이렇게 운영돼요
                   </motion.h2>
 
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     <motion.div
-                      className="flex items-start gap-4 bg-white/70 backdrop-blur-sm rounded-2xl p-4 border border-orange-100 shadow-md"
+                      className="flex items-start gap-3 sm:gap-4 bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-orange-100 shadow-md"
                       variants={fadeUp}
                     >
-                      <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-orange-400 to-amber-500 rounded-full flex items-center justify-center text-white text-[18px] font-bold shadow-lg">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-400 to-amber-500 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
                         1
                       </div>
                       <div>
-                        <h3 className="text-[18px] font-semibold mb-2 text-gray-900">
+                        <h3 className="text-[15px] sm:text-[17px] font-semibold mb-1 sm:mb-2 text-gray-900">
                           같은 지역 대학생끼리
                         </h3>
-                        <p className="text-[15px] text-gray-700 leading-[1.7]">
+                        <p className="text-[13px] sm:text-[15px] text-gray-700 leading-[1.6] sm:leading-[1.7]">
                           멀리 가지 않아도 괜찮아요.<br />
                           가까운 곳에서 자연스러운 연결을 만들어 드려요.
                         </p>
@@ -481,17 +484,17 @@ export default function EventPage() {
                     </motion.div>
 
                     <motion.div
-                      className="flex items-start gap-4 bg-white/70 backdrop-blur-sm rounded-2xl p-4 border border-amber-100 shadow-md"
+                      className="flex items-start gap-3 sm:gap-4 bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-amber-100 shadow-md"
                       variants={fadeUp}
                     >
-                      <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-full flex items-center justify-center text-white text-[18px] font-bold shadow-lg">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
                         2
                       </div>
                       <div>
-                        <h3 className="text-[18px] font-semibold mb-2 text-gray-900">
+                        <h3 className="text-[15px] sm:text-[17px] font-semibold mb-1 sm:mb-2 text-gray-900">
                           100% 대학생 인증
                         </h3>
-                        <p className="text-[15px] text-gray-700 leading-[1.7]">
+                        <p className="text-[13px] sm:text-[15px] text-gray-700 leading-[1.6] sm:leading-[1.7]">
                           철저한 인증을 거친 진짜 대학생들만 매칭되니<br />
                           안심하고 시작하세요.
                         </p>
@@ -499,17 +502,17 @@ export default function EventPage() {
                     </motion.div>
 
                     <motion.div
-                      className="flex items-start gap-4 bg-white/70 backdrop-blur-sm rounded-2xl p-4 border border-yellow-100 shadow-md"
+                      className="flex items-start gap-3 sm:gap-4 bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-yellow-100 shadow-md"
                       variants={fadeUp}
                     >
-                      <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-white text-[18px] font-bold shadow-lg">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
                         3
                       </div>
                       <div>
-                        <h3 className="text-[18px] font-semibold mb-2 text-gray-900">
+                        <h3 className="text-[15px] sm:text-[17px] font-semibold mb-1 sm:mb-2 text-gray-900">
                           온·오프라인을 넘나들며
                         </h3>
-                        <p className="text-[15px] text-gray-700 leading-[1.7]">
+                        <p className="text-[13px] sm:text-[15px] text-gray-700 leading-[1.6] sm:leading-[1.7]">
                           단순한 만남을 넘어, 대학생 여러분의 더 나은 청춘을<br />
                           응원하는 든든한 동반자가 될게요!
                         </p>
@@ -550,34 +553,37 @@ export default function EventPage() {
 
               <div className="max-w-[440px] mx-auto px-5 h-full flex flex-col justify-center items-center relative z-10">
                 <motion.div
-                  className="text-center"
+                  className="text-center w-full"
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.3 }}
                   variants={staggerContainer}
                 >
+                  {/* 로고 */}
                   <motion.div
-                    className="mb-6"
+                    className="mb-4 sm:mb-6"
                     variants={fadeUp}
                   >
-                    <Image
-                      src="/images/logo.png"
-                      alt="썸타임 로고"
-                      width={80}
-                      height={80}
-                      className="mx-auto"
-                    />
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 relative mx-auto">
+                      <Image
+                        src="/images/logo.png"
+                        alt="썸타임 로고"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
                   </motion.div>
 
+                  {/* 메인 텍스트 */}
                   <motion.h2
-                    className="text-[22px] font-bold text-gray-900 mb-3"
+                    className="text-[18px] sm:text-[22px] font-bold text-gray-900 mb-2 sm:mb-3 px-4"
                     variants={fadeUp}
                   >
                     후회 없는 청춘을 위한 첫걸음
                   </motion.h2>
 
                   <motion.p
-                    className="text-[16px] text-gray-700 mb-8 leading-[1.7]"
+                    className="text-[14px] sm:text-[16px] text-gray-700 mb-6 sm:mb-8 leading-[1.6] sm:leading-[1.7] px-4"
                     variants={fadeUp}
                   >
                     오늘 도착한 이 설렘,<br />
@@ -585,8 +591,9 @@ export default function EventPage() {
                     <span className="font-semibold text-[#7A4AE2]">지금 썸타임을 시작하세요</span>
                   </motion.p>
 
+                  {/* 앱 다운로드 버튼 */}
                   <motion.div
-                    className="flex flex-col items-center gap-3"
+                    className="flex flex-col items-center gap-2 sm:gap-3"
                     variants={fadeUp}
                   >
                     <Link
@@ -597,9 +604,10 @@ export default function EventPage() {
                     >
                       <Image
                         src="/images/app-store.png"
-                        width={140}
-                        height={50}
+                        width={120}
+                        height={40}
                         alt="앱스토어 다운로드"
+                        className="w-[120px] sm:w-[140px] h-auto"
                       />
                     </Link>
                     <Link
@@ -610,9 +618,10 @@ export default function EventPage() {
                     >
                       <Image
                         src="/images/google-play.png"
-                        width={140}
-                        height={50}
+                        width={120}
+                        height={40}
                         alt="구글플레이 다운로드"
+                        className="w-[120px] sm:w-[140px] h-auto"
                       />
                     </Link>
                   </motion.div>
@@ -620,7 +629,7 @@ export default function EventPage() {
                   <motion.div
                     animate={{ y: [0, -10, 0] }}
                     transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -top-8 -left-8"
+                    className="absolute -top-4 -left-4 hidden sm:block"
                   >
                     <Image
                       src="/images/heart-balloon.png"
@@ -633,7 +642,7 @@ export default function EventPage() {
                   <motion.div
                     animate={{ y: [0, -10, 0] }}
                     transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                    className="absolute -bottom-8 -right-8"
+                    className="absolute -bottom-4 -right-4 hidden sm:block"
                   >
                     <Image
                       src="/images/heart-arrow.png"
