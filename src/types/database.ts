@@ -9,6 +9,7 @@ export type Database = {
           applicant_phone: string;
           message: string;
           recipient_phone: string | null;
+          recipient_instagram_id: string | null;
           created_at: string;
         };
         Insert: {
@@ -18,6 +19,7 @@ export type Database = {
           applicant_phone: string;
           message: string;
           recipient_phone?: string | null;
+          recipient_instagram_id?: string | null;
           created_at?: string;
         };
         Update: {
@@ -27,6 +29,7 @@ export type Database = {
           applicant_phone?: string;
           message?: string;
           recipient_phone?: string | null;
+          recipient_instagram_id?: string | null;
           created_at?: string;
         };
       };
