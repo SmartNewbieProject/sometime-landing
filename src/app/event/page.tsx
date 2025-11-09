@@ -30,14 +30,6 @@ const staggerContainer = {
 
 
 export default function EventPage() {
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      window?.fullpage_api?.moveSectionDown();
-    }, 5000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
   const handleDownloadClick = (platform: string) => {
     amplitude.track("Click_Download", {
       platform,
@@ -155,9 +147,9 @@ export default function EventPage() {
             </div>
 
 
-            <div className="section bg-gradient-to-br from-amber-50 via-white to-orange-50 relative overflow-hidden">
-              <div className="absolute top-20 left-5 w-24 h-24 bg-amber-300 rounded-full opacity-10 blur-2xl" />
-              <div className="absolute bottom-10 right-5 w-36 h-36 bg-orange-300 rounded-full opacity-10 blur-2xl" />
+            <div className="section bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100 relative overflow-hidden">
+              <div className="absolute top-20 left-5 w-24 h-24 bg-purple-300 rounded-full opacity-10 blur-2xl" />
+              <div className="absolute bottom-10 right-5 w-36 h-36 bg-pink-300 rounded-full opacity-10 blur-2xl" />
 
               <div className="max-w-[440px] mx-auto px-5 h-full flex flex-col justify-center relative z-10">
                 <motion.div
@@ -431,10 +423,10 @@ export default function EventPage() {
             </div>
 
 
-            <div className="section bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-amber-200 to-orange-200 opacity-30" />
-              <div className="absolute top-0 left-20 w-1 h-full bg-gradient-to-b from-yellow-200 to-amber-200 opacity-20" />
-              <div className="absolute top-0 right-20 w-1 h-full bg-gradient-to-b from-orange-200 to-amber-200 opacity-20" />
+            <div className="section bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-purple-200 to-pink-200 opacity-30" />
+              <div className="absolute top-0 left-20 w-1 h-full bg-gradient-to-b from-pink-200 to-purple-200 opacity-20" />
+              <div className="absolute top-0 right-20 w-1 h-full bg-gradient-to-b from-purple-200 to-pink-200 opacity-20" />
 
               <div className="max-w-[440px] mx-auto px-5 h-full flex flex-col justify-center relative z-10">
                 <motion.div
@@ -466,10 +458,10 @@ export default function EventPage() {
 
                   <div className="space-y-4 sm:space-y-6">
                     <motion.div
-                      className="flex items-start gap-3 sm:gap-4 bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-orange-100 shadow-md"
+                      className="flex items-start gap-3 sm:gap-4 bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-purple-100 shadow-md"
                       variants={fadeUp}
                     >
-                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-400 to-amber-500 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
                         1
                       </div>
                       <div>
@@ -484,10 +476,10 @@ export default function EventPage() {
                     </motion.div>
 
                     <motion.div
-                      className="flex items-start gap-3 sm:gap-4 bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-amber-100 shadow-md"
+                      className="flex items-start gap-3 sm:gap-4 bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-pink-100 shadow-md"
                       variants={fadeUp}
                     >
-                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-pink-400 to-pink-500 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
                         2
                       </div>
                       <div>
@@ -502,10 +494,10 @@ export default function EventPage() {
                     </motion.div>
 
                     <motion.div
-                      className="flex items-start gap-3 sm:gap-4 bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-yellow-100 shadow-md"
+                      className="flex items-start gap-3 sm:gap-4 bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-purple-100 shadow-md"
                       variants={fadeUp}
                     >
-                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-fuchsia-500 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
                         3
                       </div>
                       <div>
@@ -593,7 +585,7 @@ export default function EventPage() {
 
                   {/* 앱 다운로드 버튼 */}
                   <motion.div
-                    className="flex flex-col items-center gap-2 sm:gap-3"
+                    className="flex flex-col items-center gap-3 sm:gap-4"
                     variants={fadeUp}
                   >
                     <Link
@@ -604,10 +596,10 @@ export default function EventPage() {
                     >
                       <Image
                         src="/images/app-store.png"
-                        width={120}
-                        height={40}
+                        width={160}
+                        height={53}
                         alt="앱스토어 다운로드"
-                        className="w-[120px] sm:w-[140px] h-auto"
+                        className="w-[160px] sm:w-[180px] h-auto"
                       />
                     </Link>
                     <Link
@@ -618,13 +610,22 @@ export default function EventPage() {
                     >
                       <Image
                         src="/images/google-play.png"
-                        width={120}
-                        height={40}
+                        width={160}
+                        height={53}
                         alt="구글플레이 다운로드"
-                        className="w-[120px] sm:w-[140px] h-auto"
+                        className="w-[160px] sm:w-[180px] h-auto"
                       />
                     </Link>
                   </motion.div>
+
+                  {/* 추가 강조 문구 */}
+                  <motion.p
+                    className="text-[13px] sm:text-[14px] text-gray-600 mt-6 sm:mt-8 leading-[1.6] px-4"
+                    variants={fadeUp}
+                  >
+                    같은 지역 대학생과의 진심 어린 만남,<br />
+                    <span className="font-semibold text-purple-700">썸타임에서 당신의 특별한 인연을 시작하세요</span>
+                  </motion.p>
 
                   <motion.div
                     animate={{ y: [0, -10, 0] }}
