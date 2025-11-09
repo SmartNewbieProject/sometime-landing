@@ -1,14 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import type { Database } from '@/types/database';
+
+type GiftMessage = Database['public']['Tables']['gift_messages']['Row'];
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ shortId: string }> }
 ) {
   try {
     const { shortId } = await params;
 
-    // short_id로 메시지 조회
     const { data, error } = await supabase
       .from('gift_messages')
       .select('*')
@@ -22,9 +24,11 @@ export async function GET(
       );
     }
 
+    const giftMessage = data as GiftMessage;
+
     return NextResponse.json({
-      message: data.message,
-      applicantName: data.applicant_name,
+      message: giftMessage.message,
+      applicantName: giftMessage.applicant_name,
     });
   } catch (error) {
     console.error('Error fetching message:', error);

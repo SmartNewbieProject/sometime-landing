@@ -1,9 +1,6 @@
 import "./globals.css";
 import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import Head from "next/head";
-import * as amplitude from "@amplitude/analytics-browser";
-import { autocapturePlugin } from "@amplitude/plugin-autocapture-browser";
 import { AmplitudeProvider } from "./_components/AmplitudeProvider";
 const pretendard = localFont({
   src: "../font/PretendardVariable.woff2",
@@ -104,6 +101,7 @@ export default function RootLayout({
           }}
         />
         <noscript>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             height="1"
             width="1"

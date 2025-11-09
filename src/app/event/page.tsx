@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { sendGTMEvent } from "@next/third-parties/google";
@@ -362,7 +361,7 @@ export default function EventPage() {
                         썸타임은 단순한 소개팅 앱이 아니에요.
                       </p>
                       <p className="font-medium text-pink-700">
-                        "나를 이해하고, 나다운 매력을 찾는 시작점이에요."
+                        &ldquo;나를 이해하고, 나다운 매력을 찾는 시작점이에요.&rdquo;
                       </p>
                       <p>
                         사람은 자아가 선명한 사람에게 자연스럽게 끌린다죠?<br />
@@ -371,7 +370,7 @@ export default function EventPage() {
                       </p>
                       <p className="font-medium text-purple-700">
                         내가 어떤 사람인지 명확해질 때,<br />
-                        그런 '나'를 진짜로 알아봐 줄 인연도 찾아오니까요.
+                        그런 &lsquo;나&rsquo;를 진짜로 알아봐 줄 인연도 찾아오니까요.
                       </p>
                     </div>
 

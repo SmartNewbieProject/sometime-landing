@@ -289,8 +289,8 @@ export default function MessagePage() {
 
                       {/* 메시지 카드 */}
                       <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-6 relative mt-4">
-                        <div className="absolute top-3 left-3 text-3xl opacity-20">"</div>
-                        <div className="absolute bottom-3 right-3 text-3xl opacity-20 rotate-180">"</div>
+                        <div className="absolute top-3 left-3 text-3xl opacity-20">&ldquo;</div>
+                        <div className="absolute bottom-3 right-3 text-3xl opacity-20 rotate-180">&rdquo;</div>
                         <p className="text-gray-800 text-[16px] leading-[1.8] whitespace-pre-wrap text-center relative z-10 font-medium">
                           {data.message}
                         </p>
@@ -448,7 +448,7 @@ export default function MessagePage() {
                         썸타임은 단순한 소개팅 앱이 아니에요.
                       </p>
                       <p className="font-medium text-pink-700">
-                        "나를 이해하고, 나다운 매력을 찾는 시작점이에요."
+                        &ldquo;나를 이해하고, 나다운 매력을 찾는 시작점이에요.&rdquo;
                       </p>
                       <p>
                         사람은 자아가 선명한 사람에게 자연스럽게 끌린다죠?<br />
@@ -457,7 +457,7 @@ export default function MessagePage() {
                       </p>
                       <p className="font-medium text-purple-700">
                         내가 어떤 사람인지 명확해질 때,<br />
-                        그런 '나'를 진짜로 알아봐 줄 인연도 찾아오니까요.
+                        그런 &lsquo;나&rsquo;를 진짜로 알아봐 줄 인연도 찾아오니까요.
                       </p>
                     </div>
 
