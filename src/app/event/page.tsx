@@ -461,7 +461,7 @@ export default function EventPage() {
                       className="flex items-start gap-3 sm:gap-4 bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-purple-100 shadow-md"
                       variants={fadeUp}
                     >
-                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-200 to-purple-300 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
                         1
                       </div>
                       <div>
@@ -479,7 +479,7 @@ export default function EventPage() {
                       className="flex items-start gap-3 sm:gap-4 bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-pink-100 shadow-md"
                       variants={fadeUp}
                     >
-                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-pink-400 to-pink-500 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-pink-200 to-pink-300 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
                         2
                       </div>
                       <div>
@@ -497,7 +497,7 @@ export default function EventPage() {
                       className="flex items-start gap-3 sm:gap-4 bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-purple-100 shadow-md"
                       variants={fadeUp}
                     >
-                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-fuchsia-500 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-300 to-fuchsia-300 rounded-full flex items-center justify-center text-white text-[16px] sm:text-[18px] font-bold shadow-lg">
                         3
                       </div>
                       <div>
