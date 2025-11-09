@@ -359,16 +359,19 @@ export default function EventPage() {
                   >
                     <div className="text-[14px] sm:text-[15px] leading-[1.7] sm:leading-[1.8] text-gray-800 space-y-2 sm:space-y-3">
                       <p className="font-semibold text-[15px] sm:text-[17px] text-purple-700">
-                        단순한 소개팅 앱이 아니에요.
-                      </p>
-                      <p>
-                        사람은 자아가 단단한 사람에게 본능적으로 끌린다고 하죠?<br />
-                        썸타임은 당신이 스스로에 대해 더 깊이 생각하고,<br />
-                        당신만의 가치관을 단단하게 만들 수 있도록 돕고 싶어요.
+                        썸타임은 단순한 소개팅 앱이 아니에요.
                       </p>
                       <p className="font-medium text-pink-700">
-                        내가 나를 잘 알 때 가장 나다운 매력이 빛나고,<br />
-                        그런 당신을 알아봐 줄 진짜 인연도 찾아오는 법이니까요.
+                        "나를 이해하고, 나다운 매력을 찾는 시작점이에요."
+                      </p>
+                      <p>
+                        사람은 자아가 선명한 사람에게 자연스럽게 끌린다죠?<br />
+                        그래서 우리는 당신이 스스로를 더 잘 알고,<br />
+                        당신만의 매력을 잃지 않도록 돕고 싶어요.
+                      </p>
+                      <p className="font-medium text-purple-700">
+                        내가 어떤 사람인지 명확해질 때,<br />
+                        그런 '나'를 진짜로 알아봐 줄 인연도 찾아오니까요.
                       </p>
                     </div>
 
