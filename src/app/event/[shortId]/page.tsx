@@ -716,6 +716,24 @@ export default function MessagePage() {
                     <span className="font-semibold text-purple-700">썸타임에서 당신의 특별한 인연을 시작하세요</span>
                   </motion.p>
 
+                  {/* 사업자 정보 */}
+                  <motion.div
+                    className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-gray-300/50 px-4"
+                    variants={fadeUp}
+                  >
+                    <div className="text-[10px] sm:text-[11px] text-gray-500 leading-[1.6] space-y-1">
+                      <p>상호명: 스마트 뉴비 | 사업장 소재지: 대전광역시 서구 둔산중로 74번길 42, 4층 407호 | 대표: 대표명 | 사업자 등록번호: 제 2025-대전서구-0000호</p>
+                      <p>문의번호: 010-8465-2476 | 이메일: notify@smartnewb.com | 사업자정보확인</p>
+                      <div className="flex flex-wrap gap-2 justify-center mt-2">
+                        <a href="#" className="hover:underline">개인정보처리방침</a>
+                        <span>|</span>
+                        <a href="#" className="hover:underline">개인정보 수집 및 이용동의</a>
+                        <span>|</span>
+                        <a href="#" className="hover:underline">서비스 이용약관</a>
+                      </div>
+                    </div>
+                  </motion.div>
+
                   <motion.div
                     animate={{ y: [0, -10, 0] }}
                     transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
