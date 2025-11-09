@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import ReactFullpage from "@fullpage/react-fullpage";
 import { sendGTMEvent } from "@next/third-parties/google";
 import * as amplitude from "@amplitude/analytics-browser";
-import ReactFullpage from "@fullpage/react-fullpage";
-import Link from "next/link";
+
+interface MessageData {
+  message: string;
+  applicantName: string;
+}
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -27,17 +33,85 @@ const staggerContainer = {
   },
 };
 
+export default function MessagePage() {
+  const params = useParams();
+  const router = useRouter();
+  const shortId = params.shortId as string;
 
+  const [data, setData] = useState<MessageData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-export default function EventPage() {
+  useEffect(() => {
+    const fetchMessage = async () => {
+      try {
+        const response = await fetch(`/api/message/${shortId}`);
+
+        if (!response.ok) {
+          setError(true);
+          return;
+        }
+
+        const result = await response.json();
+        setData(result);
+      } catch (err) {
+        console.error('Failed to fetch message:', err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (shortId) {
+      fetchMessage();
+    }
+  }, [shortId]);
+
   const handleDownloadClick = (platform: string) => {
     amplitude.track("Click_Download", {
       platform,
       type: "Mobile",
-      location: "Event_CTA",
+      location: "Gift_Message_CTA",
     });
     sendGTMEvent({ event: "click_download", platform });
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600 font-pretendard">메시지를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center max-w-md"
+        >
+          <div className="text-6xl mb-4">😢</div>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2 font-pretendard">
+            메시지를 찾을 수 없습니다
+          </h1>
+          <p className="text-gray-600 mb-6 font-pretendard">
+            유효하지 않은 링크이거나 만료된 메시지입니다.
+          </p>
+          <button
+            onClick={() => router.push('/event')}
+            className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full font-semibold hover:shadow-lg transition-all font-pretendard"
+          >
+            이벤트 페이지로 이동
+          </button>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <ReactFullpage
@@ -47,10 +121,11 @@ export default function EventPage() {
         enabled: false,
         label: "",
       }}
-      anchors={["gift", "intro", "about", "value", "features", "cta"]}
+      anchors={["gift", "message", "about", "value", "features", "cta"]}
       render={() => {
         return (
           <div className="bg-white font-pretendard" id="fullpage-wrapper">
+            {/* Section 1: Gift */}
             <div className="section bg-gradient-to-br from-pink-50 via-white to-purple-50 relative overflow-hidden">
               <div className="absolute top-10 right-10 w-32 h-32 bg-pink-200 rounded-full opacity-20 blur-3xl" />
               <div className="absolute bottom-20 left-10 w-40 h-40 bg-purple-200 rounded-full opacity-20 blur-3xl" />
@@ -103,24 +178,25 @@ export default function EventPage() {
                     </motion.div>
 
                     <motion.div
-                      animate={{ y: [0, -12, 0], rotate: [0, -10, 0] }}
-                      transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                      animate={{ y: [0, -12, 0], rotate: [0, -8, 0] }}
+                      transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
                       className="absolute -bottom-6 -right-6"
                     >
                       <Image
-                        src="/images/heart.png"
-                        alt="하트"
-                        width={35}
-                        height={35}
+                        src="/images/send-letter.png"
+                        alt="편지"
+                        width={44}
+                        height={44}
                       />
                     </motion.div>
                   </motion.div>
 
                   <motion.p
-                    className="text-[14px] text-gray-600 italic"
+                    className="text-[15px] text-gray-600 mb-4"
                     variants={fadeUp}
                   >
-                    당신을 위한 특별한 선물이 도착했어요 💌
+                    아래로 스크롤해서<br />
+                    <span className="font-semibold text-[#7A4AE2]">{data.applicantName}</span>님의 마음을 확인해보세요
                   </motion.p>
                 </motion.div>
 
@@ -146,7 +222,7 @@ export default function EventPage() {
               </div>
             </div>
 
-
+            {/* Section 2: Message */}
             <div className="section bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100 relative overflow-hidden">
               <div className="absolute top-20 left-5 w-24 h-24 bg-purple-300 rounded-full opacity-10 blur-2xl" />
               <div className="absolute bottom-10 right-5 w-36 h-36 bg-pink-300 rounded-full opacity-10 blur-2xl" />
@@ -171,7 +247,7 @@ export default function EventPage() {
                   </motion.div>
 
                   <motion.div
-                    className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-lg border border-pink-100 relative"
+                    className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-lg border border-pink-100 relative mb-6"
                     variants={fadeUp}
                   >
                     <motion.div
@@ -210,6 +286,16 @@ export default function EventPage() {
                         누군가 당신을 생각하며 신청한 빼빼로예요.<br />
                         직접 전하기엔 쑥스러웠는지, 저희 <span className="font-semibold text-[#7A4AE2]">썸타임</span>에게 대신 전달을 부탁하더라고요.
                       </p>
+
+                      {/* 메시지 카드 */}
+                      <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-6 relative mt-4">
+                        <div className="absolute top-3 left-3 text-3xl opacity-20">"</div>
+                        <div className="absolute bottom-3 right-3 text-3xl opacity-20 rotate-180">"</div>
+                        <p className="text-gray-800 text-[16px] leading-[1.8] whitespace-pre-wrap text-center relative z-10 font-medium">
+                          {data.message}
+                        </p>
+                      </div>
+
                       <p className="text-gray-600 text-[14px]">
                         (저희는 거들었을 뿐! 이 따뜻한 마음, 맛있게 즐겨주세요)
                       </p>
@@ -239,7 +325,7 @@ export default function EventPage() {
               </div>
             </div>
 
-
+            {/* Section 3: About */}
             <div className="section bg-gradient-to-br from-purple-50 via-pink-50 to-white relative overflow-hidden">
               <div className="absolute top-10 right-10 w-28 h-28 bg-pink-300 rounded-full opacity-15 blur-2xl" />
               <div className="absolute bottom-20 left-10 w-32 h-32 bg-purple-300 rounded-full opacity-15 blur-2xl" />
@@ -323,7 +409,7 @@ export default function EventPage() {
               </div>
             </div>
 
-
+            {/* Section 4: Value */}
             <div className="section bg-gradient-to-br from-rose-50 via-pink-50 to-fuchsia-50 relative overflow-hidden">
               <div className="absolute top-1/4 left-1/4 w-20 h-20 bg-rose-300 rounded-full opacity-20 blur-xl animate-pulse" />
               <div className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-fuchsia-300 rounded-full opacity-20 blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
@@ -425,7 +511,7 @@ export default function EventPage() {
               </div>
             </div>
 
-
+            {/* Section 5: Features */}
             <div className="section bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-purple-200 to-pink-200 opacity-30" />
               <div className="absolute top-0 left-20 w-1 h-full bg-gradient-to-b from-pink-200 to-purple-200 opacity-20" />
@@ -538,7 +624,7 @@ export default function EventPage() {
               </div>
             </div>
 
-
+            {/* Section 6: CTA */}
             <div className="section bg-gradient-to-br from-pink-100 via-purple-100 to-fuchsia-100 relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-full">
                 <div className="absolute top-10 left-10 w-40 h-40 bg-pink-300 rounded-full opacity-30 blur-3xl animate-pulse" />
@@ -664,4 +750,3 @@ export default function EventPage() {
     />
   );
 }
-
