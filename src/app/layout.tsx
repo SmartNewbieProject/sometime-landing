@@ -1,5 +1,6 @@
 import "./globals.css";
 import localFont from "next/font/local";
+import { Nanum_Pen_Script } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { AmplitudeProvider } from "./_components/AmplitudeProvider";
 const pretendard = localFont({
@@ -11,6 +12,13 @@ const pretendard = localFont({
 const wnatedSans = localFont({
   src: "../font/WantedSansVariable.woff2",
   variable: "--font-wantedSans",
+  display: "swap",
+});
+
+const nanumPenScript = Nanum_Pen_Script({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-nanum-pen",
   display: "swap",
 });
 export const metadata = {
@@ -112,7 +120,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body
-        className={`${pretendard.variable} ${wnatedSans.variable} antialiased relative`}
+        className={`${pretendard.variable} ${wnatedSans.variable} ${nanumPenScript.variable} antialiased relative`}
       >
         {children}
       </body>

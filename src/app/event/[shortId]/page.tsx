@@ -196,7 +196,7 @@ export default function MessagePage() {
                     variants={fadeUp}
                   >
                     아래로 스크롤해서<br />
-                    <span className="font-semibold text-[#7A4AE2]">{data.applicantName}</span>님의 마음을 확인해보세요
+                    <span className="font-semibold text-[#7A4AE2]">따뜻한 마음</span>을 확인해보세요
                   </motion.p>
                 </motion.div>
 
@@ -291,7 +291,7 @@ export default function MessagePage() {
                       <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-6 relative mt-4">
                         <div className="absolute top-3 left-3 text-3xl opacity-20">&ldquo;</div>
                         <div className="absolute bottom-3 right-3 text-3xl opacity-20 rotate-180">&rdquo;</div>
-                        <p className="text-gray-800 text-[16px] leading-[1.8] whitespace-pre-wrap text-center relative z-10 font-medium">
+                        <p className="text-gray-800 text-[20px] leading-[1.8] whitespace-pre-wrap text-center relative z-10 font-nanum-pen">
                           {data.message}
                         </p>
                       </div>

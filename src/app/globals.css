@@ -51,4 +51,5 @@ button {
 @theme {
   --font-pretendard: "Pretendard", sans-serif;
   --font-wantedSans: "WantedSans", sans-serif;
+  --font-nanum-pen: "Nanum Pen Script", cursive;
 }
