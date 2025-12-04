@@ -46,11 +46,7 @@ export default function IntroduceSection() {
           </motion.div>
         </motion.div>
         <motion.div variants={fadeUp}>
-          설렘은 <span className="text-[#7A4AE2]">믿을 수 있는 연결</span>에서
-        </motion.div>
-        <motion.div variants={fadeUp}>
-          새로운 만남은 <span className="text-[#7A4AE2]">기다려지는 순간</span>
-          에서 시작돼요
+          안전하고 의미 있는 만남을 위해
         </motion.div>
       </motion.div>
 
@@ -70,10 +66,12 @@ export default function IntroduceSection() {
           />
           <div className="flex flex-col gap-[20px]">
             <div className="text-[25px] font-semibold leading-[38px]">
-              대학 인증제를 통한 믿을 수 있는 설렘
+              대학생 인증 필수
             </div>
             <div className="text-black opacity-50 text-[16px] leading-[24px] font-medium">
-              진짜 대학생끼리만 매칭되니까 걱정 없이 시작할 수 있어요
+              <span className="font-bold text-[#7A4AE2]">진짜 대학생</span>끼리만 매칭돼요
+              <br />
+              안심하고 시작하실 수 있어요
             </div>
           </div>
         </motion.div>
@@ -87,10 +85,12 @@ export default function IntroduceSection() {
         >
           <div className="flex flex-col gap-[20px]">
             <div className="text-[25px] font-semibold leading-[38px]">
-              지역을 기반으로 한 연결
+              같은 지역, 인접 대학 우선
             </div>
             <div className="text-black opacity-50 text-[16px] leading-[24px] font-medium">
-              일주일에 두 번, 설레는 매칭
+              통학 거리, 생활권을 고려한 매칭으로
+              <br />
+              <span className="font-bold text-[#7A4AE2]">실제로 만날 수 있는 인연</span>을 연결해드려요
             </div>
           </div>
           <motion.div
@@ -158,10 +158,12 @@ export default function IntroduceSection() {
           </motion.div>
           <div className="flex flex-col items-end gap-[20px]">
             <div className="text-[25px] font-semibold leading-[38px]">
-              일주일에 두 번, 설레는 매칭
+              매주 목/일 무료 매칭
             </div>
             <div className="text-black opacity-50 text-[16px] leading-[24px] font-medium">
-              매주 목요일과 일요일, 기다림이 있는 연결이 시작돼요
+              부담 없이 시작하세요
+              <br />
+              기다림 끝에 만나는 <span className="font-bold text-[#7A4AE2]">특별한 순간</span>이 있어요
             </div>
           </div>
         </motion.div>
@@ -171,7 +173,7 @@ export default function IntroduceSection() {
         initial={{ scale: 0.9, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.2 }}
-        className="w-[515px] h-[578px] left-[-100px] rounded-[578px] top-[260px] blur-[100px] bg-[rgba(122,74,226,0.05)] absolute z-0"
+        className="w-[515px] h-[578px] left-[-100px] rounded-[578px] top-[260px] blur-[100px] bg-[rgba(167,139,229,0.06)] absolute z-0"
         viewport={{ once: true }}
       />
     </div>

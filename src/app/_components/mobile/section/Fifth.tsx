@@ -26,7 +26,7 @@ export default function Fifth() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-black z-10 text-[20px] font-semibold leading-[30px] mb-[5px]"
       >
-        썸타임으로 시작된 대학생들의 이야기
+        썸타임과 함께한 분들의 이야기
       </motion.h2>
 
       <motion.div
@@ -35,7 +35,7 @@ export default function Fifth() {
         whileHover={{ opacity: 1 }}
         className="text-black font-medium leading-[12px] text-[12px] mb-[20px] opacity-60"
       >
-        이런 연결, 이런 이야기들이 있었어요
+        진심 어린 만남이 시작됐어요
       </motion.div>
 
       <motion.div
@@ -45,11 +45,14 @@ export default function Fifth() {
         className="relative text-center w-[330px] py-[16px] px-[12px] flex justify-center rounded-[16px] bg-[#E2D9FF] shadow-md"
       >
         <motion.div className="text-[#7A4AE2] font-semibold text-[10px] leading-[14px]">
-          연애 못한지 꽤 됐는데 안 해본 방법이 없던 와중 이런 소개팅 어플이
+          다른 앱들은 범위가 너무 넓어서 막막했는데,
           <br />
-          나와서 한 번 써봤는데 대전 대학생들만 소개시켜주는거라 너무 좋았어요!!
+          썸타임은 우리 지역 대학생들만 소개해줘서 좋아요.
           <br />
-          여기서 애인 만들어 나갑니다..💕
+          실제로 만날 수 있는 거리라 부담도 덜하고요!
+          <br />
+          <br />
+          - 대전 지역 이용자
         </motion.div>
 
         <motion.div
@@ -69,11 +72,14 @@ export default function Fifth() {
         className="relative text-center w-[330px] py-[16px] px-[12px] flex justify-center rounded-[16px] mt-[20px] bg-[#E2D9FF] shadow-md"
       >
         <motion.div className="text-[#7A4AE2] font-semibold text-[10px] leading-[14px]">
-          여러번 만나서 둘다 좋아하는 감정 생겨서 썸이구용,,,
+          처음엔 어색했지만 여러 번 만나면서
           <br />
-          여름에 놀러가기로 했뜹니당...
+          정말 잘 맞는 사람이란 걸 알게 됐어요.
           <br />
-          완벽한 이상형인 미남오빠랑 매칭해주셔서 감사합니다 ㅠㅠㅠ
+          좋은 인연 연결해주셔서 감사합니다!
+          <br />
+          <br />
+          - 부산 지역 이용자
         </motion.div>
 
         <motion.div
@@ -83,6 +89,32 @@ export default function Fifth() {
           className="absolute right-[12px] -top-[18px]"
         >
           <SomeFemale />
+        </motion.div>
+      </motion.div>
+
+      {/* 세 번째 후기 추가 */}
+      <motion.div
+        variants={bubbleVariants}
+        whileHover={{ scale: 1.02 }}
+        transition={{ type: "spring", stiffness: 200, damping: 20 }}
+        className="relative text-center w-[330px] py-[16px] px-[12px] flex justify-center rounded-[16px] mt-[20px] bg-[#E2D9FF] shadow-md"
+      >
+        <motion.div className="text-[#7A4AE2] font-semibold text-[10px] leading-[14px]">
+          개발팀이 커뮤니티에서 직접 답변하는 거 보고
+          <br />
+          진심으로 운영한다는 게 느껴졌어요
+          <br />
+          <br />
+          - 충남 지역 이용자
+        </motion.div>
+
+        <motion.div
+          variants={floatVariants}
+          animate="animate"
+          whileHover={{ scale: 1.1 }}
+          className="absolute left-[20px] -top-[18px]"
+        >
+          <SomeMale />
         </motion.div>
       </motion.div>
 

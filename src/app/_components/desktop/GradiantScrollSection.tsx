@@ -29,7 +29,7 @@ export default function GradientScrollSection() {
       <motion.div
         style={{
           opacity: backgroundOpacity,
-          background: "linear-gradient(180deg, #EAE0FF 0%, #FFF 100%)",
+          background: "linear-gradient(180deg, #F5F2FF 0%, #FAF8FF 50%, #FFFFFF 100%)",
         }}
         className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none"
       />
@@ -42,10 +42,10 @@ export default function GradientScrollSection() {
         className="relative z-10 flex flex-col items-center justify-center h-screen"
       >
         <div className="text-black leading-[60px] font-bold text-[40px] text-center">
-          <span className="text-[#7A4AE2]">썸타임</span>으로 시작된 대학생들의 이야기
+          <span className="text-[#7A4AE2]">썸타임</span>과 함께한 분들의 이야기
         </div>
         <div className="text-black opacity-50 text-[25px] font-medium leading-[38px] text-center">
-          이런 연결, 이런 이야기들이 있었어요
+          진심 어린 만남이 시작됐어요
         </div>
 
         <motion.div
@@ -55,11 +55,14 @@ export default function GradientScrollSection() {
           className="relative text-center min-w-[840px] mt-[94px] py-[32px] px-[135px] flex justify-center rounded-[16px] bg-[#E2D9FF] shadow-md"
         >
           <motion.div className="text-[#7A4AE2] font-semibold text-[20px] leading-[30px]">
-            연애 못한지 꽤 됐는데 안 해본 방법이 없던 와중 이런 소개팅 어플이
+            다른 앱들은 범위가 너무 넓어서 막막했는데,
             <br />
-            나와서 한 번 써봤는데 대전 대학생들만 소개시켜주는거라 너무 좋았어요!!
+            썸타임은 우리 지역 대학생들만 소개해줘서 좋아요.
             <br />
-            여기서 애인 만들어 나갑니다..💕
+            실제로 만날 수 있는 거리라 부담도 덜하고요!
+            <br />
+            <br />
+            - 대전 지역 이용자
           </motion.div>
 
           <motion.div
@@ -79,11 +82,14 @@ export default function GradientScrollSection() {
           className="relative text-center min-w-[840px] mt-[70px] py-[32px] px-[135px] flex justify-center rounded-[16px] bg-[#E2D9FF] shadow-md"
         >
           <motion.div className="text-[#7A4AE2] font-semibold text-[20px] leading-[30px]">
-            여러번 만나서 둘다 좋아하는 감정 생겨서 썸이구용,,,
+            처음엔 어색했지만 여러 번 만나면서
             <br />
-            여름에 놀러가기로 했뜹니당...
+            정말 잘 맞는 사람이란 걸 알게 됐어요.
             <br />
-            완벽한 이상형인 미남오빠랑 매칭해주셔서 감사합니다 ㅠㅠㅠ
+            좋은 인연 연결해주셔서 감사합니다!
+            <br />
+            <br />
+            - 부산 지역 이용자
           </motion.div>
 
           <motion.div

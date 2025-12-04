@@ -40,7 +40,7 @@ export default function BgGradient() {
         876,
         3079,
         scrollHeight
-      )}px] blur-[100px] rounded-[873px] bg-[rgba(122,74,226,0.10)]`}
+      )}px] blur-[100px] rounded-[873px] bg-[rgba(167,139,229,0.08)]`}
     />
   );
 }

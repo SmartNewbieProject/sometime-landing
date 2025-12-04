@@ -21,14 +21,16 @@ export default function Fourth() {
         variants={fadeUpVariant}
         className="text-black z-10 text-[20px] font-semibold leading-[30px] mb-[5px]"
       >
-        지역을 기반으로 한 연결
+        매주 목/일 무료 매칭
       </motion.h2>
 
       <motion.div
         variants={fadeUpVariant}
-        className="text-black font-medium leading-[12px] text-[12px] mb-[20px]"
+        className="text-black font-medium leading-[12px] text-[12px] mb-[20px] text-center"
       >
-        내가 다니는 학교를 중심으로 같은 지역 안에 있는 대학생들과만 매칭돼요
+        부담 없이 시작하세요
+        <br />
+        기다림 끝에 만나는 특별한 순간이 있어요
       </motion.div>
 
       <motion.div
@@ -60,7 +62,7 @@ export default function Fourth() {
 
       <motion.div
         variants={scaleInVariant}
-        className="w-[316px] h-[873px] right-[-158px] rounded-full top-[-660px] blur-[100px] bg-[rgba(122,74,226,0.10)] absolute z-0"
+        className="w-[316px] h-[873px] right-[-158px] rounded-full top-[-660px] blur-[100px] bg-[rgba(167,139,229,0.08)] absolute z-0"
       />
 
       <motion.div

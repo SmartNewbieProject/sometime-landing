@@ -17,8 +17,10 @@ export default function DownloadSection() {
       <div className="font-semibold mt-[6px] mb-[8px] text-[#E1D4FF] text-[38px] leading-[46px] ">
         TO FEEL SOMETHING
       </div>
-      <div className="text-[#AD91EA] text-[20px] font-medium leading-[30px] ">
-        대학생을 위한 진짜 설렘의 시작
+      <div className="text-[#AD91EA] text-[20px] font-medium leading-[30px] text-center">
+        진심 어린 만남의 시작,
+        <br />
+        지금 썸타임과 함께하세요
       </div>
       <div className=" flex  items-center gap-[38px] mt-[30px] ">
         <motion.button whileHover={{ scale: 1.1 }}>

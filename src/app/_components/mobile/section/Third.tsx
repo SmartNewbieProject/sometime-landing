@@ -16,7 +16,7 @@ export default function Third() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1.2, delay: 0.3 }}
-        className="w-[316px] h-[873px] right-[-158px] rounded-full blur-[100px] bg-[rgba(122,74,226,0.10)] absolute z-0"
+        className="w-[316px] h-[873px] right-[-158px] rounded-full blur-[100px] bg-[rgba(167,139,229,0.08)] absolute z-0"
       />
 
       <motion.div
@@ -27,16 +27,18 @@ export default function Third() {
           variants={fadeUp}
           className="text-black z-10 text-[20px] font-semibold leading-[30px] mb-[5px]"
         >
-          대학 인증제를 통한 믿을 수 있는 설렘
+          대학생 인증 필수
         </motion.h2>
 
         <motion.div
           variants={fadeUp}
           transition={{ delay: 0.1 }}
           whileHover={{ opacity: 1 }}
-          className="text-black font-medium leading-[12px] text-[12px] mb-[20px] opacity-60"
+          className="text-black font-medium leading-[12px] text-[12px] mb-[20px] opacity-60 text-center"
         >
-          진짜 대학생끼리만 매칭되니까 걱정 없이 시작할 수 있어요
+          진짜 대학생끼리만 만나요
+          <br />
+          안심하고 시작하실 수 있어요
         </motion.div>
 
         <motion.div
@@ -71,16 +73,18 @@ export default function Third() {
       >
         <motion.h2
           variants={fadeUp}
-          className="text-black z-10 mt-[48px] text-[20px] font-semibold leading-[30px] mb-[5px]"
+          className="text-black z-10 mt-[24px] text-[20px] font-semibold leading-[30px] mb-[5px]"
         >
-          지역을 기반으로 한 연결
+          같은 지역, 실제 만남 가능한 인연
         </motion.h2>
 
         <motion.div
           variants={fadeUp}
-          className="text-black font-medium leading-[12px] text-[12px] mb-[20px] opacity-60"
+          className="text-black font-medium leading-[12px] text-[12px] mb-[10px] opacity-60 text-center"
         >
-          내가 다니는 학교를 중심으로 같은 지역 안에 있는 대학생들과만 매칭돼요
+          내가 다니는 학교 중심으로
+          <br />
+          실제로 만날 수 있는 거리의 대학생들과 연결돼요
         </motion.div>
 
         <motion.div

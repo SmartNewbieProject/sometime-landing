@@ -39,7 +39,7 @@ export default function ScreenListSection() {
         transition={{ duration: 0.7 }}
         className="text-black leading-[60px] font-bold text-[40px] text-center"
       >
-        <span className="text-[#7A4AE2]">썸타임</span>으로 시작된 대학생들의
+        <span className="text-[#7A4AE2]">썸타임</span>으로 이어진 진심 어린
         이야기
       </motion.div>
       <motion.div
@@ -49,7 +49,7 @@ export default function ScreenListSection() {
         transition={{ duration: 0.8, delay: 0.2 }}
         className="text-black opacity-50 text-[25px] font-medium leading-[38px] text-center"
       >
-        이런 연결, 이런 이야기들이 있었어요
+        매칭 숫자가 아닌, 진짜 인연들의 이야기입니다
       </motion.div>
 
       <div className="flex relative items-center justify-center mt-[100px] gap-[18px]">

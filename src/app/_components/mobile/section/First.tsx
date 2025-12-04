@@ -36,7 +36,9 @@ export default function First() {
           variants={fadeUp}
           className="text-[#AD91EA] z-10 text-[14px] font-medium leading-[24px] mb-[8px]"
         >
-          대학교에서 내 이상형을 찾는 가장 빠른 방법
+          대학생들의 진심 어린 만남,
+          <br />
+          썸타임이 함께합니다
         </motion.h3>
 
         <motion.div
@@ -79,6 +81,8 @@ export default function First() {
           다운로드
         </motion.button>
 
+
+
         <Image
           src={"/images/title-bg.png"}
           width={364}
@@ -88,7 +92,7 @@ export default function First() {
         />
       </div>
 
-      <div className="w-[524px] h-[524px] left-[-382px] rounded-full blur-[100px] bg-[rgba(122,74,226,0.10)] absolute z-0" />
+      <div className="w-[524px] h-[524px] left-[-382px] rounded-full blur-[100px] bg-[rgba(167,139,229,0.08)] absolute z-0" />
 
       <motion.div
         initial={{ y: 0 }}

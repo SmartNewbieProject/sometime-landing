@@ -18,27 +18,17 @@ export default function OverviewSection() {
         </div>
 
         <div className="text-[25px] mt-[30px] mb-[20px] font-semibold flex flex-col gap-0 leading-[38px]">
-          <div>주변에서 만남으로, 만남에서 설렘으로</div>
-          <div>같은 지역에서 대학생만을 위한</div>
-          <div className="text-[#7A4AE2]">설렘이 필요한 순간</div>
+          <div>같은 지역, 인접 대학에서</div>
+          <div className="text-[#7A4AE2]">진정으로 의미 있는 만남의 시작</div>
         </div>
 
-        <div className="text-[#898989] text-[16px] leading-[24px]">
-          썸타임은 대학생을 위한 지역 기반 소개팅 앱이에요
+        <div className="text-[#898989] text-[20px] leading-[32px]">
+          매칭 숫자가 아닌, <span className="font-bold text-[#7A4AE2]">한 분 한 분께</span> <span className="font-bold text-[#7A4AE2]">잘 맞는 인연</span>을 연결합니다
+          <br />
+          <br />
+          같은 대학생이 만들어서 여러분의 고민을 이해합니다
         </div>
 
-        <motion.div
-          animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -right-4 -top-[40px]"
-        >
-          <Image
-            src={"/images/send-letter.png"}
-            width={82}
-            height={82}
-            alt=""
-          />
-        </motion.div>
       </motion.div>
 
       <motion.div
@@ -54,31 +44,13 @@ export default function OverviewSection() {
           whileHover={{ x: 4, y: -4 }}
           transition={{ type: "spring", stiffness: 100 }}
         >
-          <Image
-            src="/images/korea-map.png"
-            width={310}
-            height={300}
-            className="z-0"
-            alt="sometime 서비스 지도"
-          />
-        </motion.div>
-        <motion.div
-          animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -right-20 bottom-[100px]"
-        >
-          <Image
-            src={"/images/heart-arrow.png"}
-            width={63}
-            height={63}
-            alt=""
-          />
+
         </motion.div>
       </motion.div>
 
       <motion.div
         variants={scaleInVariant}
-        className="w-[515px] h-[890px] right-[-140px] rounded-[890px]  top-0 blur-[100px] bg-[rgba(122,74,226,0.10)] absolute z-0"
+        className="w-[515px] h-[890px] right-[-140px] rounded-[890px]  top-0 blur-[100px] bg-[rgba(167,139,229,0.08)] absolute z-0"
       />
     </div>
   );

@@ -30,16 +30,18 @@ export default function Sixth() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-black z-10 text-[20px] font-semibold leading-[30px] mb-[5px]"
       >
-        썸타임의 연결 방식
+        썸타임의 연결방식
       </motion.h2>
 
       <motion.div
         variants={bubbleVariants}
         transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
         whileHover={{ opacity: 1 }}
-        className="text-black font-medium leading-[12px] text-[12px] mb-[20px] opacity-60"
+        className="text-black font-medium leading-[12px] text-[12px] mb-[20px] opacity-60 text-center"
       >
-        누구나 쉽게 사용할 수 있도록 만들어진 썸타임의 화면을 미리 만나보세요
+        쉽고 간단하게, 하지만 진심을 담아
+        <br />
+        <span className="font-bold text-[#7A4AE2]">의미 있는 만남</span>을 연결해드려요
       </motion.div>
 
       <div className="relative w-full items-center mx-[16px]">
@@ -55,11 +57,16 @@ export default function Sixth() {
             <span className="text-white">지금까지 </span>
             <span>
               <NumberCounter target={31523} />
-              번의 연결<span className="text-white">이 이루어지고</span>
+              번의 인연을 연결하고
             </span>
             <br />
             <div className="mt-[5px]">
-              3.8만명의 대학생<span className="text-white">이 방문했어요</span>
+              3.8만명의 대학생<span className="text-white">과 함께했어요</span>
+            </div>
+            <div className="mt-[8px] text-[12px]">
+              여러분의 피드백으로 여기까지 왔어요
+              <br />
+              앞으로도 함께 만들어가요
             </div>
           </motion.div>
 
@@ -97,7 +104,7 @@ export default function Sixth() {
 
       <motion.div
         variants={scaleInVariant}
-        className="w-[360px] h-[382px] left-[-130px] rounded-full -bottom-[180px]  blur-[100px] bg-[rgba(122,74,226,0.30)] absolute z-0"
+        className="w-[360px] h-[382px] left-[-130px] rounded-full -bottom-[180px]  blur-[100px] bg-[rgba(167,139,229,0.25)] absolute z-0"
       />
 
       <motion.div

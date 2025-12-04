@@ -10,6 +10,8 @@ import OverviewSection from "./OverviewSection";
 import ScreenListSection from "./ScreenListSection";
 import Title from "./Title";
 import TopSection from "./TopSection";
+import DifferenceSection from "./DifferenceSection";
+import PromiseSection from "./PromiseSection";
 import QueryParamHandler from "@/app/_components/QueryParamHandler";
 import usePageViewTracking from "@/app/_hooks/usePageViewTracking";
 
@@ -21,10 +23,11 @@ export default function DesktopIndex() {
       <TopSection />
       <Title />
       <OverviewSection />
-      <BackgroundSection />
+      <DifferenceSection />
       <IntroduceSection />
       <GradientScrollSection />
       <ScreenListSection />
+      <PromiseSection />
       <DownloadSection />
       <Footer />
       <Suspense fallback={null}>

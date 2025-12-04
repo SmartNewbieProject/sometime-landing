@@ -74,7 +74,12 @@ export default function Seventh() {
         variants={fadeInUpVariant}
         className="text-[12px] text-center leading-[18px] text-[#AD91EA] mt-[5px] mb-[20px]"
       >
-        대학생을 위한 진짜 설렘의 시작
+        진심 어린 만남의 시작,
+        <br />
+        지금 썸타임과 함께하세요
+        <br />
+        <br />
+        여러분의 이야기를 기다립니다
       </motion.div>
 
       <motion.div
@@ -138,7 +143,7 @@ export default function Seventh() {
 
       <motion.div
         variants={scaleInVariant}
-        className="w-[360px] h-[382px] left-[-130px] rounded-full top-[130px] blur-[100px] bg-[rgba(122,74,226,0.30)] absolute z-0"
+        className="w-[360px] h-[382px] left-[-130px] rounded-full top-[130px] blur-[100px] bg-[rgba(167,139,229,0.25)] absolute z-0"
       />
 
       <motion.div

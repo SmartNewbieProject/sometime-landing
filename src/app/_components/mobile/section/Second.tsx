@@ -49,9 +49,17 @@ export default function Second() {
           visible: { opacity: 0.6, y: 0 },
         }}
         transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
-        className="text-black font-medium leading-[18px] text-[12px] mb-[20px]"
+        className="text-black font-medium leading-[24px] text-[15px] mb-[10px] text-center"
       >
-        썸타임은 대학생을 위한 지역 기반 소개팅 앱이에요
+        같은 지역, 인접 대학에서
+        <br />
+        <span className="font-bold text-[#7A4AE2]">진정으로 의미 있는 만남의 시작</span>
+        <br />
+        <br />
+        매칭 숫자가 아닌, <span className="font-bold text-[#7A4AE2]">한 분 한 분께</span>
+        <br />
+        <span className="font-bold text-[#7A4AE2]">잘 맞는 인연</span>을 연결합니다
+        <br />
       </motion.div>
 
       <motion.div
@@ -63,47 +71,8 @@ export default function Second() {
         whileHover={{ scale: 1.03 }}
         className="z-10 relative"
       >
-        <Image src="/images/korea-map3.png" width={310} height={300} className="z-0" alt="sometime 서비스 지도" />
 
-        <motion.div
-          variants={floatVariants}
-          animate="animate"
-          whileHover={{ scale: 1.1 }}
-          className="absolute top-10 -left-[20px]"
-        >
-          <Image src={"/images/heart-balloon.png"} alt="말풍선 아이콘" width={48} height={46} />
-        </motion.div>
-        <motion.div
-          variants={floatVariants}
-          animate="animate"
-          whileHover={{ scale: 1.1 }}
-          className="absolute bottom-10 -right-[35px]"
-        >
-          <Image src={"/images/heart-arrow.png"} alt="말풍선 아이콘" width={100} height={100} />
-        </motion.div>
 
-        <div className="absolute top-[200px] left-[110px] z-30 pointer-events-none">
-          <HeartPulse />
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="z-10"
-          >
-            <FillHeart />
-          </motion.div>
-        </div>
-        <div className="absolute bottom-[150px] right-[30px] z-30 pointer-events-none">
-          <HeartPulse />
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-            className="z-10"
-          >
-            <FillHeart />
-          </motion.div>
-        </div>
       </motion.div>
 
       <motion.div
@@ -112,7 +81,7 @@ export default function Second() {
           visible: { opacity: 1 },
         }}
         transition={{ duration: 1.2, delay: 0.4 }}
-        className="w-[316px] h-[873px] right-[-158px] bottom-[-660px] rounded-full blur-[100px] bg-[rgba(122,74,226,0.10)] absolute z-0"
+        className="w-[316px] h-[873px] right-[-158px] bottom-[-660px] rounded-full blur-[100px] bg-[rgba(167,139,229,0.08)] absolute z-0"
       />
 
       <motion.div
