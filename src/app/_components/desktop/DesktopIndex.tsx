@@ -1,6 +1,5 @@
 "use client";
 import { Suspense } from "react";
-import BackgroundSection from "./BackgroundSection";
 import DownloadSection from "./DownloadSection";
 import Footer from "./Footer";
 import GradientScrollSection from "./GradiantScrollSection";
