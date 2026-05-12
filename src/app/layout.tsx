@@ -2,7 +2,14 @@ import "./globals.css";
 import localFont from "next/font/local";
 import { Nanum_Pen_Script } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import type { Metadata } from "next";
 import { AmplitudeProvider } from "./_components/AmplitudeProvider";
+
+const SITE_URL = "https://info.some-in-univ.com";
+const SITE_TITLE =
+  "썸타임 - 대학생 소개팅 앱 | 학교 인증 캠퍼스 매칭";
+const SITE_DESCRIPTION =
+  "학교 인증을 기반으로 같은 지역, 인접 대학의 대학생을 연결하는 캠퍼스 소개팅 앱 썸타임. 안전한 대학생 소개팅, 캠퍼스 매칭, 매주 목/일 무료 매칭을 확인해보세요.";
 const pretendard = localFont({
   src: "../font/PretendardVariable.woff2",
   variable: "--font-pretendard",
@@ -21,36 +28,47 @@ const nanumPenScript = Nanum_Pen_Script({
   variable: "--font-nanum-pen",
   display: "swap",
 });
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "썸타임 - 동네 대학생 연애 트렌드의 중심, 우리 지역 캠퍼스 소개팅",
-    template: "썸타임",
+    default: SITE_TITLE,
+    template: "%s | 썸타임",
   },
-  description:
-    "지금 우리 동네 대학생들 사이에서 가장 인기있는 연애 트렌드! 같은 지역 캠퍼스 친구들과의 안전하고 검증된 특별한 만남이 썸타임에서 시작됩니다.",
+  description: SITE_DESCRIPTION,
   keywords: [
-    "동네 대학생 연애 트렌드",
-    "지역 대학생 연애 중심",
-    "캠퍼스 연애 트렌드",
-    "우리 지역 대학생 소개팅",
-    "동네 대학교 연애 문화, 썸타임",
+    "대학생 소개팅 앱",
+    "대학생 소개팅 앱 추천",
+    "학교 인증 소개팅",
+    "캠퍼스 소개팅",
+    "캠퍼스 매칭",
+    "안전한 소개팅 앱",
+    "대학생 연애",
+    "AI 취향 분석 매칭",
   ],
+  alternates: {
+    canonical: SITE_URL,
+  },
   openGraph: {
-    title: "썸타임 - 동네 대학생 연애 트렌드의 중심, 우리 지역 캠퍼스 소개팅",
-    description:
-      "지금 우리 동네 대학생들 사이에서 가장 인기있는 연애 트렌드! 같은 지역 캠퍼스 친구들과의 안전하고 검증된 특별한 만남을 시작하세요.",
-    url: "https://some-in-univ.com/",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
     siteName: "썸타임",
     images: [
       {
-        url: "https://info.some-in-univ.com/images/logo.png",
-        width: 140,
-        height: 140,
-        alt: "썸타임 - 동네 대학생 연애 트렌드 중심 캠퍼스 소개팅 서비스",
+        url: "/images/preview_title.png",
+        width: 1200,
+        height: 630,
+        alt: "썸타임 대학생 소개팅 앱",
       },
     ],
     locale: "ko_KR",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/images/preview_title.png"],
   },
   robots: {
     index: true,
@@ -65,13 +83,69 @@ export const metadata = {
   },
 };
 
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "썸타임",
+    applicationCategory: "LifestyleApplication",
+    operatingSystem: "iOS, Android, Web",
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    image: `${SITE_URL}/images/preview_title.png`,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "KRW",
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "썸타임은 대학생만 이용할 수 있나요?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "썸타임은 대학생의 안전한 만남을 위해 학교 인증을 중요한 기준으로 사용합니다. 진짜 대학생끼리 더 자연스럽게 대화하고 만날 수 있도록 설계했습니다.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "학교 인증 소개팅이 왜 중요한가요?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "학교 인증은 낯선 만남의 불안을 줄이고, 같은 생활권과 캠퍼스 문화를 공유하는 사람과 연결될 가능성을 높입니다.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "캠퍼스 매칭은 일반 소개팅 앱과 무엇이 다른가요?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "캠퍼스 매칭은 단순히 많은 사람을 보여주는 방식이 아니라 같은 지역, 인접 대학, 실제 만남 가능한 생활권을 고려해 대학생에게 맞는 연결을 돕습니다.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "썸타임은 무료로 매칭을 받을 수 있나요?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "썸타임은 매주 목요일과 일요일 무료 매칭을 제공해 대학생이 부담 없이 소개팅을 시작할 수 있도록 돕습니다.",
+        },
+      },
+    ],
+  },
+];
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <head>
         <meta
           name="google-site-verification"
@@ -118,6 +192,10 @@ export default function RootLayout({
             alt=""
           />
         </noscript>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </head>
       <body
         className={`${pretendard.variable} ${wnatedSans.variable} ${nanumPenScript.variable} antialiased relative`}

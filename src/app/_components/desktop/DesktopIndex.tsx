@@ -11,6 +11,7 @@ import Title from "./Title";
 import TopSection from "./TopSection";
 import DifferenceSection from "./DifferenceSection";
 import PromiseSection from "./PromiseSection";
+import SeoGuideSection from "./SeoGuideSection";
 import QueryParamHandler from "@/app/_components/QueryParamHandler";
 import usePageViewTracking from "@/app/_hooks/usePageViewTracking";
 
@@ -26,6 +27,7 @@ export default function DesktopIndex() {
       <IntroduceSection />
       <GradientScrollSection />
       <ScreenListSection />
+      <SeoGuideSection />
       <PromiseSection />
       <DownloadSection />
       <Footer />

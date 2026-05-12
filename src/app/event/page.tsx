@@ -41,7 +41,9 @@ export default function EventPage() {
   return (
     <ReactFullpage
       scrollingSpeed={700}
-      licenseKey={process.env.NEXT_PUBLIC_FULLPAGE_LICENSE_KEY}
+      licenseKey={
+        process.env.NEXT_PUBLIC_FULLPAGE_LICENSE_KEY || "OpenSource-GPLv3-0!"
+      }
       credits={{
         enabled: false,
         label: "",
@@ -663,4 +665,3 @@ export default function EventPage() {
     />
   );
 }
-

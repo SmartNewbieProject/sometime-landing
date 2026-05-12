@@ -11,6 +11,7 @@ import Sixth from "./section/Sixth";
 import Third from "./section/Third";
 import Difference from "./section/Difference";
 import Promise from "./section/Promise";
+import SeoGuide from "./section/SeoGuide";
 import QueryParamHandler from "@/app/_components/QueryParamHandler";
 import usePageViewTracking from "@/app/_hooks/usePageViewTracking";
 
@@ -22,7 +23,7 @@ export default function MobileIndex() {
         <QueryParamHandler />
       </Suspense>
       <FullPageWrapper>
-        {[First, Second, Difference, Third, Fifth, Sixth, Promise, Seventh].map((Item, index) => (
+        {[First, Second, Difference, Third, SeoGuide, Fifth, Sixth, Promise, Seventh].map((Item, index) => (
           <Section key={index}>
             <Item />
           </Section>

@@ -9,12 +9,24 @@ export default function FullPageWrapper({
   return (
     <ReactFullpage
       scrollingSpeed={700}
-      licenseKey={process.env.NEXT_PUBLIC_FULLPAGE_LICENSE_KEY}
+      licenseKey={
+        process.env.NEXT_PUBLIC_FULLPAGE_LICENSE_KEY || "OpenSource-GPLv3-0!"
+      }
       credits={{
         enabled: false,
         label: "",
       }}
-      anchors={["title", "area", "verify", "story", "landing", "info"]}
+      anchors={[
+        "title",
+        "overview",
+        "difference",
+        "verify",
+        "guide",
+        "story",
+        "connection",
+        "promise",
+        "download",
+      ]}
       render={() => {
         return (
           <div className="bg-white" id="fullpage-wrapper">
