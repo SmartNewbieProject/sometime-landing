@@ -58,6 +58,7 @@ export default function IntroCarousel() {
           alt="말풍선 아이콘"
           width={48}
           height={46}
+          style={{ width: "auto", height: "auto" }}
         />
       </motion.div>
 
@@ -92,7 +93,8 @@ export default function IntroCarousel() {
               src={slides[index]}
               alt={`Slide ${index + 1}`}
               fill
-              onLoadingComplete={() => setLoaded(true)}
+              onLoad={() => setLoaded(true)}
+              sizes="222px"
               className="object-cover transition-opacity duration-500"
               priority
             />

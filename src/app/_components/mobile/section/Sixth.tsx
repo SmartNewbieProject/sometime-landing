@@ -97,6 +97,7 @@ export default function Sixth() {
               alt="편지 아이콘"
               width={45}
               height={45}
+              style={{ width: "auto", height: "auto" }}
             />
           </motion.div>
         </motion.div>

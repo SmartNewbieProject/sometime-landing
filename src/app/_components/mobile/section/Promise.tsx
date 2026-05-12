@@ -65,6 +65,7 @@ export default function Promise() {
                                 src={item.icon}
                                 alt={item.title}
                                 fill
+                                sizes="50px"
                                 className="object-contain"
                             />
                         </div>

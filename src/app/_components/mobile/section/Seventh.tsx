@@ -60,6 +60,7 @@ export default function Seventh() {
           width={245}
           height={35}
           alt="sometime 타이틀 로고"
+          style={{ width: "auto", height: "auto" }}
         />
       </motion.div>
 
@@ -108,6 +109,7 @@ export default function Seventh() {
               width={120}
               height={50}
               alt="앱스토어 링크 버튼"
+              style={{ width: "auto", height: "auto" }}
             />
           </Link>
         </motion.div>
@@ -136,6 +138,7 @@ export default function Seventh() {
               width={120}
               height={50}
               alt="구글 플레이 링크 버튼"
+              style={{ width: "auto", height: "auto" }}
             />
           </Link>
         </motion.div>

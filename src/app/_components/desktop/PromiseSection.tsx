@@ -54,6 +54,7 @@ export default function PromiseSection() {
                                 src={item.icon}
                                 alt={item.title}
                                 fill
+                                sizes="80px"
                                 className="object-contain"
                             />
                         </div>

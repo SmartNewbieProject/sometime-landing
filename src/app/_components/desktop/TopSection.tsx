@@ -22,6 +22,8 @@ export default function TopSection() {
               width={430}
               alt="phone frame"
               className=" z-10  "
+              style={{ width: "auto", height: "auto" }}
+              priority
             />
             <motion.div
               variants={floatVariants}
@@ -34,6 +36,8 @@ export default function TopSection() {
                 width={118}
                 height={118}
                 alt=""
+                style={{ width: "auto", height: "auto" }}
+                priority
               />
             </motion.div>
           </div>
@@ -43,6 +47,8 @@ export default function TopSection() {
             height={97}
             alt="썸타임 로고"
             className="absolute z-0  -translate-x-1/2 left-1/2 top-8"
+            style={{ width: "auto", height: "auto" }}
+            priority
           />
           <motion.button
             whileHover={{ scale: 1.1 }}
@@ -83,6 +89,8 @@ export default function TopSection() {
                 width={140}
                 height={44}
                 alt="app store"
+                style={{ width: "auto", height: "auto" }}
+                priority
               />
             </Link>
             <Link
@@ -94,6 +102,8 @@ export default function TopSection() {
                 width={140}
                 height={44}
                 alt="google play"
+                style={{ width: "auto", height: "auto" }}
+                priority
               />
             </Link>
           </div>
@@ -108,6 +118,8 @@ export default function TopSection() {
               width={66}
               height={66}
               alt=""
+              style={{ width: "auto", height: "auto" }}
+              priority
             />
           </motion.div>
 

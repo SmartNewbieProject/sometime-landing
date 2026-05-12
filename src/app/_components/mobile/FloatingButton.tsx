@@ -87,6 +87,7 @@ const FloatingButton = () => {
               alt="플로팅 버튼"
               width={50}
               height={50}
+              style={{ width: "auto", height: "auto" }}
             />
           )}
         </motion.button>

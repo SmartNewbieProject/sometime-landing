@@ -53,6 +53,8 @@ export default function First() {
             height={42}
             alt="sometime 타이틀 로고"
             className="mb-[20px] z-10"
+            style={{ width: "auto", height: "auto" }}
+            priority
           />
         </motion.div>
 
@@ -63,6 +65,8 @@ export default function First() {
             height={70}
             alt="sometime 로고"
             className="mb-[10px] z-20"
+            style={{ width: "auto", height: "auto" }}
+            priority
           />
         </motion.div>
 
@@ -89,6 +93,8 @@ export default function First() {
           height={224}
           alt="sometime 타이틀 백그라운드"
           className="absolute -z-10 top-[53px]"
+          style={{ width: "auto", height: "auto" }}
+          priority
         />
       </div>
 
