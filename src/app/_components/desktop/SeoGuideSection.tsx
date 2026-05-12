@@ -34,6 +34,51 @@ const faqs = [
     answer:
       "캠퍼스 매칭은 무작정 많은 사람을 보여주는 방식이 아니라 같은 지역, 인접 대학, 비슷한 대학 생활 리듬을 고려해 연결합니다.",
   },
+  {
+    question: "과팅과 소개팅 앱 중 무엇이 더 잘 맞나요?",
+    answer:
+      "과팅은 친구들과 함께 시작하기 좋고, 소개팅 앱은 내 일정과 취향에 맞춰 천천히 알아가기 좋습니다. 대학생이라면 학교 인증과 생활권 매칭이 있는 앱을 고르는 것이 중요합니다.",
+  },
+  {
+    question: "지방 대학생도 소개팅 앱에서 만날 수 있나요?",
+    answer:
+      "가능합니다. 다만 전국 단위로 사람만 많이 보여주는 앱보다 같은 지역과 인접 대학 생활권을 함께 보는 서비스가 실제 만남으로 이어질 가능성이 높습니다.",
+  },
+  {
+    question: "무료 대학생 소개팅 앱도 괜찮나요?",
+    answer:
+      "무료 여부보다 학교 인증, 운영 검수, 신고 대응, 매칭 품질을 먼저 확인하는 것이 좋습니다. 썸타임은 매주 목요일과 일요일 무료 매칭으로 부담을 낮추고 있습니다.",
+  },
+];
+
+const intentSections = [
+  {
+    title: "대학생 소개팅 앱 추천 기준",
+    body: "대학생 소개팅 앱을 추천받을 때는 가입자 수만 볼 것이 아니라 실제 대학생 인증이 되는지, 같은 지역 대학생과 연결되는지, 첫 만남 전 불안을 줄이는 운영 장치가 있는지 확인해야 합니다. 캠퍼스 생활권이 비슷하면 대화 소재가 자연스럽고, 수업과 시험 기간 같은 생활 리듬도 이해하기 쉽습니다.",
+  },
+  {
+    title: "학교 인증 소개팅 앱이 필요한 이유",
+    body: "대학생 연애에서는 상대가 실제 대학생인지, 나와 비슷한 생활권에 있는지가 중요합니다. 학교 인증 소개팅은 무분별한 가입을 줄이고, 첫 대화에서 생기는 신뢰 문제를 낮춰줍니다. 썸타임은 빠르게 많은 사람을 넘기는 방식보다 검증된 대학생끼리 자연스럽게 알아가는 경험을 지향합니다.",
+  },
+  {
+    title: "캠퍼스 소개팅과 일반 소개팅 앱의 차이",
+    body: "일반 소개팅 앱은 넓은 지역과 다양한 연령대를 한 번에 보여주는 경우가 많습니다. 반면 캠퍼스 소개팅은 같은 지역, 인접 대학, 실제 만남 가능한 거리처럼 대학생에게 중요한 조건을 먼저 봅니다. 그래서 단순 매칭보다 실제 대화와 만남으로 이어지는 맥락이 더 선명합니다.",
+  },
+];
+
+const checklistItems = [
+  "학교 또는 대학생 인증 절차가 있는지",
+  "같은 지역, 인접 대학 중심으로 만날 수 있는지",
+  "프로필 검수와 신고 대응 기준이 있는지",
+  "무료 매칭이나 부담 없는 시작 방식이 있는지",
+  "운영자가 피드백을 듣고 매칭 품질을 개선하는지",
+];
+
+const fitItems = [
+  "같은 지역 대학생과 자연스럽게 만나고 싶은 사람",
+  "무작정 많은 추천보다 신뢰할 수 있는 소개를 원하는 사람",
+  "학교 인증 기반의 안전한 소개팅 앱을 찾는 사람",
+  "과팅보다 조용하고 진중한 1:1 만남을 선호하는 사람",
 ];
 
 const relatedLinks = [
@@ -95,6 +140,73 @@ export default function SeoGuideSection() {
               </p>
             </motion.article>
           ))}
+        </div>
+
+        <div className="mt-[88px] flex flex-col gap-[34px]">
+          {intentSections.map((item, index) => (
+            <motion.article
+              key={item.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.6, delay: index * 0.08 }}
+              className="border-t border-[#EFEAF8] pt-[34px]"
+            >
+              <h2 className="text-[26px] font-bold leading-[38px] text-black">
+                {item.title}
+              </h2>
+              <p className="mt-[14px] text-[16px] font-medium leading-[30px] text-[#555]">
+                {item.body}
+              </p>
+            </motion.article>
+          ))}
+        </div>
+
+        <div className="mt-[80px] grid grid-cols-2 gap-[24px]">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.6 }}
+            className="rounded-[28px] border border-[#EEE8FF] bg-white p-[34px]"
+          >
+            <h2 className="text-[24px] font-bold leading-[36px] text-black">
+              안전한 대학생 소개팅 체크리스트
+            </h2>
+            <ul className="mt-[24px] flex flex-col gap-[14px]">
+              {checklistItems.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-[10px] text-[15px] font-medium leading-[26px] text-[#555]"
+                >
+                  <span className="mt-[9px] h-[6px] w-[6px] shrink-0 rounded-full bg-[#7A4AE2]" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.6, delay: 0.08 }}
+            className="rounded-[28px] bg-[#F8F5FF] p-[34px]"
+          >
+            <h2 className="text-[24px] font-bold leading-[36px] text-black">
+              썸타임이 잘 맞는 대학생
+            </h2>
+            <div className="mt-[24px] flex flex-col gap-[12px]">
+              {fitItems.map((item) => (
+                <h3
+                  key={item}
+                  className="rounded-[18px] bg-white px-[18px] py-[14px] text-[15px] font-semibold leading-[24px] text-[#2A203E]"
+                >
+                  {item}
+                </h3>
+              ))}
+            </div>
+          </motion.div>
         </div>
 
         <div className="mt-[80px] rounded-[28px] bg-[#F6F1FF] p-[42px]">
