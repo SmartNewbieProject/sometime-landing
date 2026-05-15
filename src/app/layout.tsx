@@ -5,7 +5,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { AmplitudeProvider } from "./_components/AmplitudeProvider";
 
-const SITE_URL = "https://info.some-in-univ.com";
+const SITE_URL = "https://some-in-univ.com";
 const SITE_TITLE =
   "썸타임 - 대학생 소개팅 앱 | 학교 인증 캠퍼스 매칭";
 const SITE_DESCRIPTION =

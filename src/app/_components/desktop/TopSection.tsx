@@ -81,7 +81,7 @@ export default function TopSection() {
 
           <div className="absolute bottom-[32px] flex gap-[10px] -translate-x-1/2 left-[calc(50%+280px)]">
             <Link
-              href="https://apps.apple.com/kr/app/%EC%8D%B8%ED%83%80%EC%9E%84-%EB%8C%80%ED%95%99%EC%83%9D-%EB%8D%B0%EC%9D%B4%ED%8C%85/id1614166870"
+              href="https://apps.apple.com/kr/app/썸타임-지역-대학생-소개팅/id6746120889"
               target="_blank"
             >
               <Image
@@ -94,7 +94,7 @@ export default function TopSection() {
               />
             </Link>
             <Link
-              href="https://play.google.com/store/apps/details?id=com.sometime.frontend"
+              href="https://play.google.com/store/apps/details?id=com.smartnewb.sometimes"
               target="_blank"
             >
               <Image
