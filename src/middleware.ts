@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-const OFFICIAL_ORIGIN = "https://some-in-univ.com";
+const OFFICIAL_ORIGIN = "https://info.some-in-univ.com";
 const INDEXABLE_HOSTS = new Set(["some-in-univ.com", "info.some-in-univ.com"]);
 
 export function middleware(request: NextRequest) {
