@@ -1,6 +1,7 @@
 "use client";
 
 import { track } from "@amplitude/analytics-browser";
+import { fireXDownloadEvent } from "./x-pixel";
 
 export function deeplinkToApp(deepLinkValue: string) {
   let didRedirect = false;
@@ -15,6 +16,7 @@ export function deeplinkToApp(deepLinkValue: string) {
   if (!isMobile) {
     alert("모바일 기기에서만 실행 가능한 기능입니다. 모바일로 접속해주세요.");
 
+    fireXDownloadEvent({ platform: "app_store", location: "Desktop" });
     window.location.href =
       "https://apps.apple.com/kr/app/썸타임-지역-대학생-소개팅/id6746120889";
     return;
@@ -40,6 +42,7 @@ export function deeplinkToApp(deepLinkValue: string) {
       type: "Mobile",
       location: "Top_Sectoin",
     });
+    fireXDownloadEvent({ platform: "google_play", location: "Top_Section" });
     setTimeout(() => {
       if (!didRedirect) {
         window.location.href = fallbackUrl;
@@ -53,6 +56,7 @@ export function deeplinkToApp(deepLinkValue: string) {
       type: "Mobile",
       location: "Top_Sectoin",
     });
+    fireXDownloadEvent({ platform: "app_store", location: "Top_Section" });
     const interval = setInterval(() => {
       if (!didRedirect) {
         window.location.href = fallbackUrl;

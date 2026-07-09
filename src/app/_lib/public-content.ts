@@ -139,10 +139,14 @@ export const getCommunityPost = cache(async (id: string) => {
 export function pickImage(...assets: Array<MediaAsset | string | null | undefined>) {
   for (const asset of assets) {
     if (!asset) continue;
-    if (typeof asset === "string") return asset;
-    if (asset.url) return asset.url;
+    const url = typeof asset === "string" ? asset : asset.url;
+    if (!url) continue;
+    if (url.includes("d2riz12x19cmzu.cloudfront.net/resources/sometime-story.png")) {
+      continue;
+    }
+    return url;
   }
-  return "/images/preview_title.png";
+  return "/preview_title.png";
 }
 
 export function formatDate(value?: string | null) {

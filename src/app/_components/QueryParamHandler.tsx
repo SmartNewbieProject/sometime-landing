@@ -3,6 +3,7 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import * as amplitude from "@amplitude/analytics-browser";
+import { captureTwclid } from "@/app/_lib/x-pixel";
 
 
 type RegionType = 'GalleriaDepartmentStore' | 'CNU' | 'OnCheonBridge' | 'Instagram';
@@ -20,6 +21,8 @@ export default function QueryParamHandler() {
   const router = useRouter();
 
   useEffect(() => {
+    captureTwclid();
+
     const external = searchParams.get('external');
 
     if (!!external && REGIONS.includes(external as RegionType)) {

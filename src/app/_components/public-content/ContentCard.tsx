@@ -19,7 +19,7 @@ export function ContentCard({
   return (
     <Link
       href={href}
-      className="group overflow-hidden rounded-[28px] border border-[#efe5f5] bg-white shadow-[0_20px_70px_rgba(76,47,100,0.10)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_80px_rgba(111,72,154,0.16)]"
+      className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-[#EEE8FF] bg-white transition duration-300 hover:-translate-y-1 hover:shadow-[0_14px_40px_rgba(122,74,226,0.10)]"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-[#f5edf8]">
         <Image
@@ -27,19 +27,23 @@ export function ContentCard({
           alt=""
           fill
           className="object-cover transition duration-500 group-hover:scale-105"
-          sizes="(min-width: 1024px) 360px, 100vw"
+          sizes="(min-width: 1280px) 280px, (min-width: 768px) 33vw, 100vw"
         />
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/35 to-transparent" />
-        <span className="absolute bottom-4 left-4 rounded-full bg-white/90 px-3 py-1 text-xs font-black text-[#7a4bea] shadow-sm">
+        <span className="absolute bottom-4 left-4 rounded-[14px] bg-white px-3 py-1 text-xs font-semibold text-[#7A4AE2] shadow-sm">
           {label}
         </span>
       </div>
-      <div className="p-6">
-        <h2 className="line-clamp-2 font-wantedSans text-xl font-black leading-snug text-[#201823]">
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <h2 className="line-clamp-2 font-wantedSans text-[18px] font-bold leading-[26px] text-black sm:text-[19px] sm:leading-[28px]">
           {title}
         </h2>
-        <p className="mt-3 line-clamp-3 text-sm leading-6 text-[#6c6273]">{description}</p>
-        {meta ? <p className="mt-5 text-xs font-bold text-[#9a8fa2]">{meta}</p> : null}
+        <p className="mt-2 line-clamp-2 text-[14px] font-medium leading-[22px] text-[#666] sm:mt-3 sm:line-clamp-3 sm:leading-[24px]">
+          {description}
+        </p>
+        {meta ? (
+          <p className="mt-auto pt-4 text-xs font-semibold text-[#9B8EBD]">{meta}</p>
+        ) : null}
       </div>
     </Link>
   );

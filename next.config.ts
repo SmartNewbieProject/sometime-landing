@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "dtdm4q9j639e3.cloudfront.net",
+      },
+      {
+        protocol: "https",
         hostname: "*.s3.amazonaws.com",
       },
       {

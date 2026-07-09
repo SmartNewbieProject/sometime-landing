@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { ContentCard } from "../_components/public-content/ContentCard";
-import { ContentHero, ContentShell } from "../_components/public-content/ContentShell";
+import { ContentHome, type ContentPreview } from "../_components/public-content/ContentHome";
+import { ContentShell } from "../_components/public-content/ContentShell";
 import {
   formatDate,
+  getBlogArticles,
+  getCardNewsList,
   getHotCommunityPosts,
   pickImage,
   SITE_URL,
@@ -16,28 +18,59 @@ export const metadata: Metadata = {
 };
 
 export default async function CommunityIndexPage() {
-  const posts = await getHotCommunityPosts();
+  const [articles, cardNews, posts] = await Promise.all([
+    getBlogArticles(),
+    getCardNewsList(),
+    getHotCommunityPosts(),
+  ]);
+
+  const storyItems: ContentPreview[] = articles.map((article) => ({
+    id: article.id,
+    href: `/blog/${encodeURIComponent(article.slug)}`,
+    image: pickImage(article.thumbnail),
+    label: article.category,
+    title: article.title,
+    description: textExcerpt(article.excerpt ?? article.subtitle),
+    meta: formatDate(article.publishedAt),
+    source: "story",
+    score: article.viewCount ?? 0,
+  }));
+
+  const cardNewsItems: ContentPreview[] = cardNews.map((item) => ({
+    id: item.id,
+    href: `/card-news/${item.id}`,
+    image: pickImage(item.backgroundImage),
+    label: item.layoutMode === "longform" ? "롱폼" : "카드뉴스",
+    title: item.title,
+    description: textExcerpt(item.description ?? item.subtitle ?? item.body),
+    meta: formatDate(item.publishedAt),
+    source: "card-news",
+    score: (item.readCount ?? 0) + (item.likeCount ?? 0),
+  }));
+
+  const communityItems: ContentPreview[] = posts.map((post) => ({
+    id: post.id,
+    href: `/community/${post.id}`,
+    image: pickImage(post.customBackgroundUrl),
+    label: post.author?.universityDetails?.name ?? "커뮤니티",
+    title: post.title,
+    description: textExcerpt(post.content ?? post.description),
+    meta: formatDate(post.publishedAt),
+    source: "community",
+    score: (post.viewCount ?? 0) + (post.likeCount ?? 0) + (post.commentCount ?? 0),
+  }));
 
   return (
     <ContentShell>
-      <ContentHero
+      <ContentHome
+        activeSource="community"
         eyebrow="COMMUNITY"
         title="지금 캠퍼스에서 오가는 이야기"
         description="운영진이 공개 노출로 선별한 커뮤니티 글을 앱 밖에서도 읽기 좋게 정리합니다."
+        items={communityItems}
+        allItems={[...storyItems, ...cardNewsItems, ...communityItems]}
+        cardNewsItems={cardNewsItems}
       />
-      <section className="mx-auto grid w-full max-w-6xl gap-6 px-5 pb-20 sm:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => (
-          <ContentCard
-            key={post.id}
-            href={`/community/${post.id}`}
-            image={pickImage(post.customBackgroundUrl)}
-            label={post.author?.universityDetails?.name ?? "커뮤니티"}
-            title={post.title}
-            description={textExcerpt(post.content ?? post.description)}
-            meta={formatDate(post.publishedAt)}
-          />
-        ))}
-      </section>
     </ContentShell>
   );
 }
