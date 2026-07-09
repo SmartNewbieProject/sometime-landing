@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
@@ -80,15 +81,15 @@ export default async function BlogArticlePage({ params }: PageProps) {
         <nav aria-label="breadcrumb" className="mb-6 text-sm font-medium text-[#9a8fa2]">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
-              <a href="/" className="hover:text-[#7A4AE2]">
+              <Link href="/" className="hover:text-[#7A4AE2]">
                 홈
-              </a>
+              </Link>
             </li>
             <li aria-hidden="true">/</li>
             <li>
-              <a href="/blog" className="hover:text-[#7A4AE2]">
+              <Link href="/blog" className="hover:text-[#7A4AE2]">
                 스토리
-              </a>
+              </Link>
             </li>
             <li aria-hidden="true">/</li>
             <li className="line-clamp-1 text-[#666]">{article.title}</li>
