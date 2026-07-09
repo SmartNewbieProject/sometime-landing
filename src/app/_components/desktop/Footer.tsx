@@ -18,11 +18,28 @@ const footerList = [
   },
 ];
 
+const contentLinks = [
+  { text: "스토리", href: "/blog" },
+  { text: "카드뉴스", href: "/card-news" },
+  { text: "커뮤니티", href: "/community" },
+];
+
 export default function Footer() {
   return (
     <footer className="w-full font-wantedSans bg-white flex items-center justify-center">
       <div className="w-full max-w-[850px] h-full bg-white ">
-        <div className="mt-[120px] flex justify-between items-start">
+        <div className="mt-[80px] flex flex-wrap gap-3">
+          {contentLinks.map(({ text, href }) => (
+            <Link
+              key={href}
+              href={href}
+              className="rounded-[18px] border border-[#EEE8FF] bg-[#FCFAFF] px-4 py-2 text-[14px] font-semibold text-[#7A4AE2] transition hover:border-[#D4C6F5]"
+            >
+              {text}
+            </Link>
+          ))}
+        </div>
+        <div className="mt-[40px] flex justify-between items-start">
           <div className="text-[#7A4AE2] font-medium underline underline-offset-auto text-[16px] leading-[29px]">
             {footerList.map(({ text, href }) => (
               <Link key={text} className="block" href={href} target="_blank">

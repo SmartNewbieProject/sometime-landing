@@ -2,6 +2,7 @@
 import { Suspense } from "react";
 import FloatingButton from "./FloatingButton";
 import FullPageWrapper from "./FullPageWrapper";
+import MobileHeader from "./MobileHeader";
 import Section from "./Section";
 import Fifth from "./section/Fifth";
 import First from "./section/First";
@@ -22,12 +23,15 @@ export default function MobileIndex() {
       <Suspense fallback={null}>
         <QueryParamHandler />
       </Suspense>
+      <MobileHeader />
       <FullPageWrapper>
-        {[First, Second, Difference, Third, SeoGuide, Fifth, Sixth, Promise, Seventh].map((Item, index) => (
-          <Section key={index}>
-            <Item />
-          </Section>
-        ))}
+        {[First, Second, Difference, Third, SeoGuide, Fifth, Sixth, Promise, Seventh].map(
+          (Item, index) => (
+            <Section key={index}>
+              <Item />
+            </Section>
+          ),
+        )}
       </FullPageWrapper>
       <FloatingButton />
     </>
