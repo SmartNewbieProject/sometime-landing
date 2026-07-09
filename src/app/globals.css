@@ -109,6 +109,71 @@ button {
   box-shadow: 0 24px 90px rgba(76, 47, 100, 0.14);
 }
 
+.public-markdown-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 20px;
+  border: 1px solid #eee8ff;
+  background: #fcfaff;
+  box-shadow: 0 12px 40px rgba(122, 74, 226, 0.06);
+  -webkit-overflow-scrolling: touch;
+}
+
+.public-markdown table {
+  width: 100%;
+  min-width: 420px;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.public-markdown thead {
+  background: #f4f0ff;
+}
+
+.public-markdown th {
+  padding: 14px 16px;
+  color: #5b35b5;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  border-bottom: 1px solid #e4dbf7;
+  white-space: nowrap;
+}
+
+.public-markdown td {
+  padding: 14px 16px;
+  color: #444;
+  font-weight: 500;
+  border-bottom: 1px solid #f0ebfa;
+  vertical-align: top;
+}
+
+.public-markdown tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.public-markdown tbody tr:hover td {
+  background: rgba(122, 74, 226, 0.04);
+}
+
+.public-markdown ol {
+  list-style: decimal;
+  padding-left: 1.4rem;
+}
+
+.public-markdown ol li + li {
+  margin-top: 0.5rem;
+}
+
+.public-markdown code {
+  border-radius: 6px;
+  background: #f4f0ff;
+  padding: 0.1em 0.4em;
+  font-size: 0.9em;
+  color: #5b35b5;
+}
+
 .line-clamp-2,
 .line-clamp-3 {
   display: -webkit-box;
