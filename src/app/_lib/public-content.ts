@@ -47,6 +47,7 @@ export type SometimeArticle = {
   seo?: {
     metaTitle?: string;
     metaDescription?: string;
+    ogImage?: string;
     keywords?: string[];
   } | null;
   publishedAt: string | null;
@@ -243,10 +244,17 @@ export const getCommunityPost = cache(async (id: string) => {
   return fetchJson<CommunityPost>(`/articles/details/${encodeURIComponent(id)}`);
 });
 
-function extractMarkdownImage(content?: string | null): string | undefined {
+/** 본문 마크다운/HTML에서 첫 번째 이미지 URL */
+export function extractFirstContentImage(content?: string | null): string | undefined {
   if (!content) return undefined;
-  const match = content.match(/!\[[^\]]*\]\((https?:\/\/[^)\s]+)\)/);
-  return match?.[1];
+  const md = content.match(/!\[[^\]]*\]\((https?:\/\/[^)\s]+)\)/);
+  if (md?.[1]) return md[1];
+  const html = content.match(/<img[^>]+src=["'](https?:\/\/[^"']+)["']/i);
+  return html?.[1];
+}
+
+function extractMarkdownImage(content?: string | null): string | undefined {
+  return extractFirstContentImage(content);
 }
 
 function isUsableImageUrl(url: string): boolean {
@@ -318,6 +326,55 @@ export function communityImageCandidates(
 
 export function pickCommunityImage(post: CommunityPost): string {
   return pickImageFor(post.id, ...communityImageCandidates(post));
+}
+
+/**
+ * 스토리 배너(OG용) — 업로드 시점 썸네일 우선
+ * thumbnail → cover → seo.ogImage → 본문 첫 이미지 → 폴백
+ */
+export function pickBlogBannerImage(article: {
+  id: string;
+  thumbnail?: MediaAsset | null;
+  coverImage?: MediaAsset | null;
+  content?: string | null;
+  seo?: { ogImage?: string } | null;
+}): string {
+  return pickImageFor(
+    article.id,
+    article.thumbnail,
+    article.coverImage,
+    article.seo?.ogImage,
+    extractFirstContentImage(article.content),
+  );
+}
+
+/**
+ * 카드뉴스 배너(OG용) — 업로드 background 우선
+ * backgroundImage → 첫 섹션 이미지 → 본문 이미지 → 폴백
+ */
+export function pickCardNewsBannerImage(item: {
+  id: string;
+  backgroundImage?: MediaAsset | null;
+  sections?: CardNewsSection[] | null;
+  body?: string | null;
+  description?: string | null;
+}): string {
+  const sectionImages = (item.sections ?? [])
+    .slice()
+    .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+    .map((section) => section.imageUrl);
+
+  return pickImageFor(
+    item.id,
+    item.backgroundImage,
+    ...sectionImages,
+    extractFirstContentImage(item.body ?? item.description),
+  );
+}
+
+/** OG 전용 — 절대 URL이 필요한 곳에서 absoluteUrl과 함께 사용 */
+export function resolveBannerForOg(seed: string, ...assets: Array<MediaAsset | string | null | undefined>) {
+  return pickImageFor(seed, ...assets);
 }
 
 export function formatDate(value?: string | null) {

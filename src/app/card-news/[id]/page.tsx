@@ -8,7 +8,7 @@ import { JsonLd } from "../../_components/public-content/JsonLd";
 import {
   formatDate,
   getCardNews,
-  pickImageFor,
+  pickCardNewsBannerImage,
   textExcerpt,
 } from "../../_lib/public-content";
 import {
@@ -27,21 +27,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!item) return { robots: { index: false, follow: false } };
 
   const description = textExcerpt(item.description ?? item.subtitle ?? item.body);
-  const image = pickImageFor(
-    item.id,
-    item.backgroundImage,
-    ...(item.sections ?? []).map((section) => section.imageUrl),
-  );
+  // 업로드 시점 background 배너 우선
+  const image = pickCardNewsBannerImage(item);
   const path = `/card-news/${item.id}`;
+  const sectionLabel = item.layoutMode === "longform" ? "롱폼" : "카드뉴스";
 
   return buildPageMetadata({
     title: item.title,
     description,
     path,
     image,
+    imageAlt: item.title,
     type: "article",
     publishedTime: item.publishedAt,
-    keywords: ["카드뉴스", "썸타임", "대학생", item.layoutMode === "longform" ? "롱폼" : "카드뉴스"],
+    keywords: ["카드뉴스", "썸타임", "대학생", sectionLabel],
+    section: sectionLabel,
   });
 }
 
@@ -50,11 +50,7 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
   const item = await getCardNews(id);
   if (!item) notFound();
 
-  const image = pickImageFor(
-    item.id,
-    item.backgroundImage,
-    ...(item.sections ?? []).map((section) => section.imageUrl),
-  );
+  const image = pickCardNewsBannerImage(item);
   const body = item.body?.trim();
   const description = textExcerpt(item.description ?? item.subtitle ?? item.body);
   const path = `/card-news/${item.id}`;

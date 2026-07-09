@@ -35,10 +35,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     path,
     image,
+    imageAlt: post.title,
     type: "article",
     publishedTime: post.publishedAt,
     keywords: ["썸타임 커뮤니티", "대학생 커뮤니티", "캠퍼스 이야기"],
     authors: post.author?.name ? [post.author.name] : undefined,
+    section: "커뮤니티",
   });
 }
 

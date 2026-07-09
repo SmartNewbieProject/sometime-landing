@@ -44,36 +44,64 @@ type BuildPageMetadataInput = {
   title: string;
   description: string;
   path: string;
+  /** 배너/썸네일 — 절대·상대 URL 모두 허용, OG에 절대경로로 변환 */
   image?: string | null;
+  imageAlt?: string;
   type?: "website" | "article";
   publishedTime?: string | null;
   modifiedTime?: string | null;
   keywords?: string[];
   noIndex?: boolean;
   authors?: string[];
+  section?: string | null;
 };
+
+function guessImageMime(url: string): string | undefined {
+  const lower = url.split("?")[0]?.toLowerCase() ?? "";
+  if (lower.endsWith(".png")) return "image/png";
+  if (lower.endsWith(".webp")) return "image/webp";
+  if (lower.endsWith(".gif")) return "image/gif";
+  if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "image/jpeg";
+  return undefined;
+}
 
 export function buildPageMetadata({
   title,
   description,
   path,
   image,
+  imageAlt,
   type = "website",
   publishedTime,
   modifiedTime,
   keywords = DEFAULT_KEYWORDS,
   noIndex = false,
   authors,
+  section,
 }: BuildPageMetadataInput): Metadata {
   const url = path.startsWith("http") ? path : absoluteUrl(path);
   const ogImage = absoluteUrl(image || DEFAULT_OG_PATH);
+  const ogAlt = imageAlt || title;
+  const mime = guessImageMime(ogImage);
   const fullTitle = title.includes(SITE_NAME) ? title : undefined;
+
+  const ogImages = [
+    {
+      url: ogImage,
+      secureUrl: ogImage.startsWith("https") ? ogImage : undefined,
+      width: 1200,
+      height: 630,
+      alt: ogAlt,
+      type: mime,
+    },
+  ];
 
   return {
     title: fullTitle ? { absolute: fullTitle } : title,
     description,
     keywords,
     authors: authors?.map((name) => ({ name })),
+    category: section ?? undefined,
     alternates: {
       canonical: url,
     },
@@ -86,20 +114,22 @@ export function buildPageMetadata({
       type,
       publishedTime: publishedTime ?? undefined,
       modifiedTime: modifiedTime ?? undefined,
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
+      authors: authors?.length ? authors : undefined,
+      section: section ?? undefined,
+      images: ogImages,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
       images: [ogImage],
+    },
+    // 카카오/슬랙 등 일부 크롤러 호환 보조 메타
+    other: {
+      "og:image:width": "1200",
+      "og:image:height": "630",
+      "og:image:alt": ogAlt,
+      ...(mime ? { "og:image:type": mime } : {}),
     },
     robots: noIndex
       ? { index: false, follow: false }

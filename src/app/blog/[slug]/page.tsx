@@ -8,7 +8,7 @@ import { JsonLd } from "../../_components/public-content/JsonLd";
 import {
   formatDate,
   getBlogArticle,
-  pickImageFor,
+  pickBlogBannerImage,
   textExcerpt,
 } from "../../_lib/public-content";
 import {
@@ -29,7 +29,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = article.seo?.metaTitle ?? article.title;
   const description =
     article.seo?.metaDescription ?? textExcerpt(article.excerpt ?? article.content);
-  const image = pickImageFor(article.id, article.coverImage, article.thumbnail);
+  // 업로드 배너(thumbnail) 우선 → OG/카카오/슬랙 링크 프리뷰
+  const image = pickBlogBannerImage(article);
   const path = `/blog/${encodeURIComponent(article.slug)}`;
 
   return buildPageMetadata({
@@ -37,11 +38,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     path,
     image,
+    imageAlt: article.title,
     type: "article",
     publishedTime: article.publishedAt,
     modifiedTime: article.updatedAt,
     keywords: article.seo?.keywords,
     authors: article.author?.name ? [article.author.name] : ["썸타임 에디터"],
+    section: article.category,
   });
 }
 
@@ -50,7 +53,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
   const article = await getBlogArticle(decodeURIComponent(slug));
   if (!article) notFound();
 
-  const image = pickImageFor(article.id, article.coverImage, article.thumbnail);
+  const image = pickBlogBannerImage(article);
   const description = textExcerpt(article.excerpt ?? article.content);
   const path = `/blog/${encodeURIComponent(article.slug)}`;
 
