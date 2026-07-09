@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next";
 import {
-  getBlogArticles,
-  getCardNewsList,
-  getHotCommunityPosts,
+  getAllBlogArticles,
+  getAllCardNews,
   SITE_URL,
 } from "./_lib/public-content";
 
@@ -31,12 +30,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/community`,
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 0.8,
-    },
-    {
       url: `${SITE_URL}/event`,
       lastModified: now,
       changeFrequency: "monthly",
@@ -44,32 +37,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const [articles, cardNews, communityPosts] = await Promise.all([
-    getBlogArticles(100).catch(() => []),
-    getCardNewsList(100).catch(() => []),
-    getHotCommunityPosts().catch(() => []),
+  const [articles, cardNews] = await Promise.all([
+    getAllBlogArticles().catch(() => [] as Awaited<ReturnType<typeof getAllBlogArticles>>),
+    getAllCardNews().catch(() => [] as Awaited<ReturnType<typeof getAllCardNews>>),
   ]);
 
-  const blogEntries: MetadataRoute.Sitemap = articles.map((article) => ({
-    url: `${SITE_URL}/blog/${encodeURIComponent(article.slug)}`,
-    lastModified: article.publishedAt ? new Date(article.publishedAt) : now,
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-  }));
+  const blogEntries: MetadataRoute.Sitemap = articles
+    .filter((article) => Boolean(article.slug))
+    .map((article) => ({
+      url: `${SITE_URL}/blog/${encodeURIComponent(article.slug)}`,
+      lastModified: article.publishedAt ? new Date(article.publishedAt) : now,
+      changeFrequency: "weekly" as const,
+      priority: 0.75,
+    }));
 
-  const cardNewsEntries: MetadataRoute.Sitemap = cardNews.map((item) => ({
-    url: `${SITE_URL}/card-news/${item.id}`,
-    lastModified: item.publishedAt ? new Date(item.publishedAt) : now,
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-  }));
+  const cardNewsEntries: MetadataRoute.Sitemap = cardNews
+    .filter((item) => Boolean(item.id))
+    .map((item) => ({
+      url: `${SITE_URL}/card-news/${item.id}`,
+      lastModified: item.publishedAt ? new Date(item.publishedAt) : now,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    }));
 
-  const communityEntries: MetadataRoute.Sitemap = communityPosts.map((post) => ({
-    url: `${SITE_URL}/community/${post.id}`,
-    lastModified: post.publishedAt ? new Date(post.publishedAt) : now,
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }));
-
-  return [...staticEntries, ...blogEntries, ...cardNewsEntries, ...communityEntries];
+  return [...staticEntries, ...blogEntries, ...cardNewsEntries];
 }

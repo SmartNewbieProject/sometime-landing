@@ -119,39 +119,116 @@ export type CommunityPost = {
 type ApiList<T> = {
   items?: T[];
   data?: T[];
+  meta?: {
+    currentPage?: number;
+    itemsPerPage?: number;
+    totalItems?: number;
+    hasNextPage?: boolean;
+    hasPreviousPage?: boolean;
+  };
+  success?: boolean;
+  nextCursor?: string | null;
+  hasMore?: boolean;
 };
 
-async function fetchJson<T>(path: string): Promise<T | null> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    next: { revalidate: 300 },
-    headers: {
-      Accept: "application/json",
-      // multi-schema API 기본 국가
-      "X-Country": "kr",
-    },
-  });
+/** sometime-articles public API max limit */
+const ARTICLE_PAGE_LIMIT = 50;
 
-  if (!response.ok) return null;
-  return (await response.json()) as T;
+async function fetchJson<T>(path: string): Promise<T | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}${path}`, {
+      next: { revalidate: 300 },
+      headers: {
+        Accept: "application/json",
+        // multi-schema API 기본 국가
+        "X-Country": "kr",
+      },
+    });
+
+    if (!response.ok) return null;
+    const json = (await response.json()) as T & { success?: boolean; errorCode?: string };
+    // Nest 검증 실패 등이 200 아닌 경우 처리. 일부 에러 envelope 방어.
+    if (json && typeof json === "object" && "success" in json && json.success === false) {
+      return null;
+    }
+    return json as T;
+  } catch {
+    return null;
+  }
+}
+
+function listItems<T>(payload: ApiList<T> | null | undefined): T[] {
+  if (!payload) return [];
+  if (Array.isArray(payload.items)) return payload.items;
+  if (Array.isArray(payload.data)) return payload.data;
+  return [];
 }
 
 export const getBlogArticles = cache(async (limit = 48) => {
+  const safeLimit = Math.min(Math.max(limit, 1), ARTICLE_PAGE_LIMIT);
   const payload = await fetchJson<ApiList<SometimeArticleListItem>>(
-    `/sometime-articles?limit=${limit}`,
+    `/sometime-articles?limit=${safeLimit}&page=1`,
   );
-  return payload?.items ?? payload?.data ?? [];
+  return listItems(payload);
 });
+
+/** 사이트맵 등 전량 수집 — page 단위로 순회 (limit max 50) */
+export async function getAllBlogArticles(): Promise<SometimeArticleListItem[]> {
+  const all: SometimeArticleListItem[] = [];
+  let page = 1;
+
+  while (page <= 20) {
+    const payload = await fetchJson<ApiList<SometimeArticleListItem>>(
+      `/sometime-articles?limit=${ARTICLE_PAGE_LIMIT}&page=${page}`,
+    );
+    const items = listItems(payload);
+    all.push(...items);
+
+    const hasNext =
+      payload?.meta?.hasNextPage === true || items.length === ARTICLE_PAGE_LIMIT;
+    if (!hasNext || items.length === 0) break;
+    page += 1;
+  }
+
+  return all;
+}
 
 export const getBlogArticle = cache(async (slug: string) => {
   return fetchJson<SometimeArticle>(`/sometime-articles/${encodeURIComponent(slug)}`);
 });
 
 export const getCardNewsList = cache(async (limit = 48) => {
+  const safeLimit = Math.min(Math.max(limit, 1), 100);
   const payload = await fetchJson<ApiList<CardNews>>(
-    `/posts/card-news?limit=${limit}&includeReadState=false`,
+    `/posts/card-news?limit=${safeLimit}&includeReadState=false`,
   );
-  return payload?.items ?? payload?.data ?? [];
+  return listItems(payload);
 });
+
+/** 카드뉴스 커서 페이지네이션 전량 (사이트맵용) */
+export async function getAllCardNews(): Promise<CardNews[]> {
+  const all: CardNews[] = [];
+  let cursor: string | null = null;
+  let guard = 0;
+
+  while (guard < 30) {
+    const qs = new URLSearchParams({
+      limit: "50",
+      includeReadState: "false",
+    });
+    if (cursor) qs.set("cursor", cursor);
+
+    const payload = await fetchJson<ApiList<CardNews>>(`/posts/card-news?${qs.toString()}`);
+    const items = listItems(payload);
+    all.push(...items);
+
+    if (!payload?.hasMore || !payload.nextCursor || items.length === 0) break;
+    cursor = payload.nextCursor;
+    guard += 1;
+  }
+
+  return all;
+}
 
 export const getCardNews = cache(async (id: string) => {
   return fetchJson<CardNews>(`/posts/card-news/${encodeURIComponent(id)}`);
@@ -159,7 +236,7 @@ export const getCardNews = cache(async (id: string) => {
 
 export const getHotCommunityPosts = cache(async () => {
   const payload = await fetchJson<ApiList<CommunityPost>>("/articles/hot");
-  return payload?.items ?? payload?.data ?? [];
+  return listItems(payload);
 });
 
 export const getCommunityPost = cache(async (id: string) => {
