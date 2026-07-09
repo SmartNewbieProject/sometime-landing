@@ -7,6 +7,7 @@ import { ContentBreadcrumb } from "../../_components/public-content/ContentBread
 import { ContentBanner } from "../../_components/public-content/ContentBanner";
 import { ReadingProgress } from "../../_components/public-content/ReadingProgress";
 import { FaqAccordion } from "../../_components/public-content/FaqAccordion";
+import { TrialChatCta } from "../../_components/public-content/TrialChatCta";
 import {
   formatDate,
   getBlogArticle,
@@ -127,7 +128,11 @@ export default async function BlogArticlePage({ params }: PageProps) {
 
         <MarkdownBody content={body} />
 
-        <div className="mt-14">
+        <div className="mt-12">
+          <TrialChatCta contentType="story" contentId={article.slug} placement="detail_bottom" />
+        </div>
+
+        <div className="mt-10">
           <FaqAccordion
             items={faqs}
             title={inlineFaqs.length > 0 ? "이 글 FAQ" : "함께 알아두면 좋아요"}

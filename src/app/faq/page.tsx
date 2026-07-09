@@ -4,6 +4,7 @@ import { ContentShell } from "../_components/public-content/ContentShell";
 import { ContentBreadcrumb } from "../_components/public-content/ContentBreadcrumb";
 import { FaqAccordion } from "../_components/public-content/FaqAccordion";
 import { JsonLd } from "../_components/public-content/JsonLd";
+import { TrialChatCta } from "../_components/public-content/TrialChatCta";
 import {
   allFaqItems,
   FAQ_HUB_GROUPS,
@@ -75,7 +76,16 @@ export default function FaqPage() {
           ))}
         </div>
 
-        <aside className="mt-14 rounded-[28px] bg-[#7A4AE2] px-6 py-8 text-white sm:px-8">
+        <div className="mt-12">
+          <TrialChatCta
+            contentType="faq"
+            placement="faq_bottom"
+            title="표로 비교만 하지 말고, 대화 감각을 느껴보세요"
+            description="학교 인증·비용 이야기를 읽었다면, 가입 전에 가상의 인연과 가벼운 대화를 먼저 체험해볼 수 있어요. 체험용 AI 대화이며 실제 유저 매칭은 아닙니다."
+          />
+        </div>
+
+        <aside className="mt-10 rounded-[28px] bg-[#7A4AE2] px-6 py-8 text-white sm:px-8">
           <h2 className="font-wantedSans text-[22px] font-bold leading-[30px]">
             더 긴 이야기가 필요하다면
           </h2>
@@ -94,12 +104,6 @@ export default function FaqPage() {
               className="rounded-[30px] border border-white/40 px-5 py-2.5 text-[14px] font-semibold text-white"
             >
               카드뉴스 보기
-            </Link>
-            <Link
-              href="https://some-in-univ.com"
-              className="rounded-[30px] border border-white/40 px-5 py-2.5 text-[14px] font-semibold text-white"
-            >
-              앱으로 이동
             </Link>
           </div>
         </aside>
