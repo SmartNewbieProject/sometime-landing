@@ -21,6 +21,7 @@ const footerList = [
 const contentLinks = [
   { text: "스토리", href: "/blog" },
   { text: "카드뉴스", href: "/card-news" },
+  { text: "FAQ", href: "/faq" },
 ];
 
 export default function Footer() {

@@ -6,6 +6,7 @@ import Link from "next/link";
 const contentNav = [
   { href: "/blog", label: "스토리" },
   { href: "/card-news", label: "카드뉴스" },
+  { href: "/faq", label: "FAQ" },
 ] as const;
 
 /** 모바일 랜딩 상단 — 콘텐츠 페이지로 이동하는 네비 */

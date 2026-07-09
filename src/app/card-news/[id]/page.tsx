@@ -1,21 +1,26 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
 import { ContentMedia } from "../../_components/public-content/ContentMedia";
 import { JsonLd } from "../../_components/public-content/JsonLd";
+import { ContentBreadcrumb } from "../../_components/public-content/ContentBreadcrumb";
+import { ContentBanner } from "../../_components/public-content/ContentBanner";
+import { ReadingProgress } from "../../_components/public-content/ReadingProgress";
+import { FaqAccordion } from "../../_components/public-content/FaqAccordion";
 import {
   formatDate,
   getCardNews,
   pickCardNewsBannerImage,
   textExcerpt,
 } from "../../_lib/public-content";
+import { defaultDetailFaqs, faqPageJsonLd, splitContentAndFaq } from "../../_lib/faq";
 import {
   articleJsonLd,
   breadcrumbJsonLd,
   buildPageMetadata,
 } from "../../_lib/seo";
+import { getBannerAlt } from "../../_lib/banner-a11y";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -27,7 +32,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!item) return { robots: { index: false, follow: false } };
 
   const description = textExcerpt(item.description ?? item.subtitle ?? item.body);
-  // 업로드 시점 background 배너 우선
   const image = pickCardNewsBannerImage(item);
   const path = `/card-news/${item.id}`;
   const sectionLabel = item.layoutMode === "longform" ? "롱폼" : "카드뉴스";
@@ -37,7 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     path,
     image,
-    imageAlt: item.title,
+    imageAlt: getBannerAlt(item.title),
     type: "article",
     publishedTime: item.publishedAt,
     keywords: ["카드뉴스", "썸타임", "대학생", sectionLabel],
@@ -51,13 +55,16 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
   if (!item) notFound();
 
   const image = pickCardNewsBannerImage(item);
-  const body = item.body?.trim();
+  const rawBody = item.body?.trim() ?? "";
+  const { body, faqs: inlineFaqs } = splitContentAndFaq(rawBody);
+  const faqs = inlineFaqs.length > 0 ? inlineFaqs : defaultDetailFaqs("card-news");
   const description = textExcerpt(item.description ?? item.subtitle ?? item.body);
   const path = `/card-news/${item.id}`;
   const sectionLabel = item.layoutMode === "longform" ? "롱폼" : "카드뉴스";
 
   return (
     <ContentShell>
+      <ReadingProgress />
       <JsonLd
         data={[
           articleJsonLd({
@@ -73,27 +80,18 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
             { name: "카드뉴스", path: "/card-news" },
             { name: item.title, path },
           ]),
+          ...(inlineFaqs.length > 0 ? [faqPageJsonLd(inlineFaqs)] : []),
         ]}
       />
 
       <article className="mx-auto w-full max-w-4xl px-5 pb-20 pt-12 sm:pt-20">
-        <nav aria-label="breadcrumb" className="mb-6 text-sm font-medium text-[#9a8fa2]">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href="/" className="hover:text-[#7A4AE2]">
-                홈
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li>
-              <Link href="/card-news" className="hover:text-[#7A4AE2]">
-                카드뉴스
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li className="line-clamp-1 text-[#666]">{item.title}</li>
-          </ol>
-        </nav>
+        <ContentBreadcrumb
+          items={[
+            { href: "/", label: "홈" },
+            { href: "/card-news", label: "카드뉴스" },
+            { label: item.title },
+          ]}
+        />
 
         <div className="mb-8">
           <p className="mb-4 text-sm font-black uppercase tracking-[0.2em] text-[#8a5cff]">
@@ -113,15 +111,13 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
           </p>
         </div>
 
-        <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-[32px] bg-[#f4edf8] shadow-[0_24px_90px_rgba(76,47,100,0.16)]">
-          <ContentMedia
-            src={image}
-            seed={item.id}
-            className="object-cover"
-            priority
-            sizes="(min-width: 900px) 800px, 100vw"
-          />
-        </div>
+        <ContentBanner
+          src={image}
+          title={item.title}
+          seed={item.id}
+          subtitle={item.subtitle}
+          excerpt={item.description}
+        />
 
         {body ? (
           <MarkdownBody content={body} />
@@ -136,6 +132,7 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
                   <div className="relative mb-5 aspect-[16/10] overflow-hidden rounded-2xl">
                     <ContentMedia
                       src={section.imageUrl}
+                      alt={getBannerAlt(section.title || item.title)}
                       seed={`${item.id}-${section.id ?? section.sortOrder ?? 0}`}
                       className="object-cover"
                       sizes="(min-width: 900px) 720px, 100vw"
@@ -154,6 +151,18 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
             ))}
           </div>
         )}
+
+        <div className="mt-14">
+          <FaqAccordion
+            items={faqs}
+            title={inlineFaqs.length > 0 ? "이 글 FAQ" : "함께 알아두면 좋아요"}
+            description={
+              inlineFaqs.length > 0
+                ? "이 콘텐츠에서 짚은 질문입니다."
+                : "카드뉴스를 읽은 뒤 자주 이어지는 질문이에요."
+            }
+          />
+        </div>
       </article>
     </ContentShell>
   );

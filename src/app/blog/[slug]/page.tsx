@@ -1,21 +1,25 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
-import { ContentMedia } from "../../_components/public-content/ContentMedia";
 import { JsonLd } from "../../_components/public-content/JsonLd";
+import { ContentBreadcrumb } from "../../_components/public-content/ContentBreadcrumb";
+import { ContentBanner } from "../../_components/public-content/ContentBanner";
+import { ReadingProgress } from "../../_components/public-content/ReadingProgress";
+import { FaqAccordion } from "../../_components/public-content/FaqAccordion";
 import {
   formatDate,
   getBlogArticle,
   pickBlogBannerImage,
   textExcerpt,
 } from "../../_lib/public-content";
+import { defaultDetailFaqs, faqPageJsonLd, splitContentAndFaq } from "../../_lib/faq";
 import {
   articleJsonLd,
   breadcrumbJsonLd,
   buildPageMetadata,
 } from "../../_lib/seo";
+import { getBannerAlt } from "../../_lib/banner-a11y";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -29,7 +33,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = article.seo?.metaTitle ?? article.title;
   const description =
     article.seo?.metaDescription ?? textExcerpt(article.excerpt ?? article.content);
-  // 업로드 배너(thumbnail) 우선 → OG/카카오/슬랙 링크 프리뷰
   const image = pickBlogBannerImage(article);
   const path = `/blog/${encodeURIComponent(article.slug)}`;
 
@@ -38,7 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     path,
     image,
-    imageAlt: article.title,
+    imageAlt: getBannerAlt(article.title),
     type: "article",
     publishedTime: article.publishedAt,
     modifiedTime: article.updatedAt,
@@ -56,9 +59,12 @@ export default async function BlogArticlePage({ params }: PageProps) {
   const image = pickBlogBannerImage(article);
   const description = textExcerpt(article.excerpt ?? article.content);
   const path = `/blog/${encodeURIComponent(article.slug)}`;
+  const { body, faqs: inlineFaqs } = splitContentAndFaq(article.content);
+  const faqs = inlineFaqs.length > 0 ? inlineFaqs : defaultDetailFaqs("story");
 
   return (
     <ContentShell>
+      <ReadingProgress />
       <JsonLd
         data={[
           articleJsonLd({
@@ -77,27 +83,18 @@ export default async function BlogArticlePage({ params }: PageProps) {
             { name: "스토리", path: "/blog" },
             { name: article.title, path },
           ]),
+          ...(inlineFaqs.length > 0 ? [faqPageJsonLd(inlineFaqs)] : []),
         ]}
       />
 
       <article className="mx-auto w-full max-w-4xl px-5 pb-20 pt-12 sm:pt-20">
-        <nav aria-label="breadcrumb" className="mb-6 text-sm font-medium text-[#9a8fa2]">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href="/" className="hover:text-[#7A4AE2]">
-                홈
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li>
-              <Link href="/blog" className="hover:text-[#7A4AE2]">
-                스토리
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li className="line-clamp-1 text-[#666]">{article.title}</li>
-          </ol>
-        </nav>
+        <ContentBreadcrumb
+          items={[
+            { href: "/", label: "홈" },
+            { href: "/blog", label: "스토리" },
+            { label: article.title },
+          ]}
+        />
 
         <div className="mb-8">
           <p className="mb-4 text-sm font-black uppercase tracking-[0.2em] text-[#8a5cff]">
@@ -112,7 +109,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
             </p>
           ) : null}
           <p className="mt-6 text-sm font-bold text-[#9a8fa2]">
-            <span itemProp="author">{article.author?.name ?? "썸타임 에디터"}</span>
+            <span>{article.author?.name ?? "썸타임 에디터"}</span>
             {" · "}
             <time dateTime={article.publishedAt ?? undefined}>
               {formatDate(article.publishedAt)}
@@ -120,17 +117,27 @@ export default async function BlogArticlePage({ params }: PageProps) {
           </p>
         </div>
 
-        <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-[32px] bg-[#f4edf8] shadow-[0_24px_90px_rgba(76,47,100,0.16)]">
-          <ContentMedia
-            src={image}
-            seed={article.id}
-            className="object-cover"
-            priority
-            sizes="(min-width: 900px) 800px, 100vw"
+        <ContentBanner
+          src={image}
+          title={article.title}
+          seed={article.id}
+          subtitle={article.subtitle}
+          excerpt={article.excerpt}
+        />
+
+        <MarkdownBody content={body} />
+
+        <div className="mt-14">
+          <FaqAccordion
+            items={faqs}
+            title={inlineFaqs.length > 0 ? "이 글 FAQ" : "함께 알아두면 좋아요"}
+            description={
+              inlineFaqs.length > 0
+                ? "이 글에서 짚어 본 질문들입니다."
+                : "학교 인증 소개팅을 시작하기 전에 자주 묻는 이야기예요."
+            }
           />
         </div>
-
-        <MarkdownBody content={article.content} />
       </article>
     </ContentShell>
   );

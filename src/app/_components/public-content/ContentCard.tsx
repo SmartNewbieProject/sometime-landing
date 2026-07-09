@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ContentMedia } from "./ContentMedia";
+import { getBannerAlt } from "@/app/_lib/banner-a11y";
 
 export function ContentCard({
   href,
@@ -24,6 +25,7 @@ export function ContentCard({
       <div className="relative aspect-[16/10] overflow-hidden bg-[#f5edf8]">
         <ContentMedia
           src={image}
+          alt={getBannerAlt(title)}
           seed={href}
           className="object-cover transition duration-500 group-hover:scale-105"
           sizes="(min-width: 1280px) 280px, (min-width: 768px) 33vw, 100vw"

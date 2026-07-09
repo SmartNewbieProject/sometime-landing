@@ -10,6 +10,7 @@ import * as amplitude from "@amplitude/analytics-browser";
 const contentNav = [
   { href: "/blog", label: "스토리" },
   { href: "/card-news", label: "카드뉴스" },
+  { href: "/faq", label: "FAQ" },
 ] as const;
 
 export default function Header() {
