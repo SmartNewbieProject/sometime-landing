@@ -7,6 +7,7 @@ import { AnimatePresence, motion, type Easing } from "framer-motion";
 import { floatVariants } from "@/app/_lib/motion";
 import TopSection from "../desktop/TopSection";
 import { ContentCard } from "./ContentCard";
+import { ContentMedia } from "./ContentMedia";
 
 export type ContentPreview = {
   id: string;
@@ -232,10 +233,9 @@ export function ContentHome({
                 >
                   {/* Featured image + hover zoom + CTA slide-up */}
                   <div className="relative min-h-[260px] overflow-hidden bg-[#F4F0FF] sm:min-h-[360px]">
-                    <Image
+                    <ContentMedia
                       src={featured.image}
-                      alt=""
-                      fill
+                      seed={featured.id}
                       priority
                       className="object-cover transition duration-500 ease-out group-hover:scale-105"
                       sizes="(min-width: 900px) 460px, 100vw"
@@ -324,10 +324,9 @@ export function ContentHome({
                           transition={{ duration: 0.28, ease: easeOut }}
                           className="absolute inset-0"
                         >
-                          <Image
+                          <ContentMedia
                             src={rankingPreview.image}
-                            alt=""
-                            fill
+                            seed={rankingPreview.id}
                             className="object-cover transition duration-500 group-hover:scale-105"
                             sizes="(min-width: 1280px) 680px, 50vw"
                           />
@@ -486,10 +485,9 @@ export function ContentHome({
                     className="group block h-full overflow-hidden rounded-[24px] border border-[#EEE8FF] bg-[#FCFAFF] transition duration-300 hover:-translate-y-1"
                   >
                     <div className="relative aspect-[4/3] overflow-hidden bg-[#F4F0FF]">
-                      <Image
+                      <ContentMedia
                         src={item.image}
-                        alt=""
-                        fill
+                        seed={item.id}
                         className="object-cover transition duration-500 group-hover:scale-105"
                         sizes="(min-width: 900px) 210px, 72vw"
                       />
@@ -508,7 +506,7 @@ export function ContentHome({
       ) : null}
 
       {/* App CTA */}
-      <section className="bg-white px-[24px] pb-[100px]">
+      <section className="scroll-mt-[112px] bg-white px-[24px] pb-[100px] pt-[24px]">
         <FadeUp>
           <div className="relative mx-auto max-w-[900px] overflow-hidden rounded-[32px] bg-[#7A4AE2] px-[28px] py-[34px] shadow-[0_24px_70px_rgba(122,74,226,0.22)] sm:px-[46px] sm:py-[46px]">
             <div className="pointer-events-none absolute right-[-90px] top-[-130px] h-[280px] w-[280px] rounded-full bg-white/15 blur-[8px]" />
@@ -537,11 +535,11 @@ export function ContentHome({
                     className="transition duration-300 hover:-translate-y-0.5"
                   >
                     <Image
-                      src="/images/app-store.png"
+                      src="/images/big-app-store.png"
                       alt="App Store"
-                      width={140}
-                      height={44}
-                      className="h-[44px] w-auto"
+                      width={491}
+                      height={150}
+                      className="h-auto w-[142px] sm:w-[156px]"
                     />
                   </Link>
                   <Link
@@ -550,11 +548,11 @@ export function ContentHome({
                     className="transition duration-300 hover:-translate-y-0.5"
                   >
                     <Image
-                      src="/images/google-play.png"
+                      src="/images/big-google-play.png"
                       alt="Google Play"
-                      width={140}
-                      height={44}
-                      className="h-[44px] w-auto"
+                      width={491}
+                      height={150}
+                      className="h-auto w-[142px] sm:w-[156px]"
                     />
                   </Link>
                 </div>
@@ -578,10 +576,9 @@ export function ContentHome({
                   className="absolute right-[4px] top-[2px] w-[246px] rounded-[28px] border border-white/30 bg-white/92 p-[12px] shadow-[0_24px_54px_rgba(38,21,84,0.26)] sm:right-[18px] md:right-0"
                 >
                   <div className="relative h-[138px] overflow-hidden rounded-[22px] bg-[#F7F2FF]">
-                    <Image
-                      src={featured?.image ?? "/preview_title.png"}
-                      alt=""
-                      fill
+                    <ContentMedia
+                      src={featured?.image ?? "/images/intro1.png"}
+                      seed={featured?.id ?? "cta"}
                       className="object-cover"
                       sizes="246px"
                     />

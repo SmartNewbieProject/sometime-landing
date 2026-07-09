@@ -6,7 +6,8 @@ import {
   getBlogArticles,
   getCardNewsList,
   getHotCommunityPosts,
-  pickImage,
+  pickCommunityImage,
+  pickImageFor,
   SITE_URL,
   textExcerpt,
 } from "../_lib/public-content";
@@ -27,7 +28,7 @@ export default async function CommunityIndexPage() {
   const storyItems: ContentPreview[] = articles.map((article) => ({
     id: article.id,
     href: `/blog/${encodeURIComponent(article.slug)}`,
-    image: pickImage(article.thumbnail),
+    image: pickImageFor(article.id, article.thumbnail, article.coverImage),
     label: article.category,
     title: article.title,
     description: textExcerpt(article.excerpt ?? article.subtitle),
@@ -39,7 +40,11 @@ export default async function CommunityIndexPage() {
   const cardNewsItems: ContentPreview[] = cardNews.map((item) => ({
     id: item.id,
     href: `/card-news/${item.id}`,
-    image: pickImage(item.backgroundImage),
+    image: pickImageFor(
+      item.id,
+      item.backgroundImage,
+      ...(item.sections ?? []).map((section) => section.imageUrl),
+    ),
     label: item.layoutMode === "longform" ? "롱폼" : "카드뉴스",
     title: item.title,
     description: textExcerpt(item.description ?? item.subtitle ?? item.body),
@@ -51,7 +56,7 @@ export default async function CommunityIndexPage() {
   const communityItems: ContentPreview[] = posts.map((post) => ({
     id: post.id,
     href: `/community/${post.id}`,
-    image: pickImage(post.customBackgroundUrl),
+    image: pickCommunityImage(post),
     label: post.author?.universityDetails?.name ?? "커뮤니티",
     title: post.title,
     description: textExcerpt(post.content ?? post.description),

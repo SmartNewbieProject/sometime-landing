@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
-import { formatDate, getCardNews, pickImage, SITE_URL, textExcerpt } from "../../_lib/public-content";
+import { ContentMedia } from "../../_components/public-content/ContentMedia";
+import {
+  formatDate,
+  getCardNews,
+  pickImageFor,
+  SITE_URL,
+  textExcerpt,
+} from "../../_lib/public-content";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -15,7 +21,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!item) return {};
 
   const description = textExcerpt(item.description ?? item.subtitle ?? item.body);
-  const image = pickImage(item.backgroundImage);
+  const image = pickImageFor(
+    item.id,
+    item.backgroundImage,
+    ...(item.sections ?? []).map((section) => section.imageUrl),
+  );
 
   return {
     title: item.title,
@@ -26,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       type: "article",
       url: `${SITE_URL}/card-news/${item.id}`,
-      images: [{ url: image }],
+      images: [{ url: image.startsWith("http") ? image : `${SITE_URL}${image}` }],
       publishedTime: item.publishedAt ?? undefined,
     },
   };
@@ -37,7 +47,11 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
   const item = await getCardNews(id);
   if (!item) notFound();
 
-  const image = pickImage(item.backgroundImage);
+  const image = pickImageFor(
+    item.id,
+    item.backgroundImage,
+    ...(item.sections ?? []).map((section) => section.imageUrl),
+  );
   const body = item.body?.trim();
 
   return (
@@ -61,7 +75,7 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
         </div>
 
         <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-[32px] bg-[#f4edf8] shadow-[0_24px_90px_rgba(76,47,100,0.16)]">
-          <Image src={image} alt="" fill className="object-cover" priority />
+          <ContentMedia src={image} seed={item.id} className="object-cover" priority sizes="(min-width: 900px) 800px, 100vw" />
         </div>
 
         {body ? (
@@ -75,7 +89,12 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
               >
                 {section.imageUrl ? (
                   <div className="relative mb-5 aspect-[16/10] overflow-hidden rounded-2xl">
-                    <Image src={section.imageUrl} alt="" fill className="object-cover" />
+                    <ContentMedia
+                      src={section.imageUrl}
+                      seed={`${item.id}-${section.id ?? section.sortOrder ?? 0}`}
+                      className="object-cover"
+                      sizes="(min-width: 900px) 720px, 100vw"
+                    />
                   </div>
                 ) : null}
                 {section.title ? (

@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { ContentMedia } from "./ContentMedia";
 
 export function ContentCard({
   href,
@@ -22,10 +22,9 @@ export function ContentCard({
       className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-[#EEE8FF] bg-white transition duration-300 hover:-translate-y-1 hover:shadow-[0_14px_40px_rgba(122,74,226,0.10)]"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-[#f5edf8]">
-        <Image
+        <ContentMedia
           src={image}
-          alt=""
-          fill
+          seed={href}
           className="object-cover transition duration-500 group-hover:scale-105"
           sizes="(min-width: 1280px) 280px, (min-width: 768px) 33vw, 100vw"
         />

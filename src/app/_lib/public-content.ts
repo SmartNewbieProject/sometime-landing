@@ -8,9 +8,26 @@ const API_BASE_URL =
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://info.some-in-univ.com";
 
+/** 로컬 브랜드 폴백 — CDN 403/미존재 시 사용 (preview_title 9MB 회피) */
+export const IMAGE_FALLBACKS = [
+  "/images/intro1.png",
+  "/images/intro2.png",
+  "/images/intro3.png",
+  "/images/pick-some.png",
+  "/images/pepero.jpg",
+  "/images/happy-some.png",
+] as const;
+
+/** 접근 불가·플레이스홀더로 알려진 URL 조각 */
+const BROKEN_URL_MARKERS = [
+  "resources/sometime-story.png",
+  "resources/sometime-story",
+];
+
 export type MediaAsset = {
   url?: string;
   alt?: string;
+  type?: string;
 };
 
 export type SometimeArticle = {
@@ -46,6 +63,7 @@ export type SometimeArticleListItem = Pick<
   | "subtitle"
   | "excerpt"
   | "thumbnail"
+  | "coverImage"
   | "author"
   | "viewCount"
   | "publishedAt"
@@ -74,6 +92,13 @@ export type CardNews = {
   body?: string | null;
 };
 
+export type CommunityPostImage = {
+  id?: string;
+  imageUrl?: string | null;
+  url?: string | null;
+  displayOrder?: number;
+};
+
 export type CommunityPost = {
   id: string;
   title: string;
@@ -84,6 +109,7 @@ export type CommunityPost = {
   viewCount?: number;
   publishedAt?: string | null;
   customBackgroundUrl?: string | null;
+  images?: CommunityPostImage[] | null;
   author?: {
     name?: string;
     universityDetails?: { name?: string };
@@ -98,7 +124,11 @@ type ApiList<T> = {
 async function fetchJson<T>(path: string): Promise<T | null> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     next: { revalidate: 300 },
-    headers: { Accept: "application/json" },
+    headers: {
+      Accept: "application/json",
+      // multi-schema API 기본 국가
+      "X-Country": "kr",
+    },
   });
 
   if (!response.ok) return null;
@@ -136,17 +166,81 @@ export const getCommunityPost = cache(async (id: string) => {
   return fetchJson<CommunityPost>(`/articles/details/${encodeURIComponent(id)}`);
 });
 
-export function pickImage(...assets: Array<MediaAsset | string | null | undefined>) {
+function extractMarkdownImage(content?: string | null): string | undefined {
+  if (!content) return undefined;
+  const match = content.match(/!\[[^\]]*\]\((https?:\/\/[^)\s]+)\)/);
+  return match?.[1];
+}
+
+function isUsableImageUrl(url: string): boolean {
+  const trimmed = url.trim();
+  if (!trimmed) return false;
+  if (
+    !trimmed.startsWith("https://") &&
+    !trimmed.startsWith("http://") &&
+    !trimmed.startsWith("/")
+  ) {
+    return false;
+  }
+  return !BROKEN_URL_MARKERS.some((marker) => trimmed.includes(marker));
+}
+
+export function fallbackImage(seed = ""): string {
+  if (!seed) return IMAGE_FALLBACKS[0];
+  let hash = 0;
+  for (let i = 0; i < seed.length; i += 1) {
+    hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  }
+  return IMAGE_FALLBACKS[hash % IMAGE_FALLBACKS.length];
+}
+
+/**
+ * 여러 후보 중 사용 가능한 첫 이미지 URL.
+ * seed가 있으면 폴백을 콘텐츠별로 다른 로컬 에셋으로 분산.
+ */
+export function pickImage(
+  ...assets: Array<MediaAsset | string | null | undefined>
+): string {
   for (const asset of assets) {
     if (!asset) continue;
     const url = typeof asset === "string" ? asset : asset.url;
-    if (!url) continue;
-    if (url.includes("d2riz12x19cmzu.cloudfront.net/resources/sometime-story.png")) {
-      continue;
-    }
-    return url;
+    if (!url || !isUsableImageUrl(url)) continue;
+    return url.trim();
   }
-  return "/preview_title.png";
+  return fallbackImage();
+}
+
+export function pickImageFor(
+  seed: string,
+  ...assets: Array<MediaAsset | string | null | undefined>
+): string {
+  for (const asset of assets) {
+    if (!asset) continue;
+    const url = typeof asset === "string" ? asset : asset.url;
+    if (!url || !isUsableImageUrl(url)) continue;
+    return url.trim();
+  }
+  return fallbackImage(seed);
+}
+
+/** 커뮤니티 게시글 커버 후보 (bg → 첨부 이미지 → 본문 마크다운 이미지) */
+export function communityImageCandidates(
+  post: CommunityPost,
+): Array<string | MediaAsset | null | undefined> {
+  const attachmentUrls = (post.images ?? [])
+    .slice()
+    .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0))
+    .map((img) => img.imageUrl ?? img.url ?? null);
+
+  return [
+    post.customBackgroundUrl,
+    ...attachmentUrls,
+    extractMarkdownImage(post.content ?? post.description),
+  ];
+}
+
+export function pickCommunityImage(post: CommunityPost): string {
+  return pickImageFor(post.id, ...communityImageCandidates(post));
 }
 
 export function formatDate(value?: string | null) {

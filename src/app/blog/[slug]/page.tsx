@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
+import { ContentMedia } from "../../_components/public-content/ContentMedia";
 import {
   formatDate,
   getBlogArticle,
-  pickImage,
+  pickImageFor,
   SITE_URL,
   textExcerpt,
 } from "../../_lib/public-content";
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = article.seo?.metaTitle ?? article.title;
   const description =
     article.seo?.metaDescription ?? textExcerpt(article.excerpt ?? article.content);
-  const image = pickImage(article.coverImage, article.thumbnail);
+  const image = pickImageFor(article.id, article.coverImage, article.thumbnail);
 
   return {
     title,
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       type: "article",
       url: `${SITE_URL}/blog/${encodeURIComponent(article.slug)}`,
-      images: [{ url: image }],
+      images: [{ url: image.startsWith("http") ? image : `${SITE_URL}${image}` }],
       publishedTime: article.publishedAt ?? undefined,
     },
   };
@@ -45,7 +45,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
   const article = await getBlogArticle(decodeURIComponent(slug));
   if (!article) notFound();
 
-  const image = pickImage(article.coverImage, article.thumbnail);
+  const image = pickImageFor(article.id, article.coverImage, article.thumbnail);
 
   return (
     <ContentShell>
@@ -68,7 +68,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
         </div>
 
         <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-[32px] bg-[#f4edf8] shadow-[0_24px_90px_rgba(76,47,100,0.16)]">
-          <Image src={image} alt="" fill className="object-cover" priority />
+          <ContentMedia src={image} seed={article.id} className="object-cover" priority sizes="(min-width: 900px) 800px, 100vw" />
         </div>
 
         <MarkdownBody content={article.content} />

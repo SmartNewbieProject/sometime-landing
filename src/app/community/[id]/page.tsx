@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
+import { ContentMedia } from "../../_components/public-content/ContentMedia";
 import {
   formatDate,
   getCommunityPost,
-  pickImage,
+  pickCommunityImage,
   SITE_URL,
   textExcerpt,
 } from "../../_lib/public-content";
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!post) return {};
 
   const description = textExcerpt(post.content ?? post.description);
-  const image = pickImage(post.customBackgroundUrl);
+  const image = pickCommunityImage(post);
 
   return {
     title: post.title,
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       type: "article",
       url: `${SITE_URL}/community/${post.id}`,
-      images: [{ url: image }],
+      images: [{ url: image.startsWith("http") ? image : `${SITE_URL}${image}` }],
       publishedTime: post.publishedAt ?? undefined,
     },
   };
@@ -43,7 +43,10 @@ export default async function CommunityDetailPage({ params }: PageProps) {
   const post = await getCommunityPost(id);
   if (!post) notFound();
 
-  const image = pickImage(post.customBackgroundUrl);
+  const image = pickCommunityImage(post);
+  const hasCover =
+    Boolean(post.customBackgroundUrl) ||
+    Boolean(post.images?.some((img) => img.imageUrl || img.url));
 
   return (
     <ContentShell>
@@ -61,9 +64,15 @@ export default async function CommunityDetailPage({ params }: PageProps) {
           </p>
         </div>
 
-        {post.customBackgroundUrl ? (
+        {hasCover ? (
           <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-[32px] bg-[#f4edf8] shadow-[0_24px_90px_rgba(76,47,100,0.16)]">
-            <Image src={image} alt="" fill className="object-cover" priority />
+            <ContentMedia
+              src={image}
+              seed={post.id}
+              className="object-cover"
+              priority
+              sizes="(min-width: 900px) 800px, 100vw"
+            />
           </div>
         ) : null}
 
