@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ContentHome, type ContentPreview } from "../_components/public-content/ContentHome";
 import { ContentShell } from "../_components/public-content/ContentShell";
+import { JsonLd } from "../_components/public-content/JsonLd";
 import {
   formatDate,
   getBlogArticles,
@@ -8,15 +9,24 @@ import {
   getHotCommunityPosts,
   pickCommunityImage,
   pickImageFor,
-  SITE_URL,
   textExcerpt,
 } from "../_lib/public-content";
+import { buildPageMetadata, collectionPageJsonLd } from "../_lib/seo";
 
-export const metadata: Metadata = {
-  title: "썸타임 스토리",
-  description: "학교 인증, 연애 고민, 소개팅 팁, 캠퍼스 라이프를 담은 썸타임 공개 스토리입니다.",
-  alternates: { canonical: `${SITE_URL}/blog` },
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: "썸타임 스토리 — 캠퍼스 연애·학교 인증 이야기",
+  description:
+    "학교 인증, 연애 고민, 소개팅 팁, 캠퍼스 라이프를 담은 썸타임 공개 스토리. 대학생 소개팅과 캠퍼스 매칭 인사이트를 읽어보세요.",
+  path: "/blog",
+  keywords: [
+    "썸타임 스토리",
+    "대학생 소개팅",
+    "학교 인증",
+    "캠퍼스 연애",
+    "소개팅 팁",
+    "대학생 매칭",
+  ],
+});
 
 export default async function BlogIndexPage() {
   const [articles, cardNews, communityPosts] = await Promise.all([
@@ -67,6 +77,15 @@ export default async function BlogIndexPage() {
 
   return (
     <ContentShell>
+      <JsonLd
+        data={collectionPageJsonLd({
+          name: "썸타임 스토리",
+          description:
+            "학교 인증, 연애 고민, 소개팅 팁, 캠퍼스 라이프를 담은 썸타임 공개 스토리",
+          path: "/blog",
+          items: storyItems.map((item) => ({ name: item.title, path: item.href })),
+        })}
+      />
       <ContentHome
         activeSource="story"
         eyebrow="SOMETIME STORY"

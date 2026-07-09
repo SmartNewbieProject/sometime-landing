@@ -135,9 +135,9 @@ async function fetchJson<T>(path: string): Promise<T | null> {
   return (await response.json()) as T;
 }
 
-export const getBlogArticles = cache(async () => {
+export const getBlogArticles = cache(async (limit = 48) => {
   const payload = await fetchJson<ApiList<SometimeArticleListItem>>(
-    "/sometime-articles?limit=24",
+    `/sometime-articles?limit=${limit}`,
   );
   return payload?.items ?? payload?.data ?? [];
 });
@@ -146,9 +146,9 @@ export const getBlogArticle = cache(async (slug: string) => {
   return fetchJson<SometimeArticle>(`/sometime-articles/${encodeURIComponent(slug)}`);
 });
 
-export const getCardNewsList = cache(async () => {
+export const getCardNewsList = cache(async (limit = 48) => {
   const payload = await fetchJson<ApiList<CardNews>>(
-    "/posts/card-news?limit=24&includeReadState=false",
+    `/posts/card-news?limit=${limit}&includeReadState=false`,
   );
   return payload?.items ?? payload?.data ?? [];
 });

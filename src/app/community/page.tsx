@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ContentHome, type ContentPreview } from "../_components/public-content/ContentHome";
 import { ContentShell } from "../_components/public-content/ContentShell";
+import { JsonLd } from "../_components/public-content/JsonLd";
 import {
   formatDate,
   getBlogArticles,
@@ -8,15 +9,17 @@ import {
   getHotCommunityPosts,
   pickCommunityImage,
   pickImageFor,
-  SITE_URL,
   textExcerpt,
 } from "../_lib/public-content";
+import { buildPageMetadata, collectionPageJsonLd } from "../_lib/seo";
 
-export const metadata: Metadata = {
-  title: "썸타임 커뮤니티 이야기",
-  description: "썸타임 커뮤니티에서 공개된 인기 이야기와 캠퍼스 연애 고민을 확인하세요.",
-  alternates: { canonical: `${SITE_URL}/community` },
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: "썸타임 커뮤니티 — 캠퍼스에서 오가는 이야기",
+  description:
+    "썸타임 커뮤니티에서 공개된 인기 이야기와 캠퍼스 연애 고민을 확인하세요. 대학생들의 진짜 고민과 일상을 모았습니다.",
+  path: "/community",
+  keywords: ["썸타임 커뮤니티", "대학생 고민", "캠퍼스 이야기", "연애 고민", "학교 인증 커뮤니티"],
+});
 
 export default async function CommunityIndexPage() {
   const [articles, cardNews, posts] = await Promise.all([
@@ -67,6 +70,14 @@ export default async function CommunityIndexPage() {
 
   return (
     <ContentShell>
+      <JsonLd
+        data={collectionPageJsonLd({
+          name: "썸타임 커뮤니티",
+          description: "공개된 인기 이야기와 캠퍼스 연애 고민",
+          path: "/community",
+          items: communityItems.map((item) => ({ name: item.title, path: item.href })),
+        })}
+      />
       <ContentHome
         activeSource="community"
         eyebrow="COMMUNITY"

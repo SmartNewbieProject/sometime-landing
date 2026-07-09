@@ -4,12 +4,19 @@ import { Nanum_Pen_Script } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { AmplitudeProvider } from "./_components/AmplitudeProvider";
+import { SITE_URL } from "./_lib/public-content";
+import {
+  DEFAULT_KEYWORDS,
+  DEFAULT_OG_IMAGE,
+  DEFAULT_OG_PATH,
+  organizationJsonLd,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TITLE,
+  softwareApplicationJsonLd,
+  websiteJsonLd,
+} from "./_lib/seo";
 
-const SITE_URL = "https://info.some-in-univ.com";
-const SITE_TITLE =
-  "썸타임 - 대학생 소개팅 앱 | 학교 인증 캠퍼스 매칭";
-const SITE_DESCRIPTION =
-  "학교 인증을 기반으로 같은 지역, 인접 대학의 대학생을 연결하는 캠퍼스 소개팅 앱 썸타임. 안전한 대학생 소개팅, 캠퍼스 매칭, 매주 목/일 무료 매칭을 확인해보세요.";
 const pretendard = localFont({
   src: "../font/PretendardVariable.woff2",
   variable: "--font-pretendard",
@@ -28,23 +35,17 @@ const nanumPenScript = Nanum_Pen_Script({
   variable: "--font-nanum-pen",
   display: "swap",
 });
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_TITLE,
-    template: "%s | 썸타임",
+    template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
-  keywords: [
-    "대학생 소개팅 앱",
-    "대학생 소개팅 앱 추천",
-    "학교 인증 소개팅",
-    "캠퍼스 소개팅",
-    "캠퍼스 매칭",
-    "안전한 소개팅 앱",
-    "대학생 연애",
-    "AI 취향 분석 매칭",
-  ],
+  keywords: DEFAULT_KEYWORDS,
+  applicationName: SITE_NAME,
+  category: "dating",
   alternates: {
     canonical: SITE_URL,
   },
@@ -52,10 +53,10 @@ export const metadata: Metadata = {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
-    siteName: "썸타임",
+    siteName: SITE_NAME,
     images: [
       {
-        url: "/images/preview_title.png",
+        url: DEFAULT_OG_PATH,
         width: 1200,
         height: 630,
         alt: "썸타임 대학생 소개팅 앱",
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: ["/images/preview_title.png"],
+    images: [DEFAULT_OG_IMAGE],
   },
   robots: {
     index: true,
@@ -84,21 +85,9 @@ export const metadata: Metadata = {
 };
 
 const structuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "썸타임",
-    applicationCategory: "LifestyleApplication",
-    operatingSystem: "iOS, Android, Web",
-    description: SITE_DESCRIPTION,
-    url: SITE_URL,
-    image: `${SITE_URL}/images/preview_title.png`,
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "KRW",
-    },
-  },
+  organizationJsonLd(),
+  websiteJsonLd(),
+  softwareApplicationJsonLd(),
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",

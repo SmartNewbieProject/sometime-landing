@@ -3,13 +3,18 @@ import { notFound } from "next/navigation";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
 import { ContentMedia } from "../../_components/public-content/ContentMedia";
+import { JsonLd } from "../../_components/public-content/JsonLd";
 import {
   formatDate,
   getCommunityPost,
   pickCommunityImage,
-  SITE_URL,
   textExcerpt,
 } from "../../_lib/public-content";
+import {
+  articleJsonLd,
+  breadcrumbJsonLd,
+  buildPageMetadata,
+} from "../../_lib/seo";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -18,24 +23,22 @@ type PageProps = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const post = await getCommunityPost(id);
-  if (!post) return {};
+  if (!post) return { robots: { index: false, follow: false } };
 
   const description = textExcerpt(post.content ?? post.description);
   const image = pickCommunityImage(post);
+  const path = `/community/${post.id}`;
 
-  return {
+  return buildPageMetadata({
     title: post.title,
     description,
-    alternates: { canonical: `${SITE_URL}/community/${post.id}` },
-    openGraph: {
-      title: post.title,
-      description,
-      type: "article",
-      url: `${SITE_URL}/community/${post.id}`,
-      images: [{ url: image.startsWith("http") ? image : `${SITE_URL}${image}` }],
-      publishedTime: post.publishedAt ?? undefined,
-    },
-  };
+    path,
+    image,
+    type: "article",
+    publishedTime: post.publishedAt,
+    keywords: ["썸타임 커뮤니티", "대학생 커뮤니티", "캠퍼스 이야기"],
+    authors: post.author?.name ? [post.author.name] : undefined,
+  });
 }
 
 export default async function CommunityDetailPage({ params }: PageProps) {
@@ -44,13 +47,52 @@ export default async function CommunityDetailPage({ params }: PageProps) {
   if (!post) notFound();
 
   const image = pickCommunityImage(post);
+  const description = textExcerpt(post.content ?? post.description);
+  const path = `/community/${post.id}`;
   const hasCover =
     Boolean(post.customBackgroundUrl) ||
     Boolean(post.images?.some((img) => img.imageUrl || img.url));
 
   return (
     <ContentShell>
+      <JsonLd
+        data={[
+          articleJsonLd({
+            title: post.title,
+            description,
+            path,
+            image,
+            publishedTime: post.publishedAt,
+            authorName: post.author?.name ?? "썸타임 커뮤니티",
+            section: "커뮤니티",
+          }),
+          breadcrumbJsonLd([
+            { name: "홈", path: "/" },
+            { name: "커뮤니티", path: "/community" },
+            { name: post.title, path },
+          ]),
+        ]}
+      />
+
       <article className="mx-auto w-full max-w-4xl px-5 pb-20 pt-12 sm:pt-20">
+        <nav aria-label="breadcrumb" className="mb-6 text-sm font-medium text-[#9a8fa2]">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li>
+              <a href="/" className="hover:text-[#7A4AE2]">
+                홈
+              </a>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <a href="/community" className="hover:text-[#7A4AE2]">
+                커뮤니티
+              </a>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li className="line-clamp-1 text-[#666]">{post.title}</li>
+          </ol>
+        </nav>
+
         <div className="mb-8">
           <p className="mb-4 text-sm font-black uppercase tracking-[0.2em] text-[#8a5cff]">
             COMMUNITY
@@ -60,7 +102,7 @@ export default async function CommunityDetailPage({ params }: PageProps) {
           </h1>
           <p className="mt-6 text-sm font-bold text-[#9a8fa2]">
             {post.author?.universityDetails?.name ?? "썸타임 커뮤니티"} ·{" "}
-            {formatDate(post.publishedAt)}
+            <time dateTime={post.publishedAt ?? undefined}>{formatDate(post.publishedAt)}</time>
           </p>
         </div>
 

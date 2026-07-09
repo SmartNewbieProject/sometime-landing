@@ -3,13 +3,18 @@ import { notFound } from "next/navigation";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
 import { ContentMedia } from "../../_components/public-content/ContentMedia";
+import { JsonLd } from "../../_components/public-content/JsonLd";
 import {
   formatDate,
   getCardNews,
   pickImageFor,
-  SITE_URL,
   textExcerpt,
 } from "../../_lib/public-content";
+import {
+  articleJsonLd,
+  breadcrumbJsonLd,
+  buildPageMetadata,
+} from "../../_lib/seo";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -18,7 +23,7 @@ type PageProps = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const item = await getCardNews(id);
-  if (!item) return {};
+  if (!item) return { robots: { index: false, follow: false } };
 
   const description = textExcerpt(item.description ?? item.subtitle ?? item.body);
   const image = pickImageFor(
@@ -26,20 +31,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     item.backgroundImage,
     ...(item.sections ?? []).map((section) => section.imageUrl),
   );
+  const path = `/card-news/${item.id}`;
 
-  return {
+  return buildPageMetadata({
     title: item.title,
     description,
-    alternates: { canonical: `${SITE_URL}/card-news/${item.id}` },
-    openGraph: {
-      title: item.title,
-      description,
-      type: "article",
-      url: `${SITE_URL}/card-news/${item.id}`,
-      images: [{ url: image.startsWith("http") ? image : `${SITE_URL}${image}` }],
-      publishedTime: item.publishedAt ?? undefined,
-    },
-  };
+    path,
+    image,
+    type: "article",
+    publishedTime: item.publishedAt,
+    keywords: ["카드뉴스", "썸타임", "대학생", item.layoutMode === "longform" ? "롱폼" : "카드뉴스"],
+  });
 }
 
 export default async function CardNewsDetailPage({ params }: PageProps) {
@@ -53,10 +55,49 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
     ...(item.sections ?? []).map((section) => section.imageUrl),
   );
   const body = item.body?.trim();
+  const description = textExcerpt(item.description ?? item.subtitle ?? item.body);
+  const path = `/card-news/${item.id}`;
+  const sectionLabel = item.layoutMode === "longform" ? "롱폼" : "카드뉴스";
 
   return (
     <ContentShell>
+      <JsonLd
+        data={[
+          articleJsonLd({
+            title: item.title,
+            description,
+            path,
+            image,
+            publishedTime: item.publishedAt,
+            section: sectionLabel,
+          }),
+          breadcrumbJsonLd([
+            { name: "홈", path: "/" },
+            { name: "카드뉴스", path: "/card-news" },
+            { name: item.title, path },
+          ]),
+        ]}
+      />
+
       <article className="mx-auto w-full max-w-4xl px-5 pb-20 pt-12 sm:pt-20">
+        <nav aria-label="breadcrumb" className="mb-6 text-sm font-medium text-[#9a8fa2]">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li>
+              <a href="/" className="hover:text-[#7A4AE2]">
+                홈
+              </a>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <a href="/card-news" className="hover:text-[#7A4AE2]">
+                카드뉴스
+              </a>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li className="line-clamp-1 text-[#666]">{item.title}</li>
+          </ol>
+        </nav>
+
         <div className="mb-8">
           <p className="mb-4 text-sm font-black uppercase tracking-[0.2em] text-[#8a5cff]">
             {item.layoutMode === "longform" ? "LONGFORM" : "CARD NEWS"}
@@ -70,12 +111,19 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
             </p>
           ) : null}
           <p className="mt-6 text-sm font-bold text-[#9a8fa2]">
-            {formatDate(item.publishedAt)} · 좋아요 {item.likeCount ?? 0}
+            <time dateTime={item.publishedAt ?? undefined}>{formatDate(item.publishedAt)}</time>
+            {" · "}좋아요 {item.likeCount ?? 0}
           </p>
         </div>
 
         <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-[32px] bg-[#f4edf8] shadow-[0_24px_90px_rgba(76,47,100,0.16)]">
-          <ContentMedia src={image} seed={item.id} className="object-cover" priority sizes="(min-width: 900px) 800px, 100vw" />
+          <ContentMedia
+            src={image}
+            seed={item.id}
+            className="object-cover"
+            priority
+            sizes="(min-width: 900px) 800px, 100vw"
+          />
         </div>
 
         {body ? (
@@ -102,7 +150,9 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
                     {section.title}
                   </h2>
                 ) : null}
-                {section.body ? <p className="mt-3 leading-8 text-[#5f5567]">{section.body}</p> : null}
+                {section.body ? (
+                  <p className="mt-3 leading-8 text-[#5f5567]">{section.body}</p>
+                ) : null}
               </section>
             ))}
           </div>
