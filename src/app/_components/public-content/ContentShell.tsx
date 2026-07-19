@@ -99,7 +99,7 @@ export function ContentShell({ children }: { children: ReactNode }) {
           <div className="mt-[54px] border-t border-[#F1ECFA] pt-[32px] text-[13px] font-medium leading-[24px] text-[#8D82A8]">
             <p>상호명 ㅣ 스마트뉴비</p>
             <p>사업자 등록 번호 ㅣ 498-05-02914</p>
-            <p>사업장 소재지 ㅣ 대전광역시 유성구 동서대로 125, 한밭인큐베이터타운 405호</p>
+            <p>사업장 소재지 ㅣ 대전광역시 유성구 동서대로 125, S9동 한밭인큐베이터타운 405호</p>
             <p>대표 ㅣ 전준영</p>
             <p>문의 메일 ㅣ notify@smartnewb.com</p>
             <p>통신판매업신고 ㅣ 제 2025-대전유성-0530호</p>

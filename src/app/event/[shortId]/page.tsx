@@ -724,7 +724,7 @@ export default function MessagePage() {
                     variants={fadeUp}
                   >
                     <div className="text-[10px] sm:text-[11px] text-gray-500 leading-[1.6] space-y-1">
-                      <p>상호명: 스마트 뉴비 | 사업장 소재지: 대전광역시 유성구 동서대로 125, 한밭인큐베이터타운 405호 | 대표: 전준영 | 사업자 등록번호: 498-05-02914</p>
+                      <p>상호명: 스마트 뉴비 | 사업장 소재지: 대전광역시 유성구 동서대로 125, S9동 한밭인큐베이터타운 405호 | 대표: 전준영 | 사업자 등록번호: 498-05-02914</p>
                       <p>문의번호: 010-8465-2476 | 이메일: notify@smartnewb.com | 사업자정보확인</p>
                       <div className="flex flex-wrap gap-2 justify-center mt-2">
                         <a href="https://ruby-composer-6d2.notion.site/1cd1bbec5ba180a3a4bbdf9301683145" target="_blank" rel="noopener noreferrer" className="hover:underline">개인정보처리방침</a>
