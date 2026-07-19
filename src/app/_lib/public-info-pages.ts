@@ -195,3 +195,79 @@ export const PRESS_PAGE: PublicInfoPage = {
     },
   ],
 };
+
+export const ABOUT_PAGE: PublicInfoPage = {
+  badge: "ABOUT",
+  breadcrumbLabel: "썸타임 소개",
+  title: "썸타임이란",
+  metaTitle: "썸타임이란 — 대학생 전용 소개팅 앱 소개",
+  description:
+    "썸타임은 학교 인증 대학생을 위한 지역 기반 소개팅 앱으로, 스마트뉴비가 운영해요.",
+  keywords: ["썸타임이란", "대학생 소개팅 앱", "학교 인증 소개팅", "캠퍼스 매칭"],
+  answer: [
+    "썸타임은 대학생이 학교 인증을 거쳐 같은 지역의 대학생과 연결될 수 있도록 만든 소개팅 앱이에요.",
+    "서비스 운영사는 스마트뉴비이고, 공식 도메인은 some-in-univ.com이에요.",
+    "프로필, 인증, 매칭, 커뮤니티 규칙은 앱 안에서 일관된 정책으로 운영돼요.",
+  ],
+  sections: [
+    {
+      id: "intro",
+      heading: "서비스 소개",
+      body: [
+        "썸타임은 대학생의 생활권과 학교 인증을 중심에 둔 소개팅 서비스예요.",
+        "앱에서 프로필을 만들고, 인증 절차를 거친 뒤 매칭 기능을 사용할 수 있어요.",
+      ],
+    },
+    {
+      id: "principles",
+      heading: "운영 원칙",
+      items: [
+        "대학생 이용자를 중심으로 설계해요.",
+        "인증과 신고 절차를 통해 안전한 이용 환경을 지향해요.",
+        "검색엔진과 이용자가 같은 공식 정보를 볼 수 있도록 공개 페이지를 운영해요.",
+      ],
+    },
+  ],
+  links: [
+    { label: "썸타임 안전 안내", href: "/safety" },
+    { label: "자주 묻는 질문", href: "/faq" },
+    { label: "앱 다운로드", href: "/download" },
+  ],
+};
+
+export const DOWNLOAD_PAGE: PublicInfoPage = {
+  badge: "DOWNLOAD",
+  breadcrumbLabel: "앱 다운로드",
+  title: "썸타임 다운로드",
+  metaTitle: "썸타임 다운로드 — App Store와 Google Play 공식 링크",
+  description:
+    "썸타임 공식 앱 다운로드 링크예요. App Store와 Google Play에서 썸타임을 설치할 수 있어요.",
+  keywords: ["썸타임 다운로드", "썸타임 앱", "App Store", "Google Play"],
+  answer: [
+    "썸타임은 App Store와 Google Play에서 다운로드할 수 있어요.",
+    "공식 스토어 링크로 앱을 설치하면 대학생 인증과 매칭 기능을 이용할 수 있어요.",
+    "아래 공식 링크에서 바로 설치를 시작할 수 있어요.",
+  ],
+  sections: [
+    {
+      id: "store-links",
+      heading: "공식 스토어 링크",
+      items: [
+        "App Store: https://apps.apple.com/kr/app/id6746120889",
+        "Google Play: https://play.google.com/store/apps/details?id=com.smartnewb.sometimes",
+      ],
+    },
+    {
+      id: "after-install",
+      heading: "설치 후 이용 흐름",
+      body: [
+        "앱을 설치한 뒤 회원가입, 학교 인증, 프로필 입력을 진행해요.",
+        "인증과 프로필 절차가 완료되면 앱에서 매칭과 관련 기능을 사용할 수 있어요.",
+      ],
+    },
+  ],
+  links: [
+    { label: "썸타임 소개", href: "/about" },
+    { label: "썸타임 안전 안내", href: "/safety" },
+  ],
+};
