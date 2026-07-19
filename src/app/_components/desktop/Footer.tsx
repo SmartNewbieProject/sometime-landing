@@ -63,7 +63,7 @@ export default function Footer() {
         <div className="text-[#7A4AE2] mb-[120px] font-medium text-[16px] leading-[29px] mt-[100px]">
           상호명 ㅣ 스마트뉴비
           <br /> 사업자 등록 번호 ㅣ 498-05-02914 <br />
-          사업장 소재지 ㅣ 대전광역시 유성구 동서대로 125, 한밭인큐베이터타운 405호
+          사업장 소재지 ㅣ 대전광역시 유성구 동서대로 125, S9동 한밭인큐베이터타운 405호
           <br /> 대표 ㅣ 전준영
           <br /> 문의 메일 ㅣ notify@smartnewb.com <br />
           통신판매업신고 ㅣ 제 2025-대전유성-0530호
