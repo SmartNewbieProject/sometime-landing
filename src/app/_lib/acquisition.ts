@@ -5,10 +5,11 @@ export const APP_WEB_ORIGIN = "https://some-in-univ.com";
 export type TrialPlacement =
   | "detail_bottom"
   | "faq_bottom"
+  | "safety_bottom"
   | "list_cta"
   | "home_cta";
 
-export type TrialContentType = "story" | "card-news" | "faq" | "home";
+export type TrialContentType = "story" | "card-news" | "faq" | "home" | "safety";
 
 /**
  * 비로그인 썸메이트(가상 인연) 체험 진입 URL.
