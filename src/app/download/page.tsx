@@ -3,6 +3,7 @@ import { ContentShell } from "../_components/public-content/ContentShell";
 import { InfoPageBody } from "../_components/public-content/InfoPageBody";
 import { JsonLd } from "../_components/public-content/JsonLd";
 import { DOWNLOAD_PAGE as PAGE } from "../_lib/public-info-pages";
+import { DesktopDownloadQrSection } from "./DesktopDownloadQrSection";
 import {
   absoluteUrl,
   breadcrumbJsonLd,
@@ -53,6 +54,9 @@ export default function DownloadPage() {
         storeCtaSurface="landing_download_hub"
         storeCtaHeading="썸타임 공식 앱 다운로드"
       />
+      <div className="mx-auto w-full max-w-4xl px-5 pb-20">
+        <DesktopDownloadQrSection />
+      </div>
     </ContentShell>
   );
 }

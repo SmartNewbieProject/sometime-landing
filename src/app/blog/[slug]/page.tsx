@@ -8,6 +8,7 @@ import { ContentBanner } from "../../_components/public-content/ContentBanner";
 import { ReadingProgress } from "../../_components/public-content/ReadingProgress";
 import { FaqAccordion } from "../../_components/public-content/FaqAccordion";
 import { TrialChatCta } from "../../_components/public-content/TrialChatCta";
+import { ContextualStoreCta } from "../../_components/public-content/ContextualStoreCta";
 import {
   formatDate,
   getBlogArticle,
@@ -128,6 +129,13 @@ export default async function BlogArticlePage({ params }: PageProps) {
         />
 
         <MarkdownBody content={body} />
+
+        <ContextualStoreCta
+          title={article.title}
+          category={article.category}
+          keywords={article.seo?.keywords}
+          description={article.excerpt ?? article.subtitle}
+        />
 
         <div className="mt-12">
           <TrialChatCta contentType="story" contentId={article.slug} placement="detail_bottom" />

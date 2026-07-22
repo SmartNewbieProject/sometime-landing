@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   APP_STORE_URL,
+  appendStoreClickIds,
   buildStoreUrl,
   createUuidV7,
   getOrCreateLandingAttributionId,
@@ -20,6 +21,21 @@ test("store CTA URLs use official stores and preserve the attribution contract",
     assert.equal(url.searchParams.get("utm_medium"), "organic");
     assert.equal(url.searchParams.get("utm_campaign"), "seo_public_pages");
   }
+});
+
+test("Android click identifiers are embedded in the Play Install Referrer", () => {
+  const url = new URL(
+    appendStoreClickIds({
+      href: buildStoreUrl({ store: "android", surface: "landing_content_detail" }),
+      store: "android",
+      attributionId: "018f0000-0000-7000-8000-000000000001",
+      touchId: "018f0000-0000-7000-8000-000000000002",
+    }),
+  );
+  const referrer = new URLSearchParams(url.searchParams.get("referrer") ?? "");
+
+  assert.equal(referrer.get("attribution_id"), "018f0000-0000-7000-8000-000000000001");
+  assert.equal(referrer.get("touch_id"), "018f0000-0000-7000-8000-000000000002");
 });
 
 test("canonical official store URLs stay stable for entity and schema signals", () => {

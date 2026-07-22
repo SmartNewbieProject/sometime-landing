@@ -7,6 +7,7 @@ export type StoreCtaSurface =
   | "landing_home_floating"
   | "landing_home_footer"
   | "landing_content_hub"
+  | "landing_content_detail"
   | "landing_download_hub"
   | "landing_public_guide"
   | "landing_university"
@@ -55,6 +56,33 @@ export function buildStoreUrl({ store, surface }: { store: Store; surface: Store
       "referrer",
       new URLSearchParams({ ...attribution, surface }).toString(),
     );
+  }
+
+  return url.toString();
+}
+
+export function appendStoreClickIds({
+  href,
+  store,
+  attributionId,
+  touchId,
+}: {
+  href: string;
+  store: Store;
+  attributionId: string;
+  touchId: string;
+}): string {
+  const url = new URL(href);
+  url.searchParams.set("attribution_id", attributionId);
+  url.searchParams.set("touch_id", touchId);
+
+  if (store === "android") {
+    const referrer = new URLSearchParams(url.searchParams.get("referrer") ?? "");
+    referrer.set("attribution_id", attributionId);
+    referrer.set("touch_id", touchId);
+    const utmLinkId = url.searchParams.get("utm_link_id");
+    if (utmLinkId) referrer.set("utm_link_id", utmLinkId);
+    url.searchParams.set("referrer", referrer.toString());
   }
 
   return url.toString();

@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.smartnewb.sometimes",
+      "sha256_cert_fingerprints": [
+        "BE:59:8C:1E:D3:22:2F:1B:EA:8B:07:FC:C4:41:58:03:4D:4D:A4:83:A1:DB:B7:0B:CE:B2:F0:FF:33:DB:6F:25"
+      ]
+    }
+  }
+]

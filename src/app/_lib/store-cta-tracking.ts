@@ -2,6 +2,7 @@
 
 import mixpanel from "mixpanel-browser";
 import {
+  appendStoreClickIds,
   buildStoreAttribution,
   buildStoreUrl,
   createUuidV7,
@@ -24,44 +25,47 @@ export function initializeLandingMixpanel() {
   initialized = true;
 }
 
-export function trackLandingPageView() {
+export function trackLandingPageView({
+  pathname,
+  search,
+}: {
+  pathname?: string | null;
+  search?: string | null;
+} = {}) {
   initializeLandingMixpanel();
   if (!process.env.NEXT_PUBLIC_MIXPANEL_TOKEN) return;
 
-  const urlAttributionId =
-    typeof window !== "undefined"
-      ? new URL(window.location.href).searchParams.get("attribution_id")
-      : null;
+  const normalizedPathname =
+    pathname ?? (typeof window !== "undefined" ? window.location.pathname : undefined);
+  const normalizedSearch =
+    search ?? (typeof window !== "undefined" ? window.location.search : undefined) ?? "";
+  const searchParams = new URLSearchParams(normalizedSearch.replace(/^\?/, ""));
+  const urlAttributionId = searchParams.get("attribution_id");
   const attributionId = getOrCreateLandingAttributionId(urlAttributionId);
   if (attributionId) mixpanel.identify(attributionId);
 
   mixpanel.track("Landing_Page_Viewed", {
     attribution_id: attributionId ?? undefined,
-    path: typeof window !== "undefined" ? window.location.pathname : undefined,
-    utm_source: urlAttributionParam("utm_source"),
-    utm_medium: urlAttributionParam("utm_medium"),
-    utm_campaign: urlAttributionParam("utm_campaign"),
+    path: normalizedPathname ?? undefined,
+    query_string: searchParams.toString() || undefined,
+    path_with_query:
+      normalizedPathname && searchParams.toString()
+        ? `${normalizedPathname}?${searchParams.toString()}`
+        : normalizedPathname ?? undefined,
+    utm_source: searchParams.get("utm_source") ?? undefined,
+    utm_medium: searchParams.get("utm_medium") ?? undefined,
+    utm_campaign: searchParams.get("utm_campaign") ?? undefined,
   });
 }
 
-function urlAttributionParam(key: string): string | undefined {
-  if (typeof window === "undefined") return undefined;
-  return new URL(window.location.href).searchParams.get(key) ?? undefined;
-}
-
-export function trackStoreCtaClick({
-  store,
-  surface,
-  href,
-  legacyLocation: _legacyLocation,
-  legacyType: _legacyType,
-}: {
+export function trackStoreCtaClick(input: {
   store: Store;
   surface: StoreCtaSurface;
   href?: string;
   legacyLocation?: string;
   legacyType?: string;
 }): string {
+  const { store, surface, href } = input;
   initializeLandingMixpanel();
 
   const clickUrl = new URL(href ?? buildStoreUrl({ store, surface }));
@@ -70,20 +74,21 @@ export function trackStoreCtaClick({
     clickUrl.searchParams.get("attribution_id") ?? getOrCreateLandingAttributionId() ?? createUuidV7();
   const touchId = clickUrl.searchParams.get("touch_id") ?? createUuidV7();
 
-  clickUrl.searchParams.set("attribution_id", attributionId);
-  clickUrl.searchParams.set("touch_id", touchId);
+  const attributedClickUrl = new URL(
+    appendStoreClickIds({ href: clickUrl.toString(), store, attributionId, touchId }),
+  );
 
   mixpanel.track("Store_CTA_Clicked", {
     attribution_id: attributionId,
     touch_id: touchId,
-    utm_link_id: clickUrl.searchParams.get("utm_link_id") ?? undefined,
+    utm_link_id: attributedClickUrl.searchParams.get("utm_link_id") ?? undefined,
     surface,
     store,
-    utm_source: clickUrl.searchParams.get("utm_source") ?? attribution.utm_source,
-    utm_medium: clickUrl.searchParams.get("utm_medium") ?? attribution.utm_medium,
-    utm_campaign: clickUrl.searchParams.get("utm_campaign") ?? attribution.utm_campaign,
+    utm_source: attributedClickUrl.searchParams.get("utm_source") ?? attribution.utm_source,
+    utm_medium: attributedClickUrl.searchParams.get("utm_medium") ?? attribution.utm_medium,
+    utm_campaign: attributedClickUrl.searchParams.get("utm_campaign") ?? attribution.utm_campaign,
   });
-  return clickUrl.toString();
+  return attributedClickUrl.toString();
 }
 
 type StoreAnchorClickEvent = {

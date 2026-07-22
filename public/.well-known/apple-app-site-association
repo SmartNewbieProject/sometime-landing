@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["WMTF4GH37Q.com.some-in-univ"],
+        "components": [
+          { "/": "/download", "comment": "공식 앱 설치 허브" },
+          { "/": "/card-news/*", "comment": "앱 카드뉴스 상세" }
+        ]
+      }
+    ]
+  }
+}

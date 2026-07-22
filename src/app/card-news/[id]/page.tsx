@@ -9,6 +9,7 @@ import { ContentBanner } from "../../_components/public-content/ContentBanner";
 import { ReadingProgress } from "../../_components/public-content/ReadingProgress";
 import { FaqAccordion } from "../../_components/public-content/FaqAccordion";
 import { TrialChatCta } from "../../_components/public-content/TrialChatCta";
+import { ContextualStoreCta } from "../../_components/public-content/ContextualStoreCta";
 import {
   formatDate,
   getCardNews,
@@ -152,6 +153,12 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
             ))}
           </div>
         )}
+
+        <ContextualStoreCta
+          title={item.title}
+          category={sectionLabel}
+          description={item.description ?? item.subtitle}
+        />
 
         <div className="mt-12">
           <TrialChatCta

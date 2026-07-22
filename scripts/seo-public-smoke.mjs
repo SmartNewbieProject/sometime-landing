@@ -164,6 +164,33 @@ async function checkAppAuthoritySignals({ base, timeoutMs }) {
   }
 }
 
+async function checkAppAssociations({ base, timeoutMs }) {
+  const associationPaths = [
+    "/.well-known/apple-app-site-association",
+    "/.well-known/assetlinks.json",
+  ];
+
+  for (const path of associationPaths) {
+    const url = `${base}${path}`;
+    const { response, text, contentType } = await fetchWithChecks(url, timeoutMs);
+    ensure(response.status === 200, `app association must return 200: ${url}`);
+    ensure(contentType.includes("application/json"), `app association must be JSON: ${url}`);
+
+    const payload = JSON.parse(text);
+    if (path.includes("apple-app-site-association")) {
+      ensure(
+        JSON.stringify(payload).includes("WMTF4GH37Q.com.some-in-univ"),
+        `AASA must include the production app ID: ${url}`,
+      );
+    } else {
+      ensure(
+        JSON.stringify(payload).includes("com.smartnewb.sometimes"),
+        `assetlinks must include the production Android package: ${url}`,
+      );
+    }
+  }
+}
+
 async function checkUniversityRoutes({ base, validCode, invalidCode, timeoutMs }) {
   const validUrl = `${base}/university/${encodeURIComponent(validCode)}`;
   const invalidUrl = `${base}/university/${encodeURIComponent(invalidCode)}`;
@@ -232,6 +259,9 @@ async function main() {
 
   await checkAppAuthoritySignals({ base, timeoutMs });
   console.log("✓ official store links, Smart App Banner, and app schema are present");
+
+  await checkAppAssociations({ base, timeoutMs });
+  console.log("✓ iOS and Android app association files are valid");
 
   console.log("SEO smoke passed");
 }

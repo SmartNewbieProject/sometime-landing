@@ -5,6 +5,7 @@ import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
 import { ContentMedia } from "../../_components/public-content/ContentMedia";
 import { JsonLd } from "../../_components/public-content/JsonLd";
+import { ContextualStoreCta } from "../../_components/public-content/ContextualStoreCta";
 import {
   formatDate,
   getCommunityPost,
@@ -122,6 +123,12 @@ export default async function CommunityDetailPage({ params }: PageProps) {
         ) : null}
 
         <MarkdownBody content={post.content ?? post.description ?? ""} />
+
+        <ContextualStoreCta
+          title={post.title}
+          category="커뮤니티"
+          description={post.description}
+        />
       </article>
     </ContentShell>
   );
