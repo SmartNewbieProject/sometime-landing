@@ -7,14 +7,23 @@ export type StoreCtaSurface =
   | "landing_home_floating"
   | "landing_home_footer"
   | "landing_content_hub"
+  | "landing_download_hub"
+  | "landing_public_guide"
+  | "landing_university"
+  | "landing_content_sticky"
+  | "landing_content_footer"
   | "landing_event"
   | "landing_gift_message";
 
-const REDIRECT_BASE_URL =
-  process.env.NEXT_PUBLIC_STORE_CTA_REDIRECT_BASE_URL ?? "https://api.some-in-univ.com/api/go";
-const SHORT_CODES: Record<Store, string> = {
-  ios: process.env.NEXT_PUBLIC_STORE_CTA_IOS_SHORT_CODE ?? "store-ios",
-  android: process.env.NEXT_PUBLIC_STORE_CTA_ANDROID_SHORT_CODE ?? "store-android",
+export const APP_STORE_URL =
+  process.env.NEXT_PUBLIC_APP_STORE_URL ?? "https://apps.apple.com/kr/app/id6746120889";
+export const GOOGLE_PLAY_URL =
+  process.env.NEXT_PUBLIC_GOOGLE_PLAY_URL ??
+  "https://play.google.com/store/apps/details?id=com.smartnewb.sometimes";
+
+const STORE_URLS: Record<Store, string> = {
+  ios: APP_STORE_URL,
+  android: GOOGLE_PLAY_URL,
 };
 const UTM_LINK_IDS: Record<Store, string | undefined> = {
   ios: process.env.NEXT_PUBLIC_STORE_CTA_IOS_UTM_LINK_ID,
@@ -28,8 +37,7 @@ export const buildStoreAttribution = (surface: StoreCtaSurface) => ({
 });
 
 export function buildStoreUrl({ store, surface }: { store: Store; surface: StoreCtaSurface }): string {
-  const baseUrl = REDIRECT_BASE_URL.replace(/\/+$/, "");
-  const url = new URL(`${baseUrl}/${encodeURIComponent(SHORT_CODES[store])}`);
+  const url = new URL(STORE_URLS[store]);
   const attribution = buildStoreAttribution(surface);
 
   url.searchParams.set("store", store);
@@ -38,6 +46,16 @@ export function buildStoreUrl({ store, surface }: { store: Store; surface: Store
 
   const utmLinkId = UTM_LINK_IDS[store];
   if (utmLinkId) url.searchParams.set("utm_link_id", utmLinkId);
+
+  if (store === "ios") {
+    url.searchParams.set("ct", attribution.utm_source);
+    url.searchParams.set("mt", "8");
+  } else {
+    url.searchParams.set(
+      "referrer",
+      new URLSearchParams({ ...attribution, surface }).toString(),
+    );
+  }
 
   return url.toString();
 }

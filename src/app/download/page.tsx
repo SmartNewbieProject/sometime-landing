@@ -50,6 +50,8 @@ export default function DownloadPage() {
         sections={PAGE.sections}
         links={PAGE.links}
         breadcrumbLabel={PAGE.breadcrumbLabel}
+        storeCtaSurface="landing_download_hub"
+        storeCtaHeading="썸타임 공식 앱 다운로드"
       />
     </ContentShell>
   );

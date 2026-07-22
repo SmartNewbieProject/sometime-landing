@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ContentBreadcrumb } from "./ContentBreadcrumb";
+import { StoreInstallCta } from "./StoreInstallCta";
+import type { StoreCtaSurface } from "@/app/_lib/store-links";
 
 export type InfoSection = {
   id: string;
@@ -17,6 +19,9 @@ type InfoPageBodyProps = {
   sections: InfoSection[];
   links?: InfoLink[];
   breadcrumbLabel: string;
+  storeCtaSurface?: StoreCtaSurface;
+  storeCtaHeading?: string;
+  showMobileSticky?: boolean;
 };
 
 /** 공개 안내 페이지(인증/개인정보/가이드라인/프레스) 공용 본문 — /safety 마크업과 동일 패턴 */
@@ -27,6 +32,9 @@ export function InfoPageBody({
   sections,
   links,
   breadcrumbLabel,
+  storeCtaSurface,
+  storeCtaHeading,
+  showMobileSticky = false,
 }: InfoPageBodyProps) {
   return (
     <div className="mx-auto w-full max-w-4xl px-5 pb-20 pt-12 sm:pt-16">
@@ -82,6 +90,16 @@ export function InfoPageBody({
           </section>
         ))}
       </div>
+
+      {storeCtaSurface ? (
+        <div className="mt-14">
+          <StoreInstallCta
+            surface={storeCtaSurface}
+            heading={storeCtaHeading}
+            showMobileSticky={showMobileSticky}
+          />
+        </div>
+      ) : null}
 
       {links && links.length > 0 && (
         <section className="mt-14 rounded-2xl bg-neutral-50 p-6">

@@ -4,6 +4,7 @@ import { ContentShell } from "../_components/public-content/ContentShell";
 import { ContentBreadcrumb } from "../_components/public-content/ContentBreadcrumb";
 import { JsonLd } from "../_components/public-content/JsonLd";
 import { TrialChatCta } from "../_components/public-content/TrialChatCta";
+import { StoreInstallCta } from "../_components/public-content/StoreInstallCta";
 import {
   SAFETY_ANSWER,
   SAFETY_LEGAL_LINKS,
@@ -149,6 +150,14 @@ export default function SafetyPage() {
             )}
           </ul>
         </section>
+
+        <div className="mt-16">
+          <StoreInstallCta
+            surface="landing_public_guide"
+            heading="안전 장치를 확인했다면 공식 앱에서 시작하세요"
+            showMobileSticky
+          />
+        </div>
 
         <div className="mt-16">
           <TrialChatCta

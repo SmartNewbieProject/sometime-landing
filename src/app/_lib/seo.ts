@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SITE_URL } from "./public-content";
+import { APP_STORE_URL, GOOGLE_PLAY_URL } from "./store-links";
 
 export const DEFAULT_OG_PATH = "/preview_title.png";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}${DEFAULT_OG_PATH}`;
@@ -161,8 +162,8 @@ export function organizationJsonLd() {
     url: SITE_URL,
     logo: absoluteUrl("/images/info-logo.png"),
     sameAs: [
-      "https://apps.apple.com/kr/app/썸타임-지역-대학생-소개팅/id6746120889",
-      "https://play.google.com/store/apps/details?id=com.smartnewb.sometimes",
+      APP_STORE_URL,
+      GOOGLE_PLAY_URL,
     ],
     contactPoint: {
       "@type": "ContactPoint",
@@ -192,12 +193,14 @@ export function websiteJsonLd() {
 export function softwareApplicationJsonLd() {
   return {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": "MobileApplication",
     name: SITE_NAME,
     applicationCategory: "LifestyleApplication",
-    operatingSystem: "iOS, Android, Web",
+    operatingSystem: ["iOS", "Android"],
     description: SITE_DESCRIPTION,
     url: SITE_URL,
+    downloadUrl: [APP_STORE_URL, GOOGLE_PLAY_URL],
+    sameAs: [APP_STORE_URL, GOOGLE_PLAY_URL],
     image: DEFAULT_OG_IMAGE,
     offers: {
       "@type": "Offer",

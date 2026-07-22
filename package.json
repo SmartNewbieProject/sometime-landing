@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seo:public-smoke": "node scripts/seo-public-smoke.mjs",
+    "test:store-links": "tsx --test src/app/_lib/store-links.test.ts",
     "import-csv": "tsx scripts/importCsvToSupabase.ts"
   },
   "dependencies": {

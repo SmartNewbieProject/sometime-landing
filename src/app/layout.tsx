@@ -45,6 +45,10 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   keywords: DEFAULT_KEYWORDS,
   applicationName: SITE_NAME,
+  itunes: {
+    appId: "6746120889",
+    appArgument: `${SITE_URL}/download`,
+  },
   category: "dating",
   alternates: {
     canonical: SITE_URL,

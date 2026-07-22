@@ -50,6 +50,8 @@ export default function VerificationPage() {
         sections={PAGE.sections}
         links={PAGE.links}
         breadcrumbLabel={PAGE.breadcrumbLabel}
+        storeCtaSurface="landing_public_guide"
+        showMobileSticky
       />
     </ContentShell>
   );

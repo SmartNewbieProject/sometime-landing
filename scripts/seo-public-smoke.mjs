@@ -152,6 +152,18 @@ async function checkPage(url, timeoutMs) {
   );
 }
 
+async function checkAppAuthoritySignals({ base, timeoutMs }) {
+  for (const path of ["/", "/download", "/safety", "/verification"]) {
+    const url = `${base}${path}`;
+    const { response, text } = await fetchWithChecks(url, timeoutMs);
+    ensure(response.status === 200, `app authority page must return 200: ${url}`);
+    ensure(text.includes("apps.apple.com"), `missing official App Store signal: ${url}`);
+    ensure(text.includes("play.google.com"), `missing official Google Play signal: ${url}`);
+    ensure(text.includes("apple-itunes-app"), `missing Smart App Banner metadata: ${url}`);
+    ensure(text.includes("MobileApplication"), `missing MobileApplication schema: ${url}`);
+  }
+}
+
 async function checkUniversityRoutes({ base, validCode, invalidCode, timeoutMs }) {
   const validUrl = `${base}/university/${encodeURIComponent(validCode)}`;
   const invalidUrl = `${base}/university/${encodeURIComponent(invalidCode)}`;
@@ -217,6 +229,9 @@ async function main() {
     timeoutMs,
   });
   console.log("✓ representative university routes behave as expected");
+
+  await checkAppAuthoritySignals({ base, timeoutMs });
+  console.log("✓ official store links, Smart App Banner, and app schema are present");
 
   console.log("SEO smoke passed");
 }

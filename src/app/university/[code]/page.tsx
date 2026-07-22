@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ContentBreadcrumb } from "../../_components/public-content/ContentBreadcrumb";
 import { ContentHero, ContentShell } from "../../_components/public-content/ContentShell";
 import { JsonLd } from "../../_components/public-content/JsonLd";
+import { StoreInstallCta } from "../../_components/public-content/StoreInstallCta";
 import { getUniversityPage } from "../../_lib/public-content";
 import { breadcrumbJsonLd, buildPageMetadata } from "../../_lib/seo";
 
@@ -78,6 +79,14 @@ export default async function UniversityPage({ params }: PageProps) {
             대화를 시작할 수 있도록 돕습니다. 프로필을 확인하고 서로의 속도에 맞춰 인연을
             이어가 보세요.
           </p>
+        </div>
+        <div className="mt-12">
+          <StoreInstallCta
+            surface="landing_university"
+            heading={`${university.name} 학생이라면 썸타임에서 시작하세요`}
+            description="공식 앱을 설치하고 학교 인증을 완료하면 같은 생활권의 대학생 인연을 만날 수 있어요."
+            showMobileSticky
+          />
         </div>
       </div>
     </ContentShell>

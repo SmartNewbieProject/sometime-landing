@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { StoreInstallCta } from "./StoreInstallCta";
 
 const navItems = [
   { href: "/", label: "홈" },
@@ -50,7 +51,7 @@ export function ContentShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
           <Link
-            href="https://some-in-univ.com"
+            href="/download"
             className="hidden rounded-[30px] bg-[#7A4AE2] px-[20px] py-[10px] text-[14px] font-semibold text-white sm:inline-flex"
           >
             앱으로 이동
@@ -94,6 +95,15 @@ export function ContentShell({ children }: { children: ReactNode }) {
                 </Link>
               ))}
             </div>
+          </div>
+
+          <div className="mt-10 max-w-2xl">
+            <StoreInstallCta
+              surface="landing_content_footer"
+              heading="썸타임 공식 앱"
+              description="App Store와 Google Play에서 안전하게 설치하세요."
+              compact
+            />
           </div>
 
           <div className="mt-[54px] border-t border-[#F1ECFA] pt-[32px] text-[13px] font-medium leading-[24px] text-[#8D82A8]">
