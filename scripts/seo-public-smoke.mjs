@@ -1,11 +1,18 @@
 #!/usr/bin/env node
 
 const DEFAULT_BASE = process.env.SEO_SMOKE_BASE_URL ?? "https://info.some-in-univ.com";
+const DEFAULT_API_BASE = process.env.SEO_SMOKE_API_BASE_URL ?? "https://api.some-in-univ.com";
 const DEFAULT_VALID_UNIVERSITY_CODE =
   process.env.SEO_SMOKE_VALID_UNIVERSITY_CODE ?? "DJU";
 const DEFAULT_INVALID_UNIVERSITY_CODE =
   process.env.SEO_SMOKE_INVALID_UNIVERSITY_CODE ?? "__INVALID_SEO_CODE__";
 const DEFAULT_TIMEOUT_MS = Number(process.env.SEO_SMOKE_TIMEOUT_MS ?? 8000);
+const DEFAULT_UNIVERSITY_SITEMAP_LIMIT = Number(
+  process.env.SEO_SMOKE_UNIVERSITY_SITEMAP_LIMIT ?? 18,
+);
+const DEFAULT_UNIVERSITY_MIN_VERIFIED_COUNT = Number(
+  process.env.SEO_SMOKE_UNIVERSITY_MIN_VERIFIED_COUNT ?? 20,
+);
 
 function parseArgs(argv) {
   const options = {};
@@ -122,10 +129,6 @@ async function checkSitemap({ sitemapUrl, timeoutMs }) {
     const parsed = new URL(loc);
     ensure(!parsed.pathname.startsWith("/jp/"), `sitemap must not include JP route: ${loc}`);
     ensure(parsed.pathname !== "/jp", `sitemap must not include JP route: ${loc}`);
-    ensure(
-      !parsed.pathname.startsWith("/university/"),
-      `sitemap must not include university route: ${loc}`,
-    );
     ensure(parsed.pathname !== "/event", `sitemap must not include /event: ${loc}`);
   }
 
@@ -220,12 +223,100 @@ async function checkUniversityRoutes({ base, validCode, invalidCode, timeoutMs }
   );
 }
 
+async function getExpectedUniversityCodes({
+  apiBase,
+  timeoutMs,
+  limit,
+  minVerifiedCount,
+}) {
+  const topUrl = `${apiBase}/api/universities/top?country=kr`;
+  const { response, text } = await fetchWithChecks(topUrl, timeoutMs);
+  ensure(response.ok, `top universities fetch failed: ${response.status} ${topUrl}`);
+
+  const universities = JSON.parse(text);
+  ensure(Array.isArray(universities), "top universities response must be an array");
+
+  const results = [];
+
+  for (const university of universities.slice(0, 20)) {
+    if (!university?.code) continue;
+
+    const detailUrl = `${apiBase}/web/university-data/${encodeURIComponent(university.code)}`;
+    const detail = await fetch(detailUrl, {
+      headers: {
+        "user-agent": "seo-public-smoke/1.0",
+        accept: "application/json",
+        "X-Country": "kr",
+      },
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+
+    if (!detail.ok) continue;
+
+    const payload = await detail.json();
+    const verifiedCount = payload?.stats?.verifiedCount ?? 0;
+    if (verifiedCount < minVerifiedCount) continue;
+
+    results.push(String(payload?.university?.code ?? university.code));
+    if (results.length >= limit) break;
+  }
+
+  return results;
+}
+
+async function checkUniversitySitemapEntries({
+  base,
+  apiBase,
+  locs,
+  timeoutMs,
+  limit,
+  minVerifiedCount,
+}) {
+  const universityLocs = locs.filter((loc) => new URL(loc).pathname.startsWith("/university/"));
+  const expectedCodes = await getExpectedUniversityCodes({
+    apiBase,
+    timeoutMs,
+    limit,
+    minVerifiedCount,
+  });
+
+  ensure(
+    universityLocs.length === expectedCodes.length,
+    `university sitemap count mismatch: expected ${expectedCodes.length}, got ${universityLocs.length}`,
+  );
+
+  const actualPaths = universityLocs.map((loc) => new URL(loc).pathname).sort();
+  const expectedPaths = expectedCodes
+    .map((code) => `/university/${encodeURIComponent(code)}`)
+    .sort();
+
+  ensure(
+    JSON.stringify(actualPaths) === JSON.stringify(expectedPaths),
+    `university sitemap mismatch: expected ${expectedPaths.join(", ")}, got ${actualPaths.join(", ")}`,
+  );
+
+  for (const loc of universityLocs) {
+    ensure(
+      new URL(loc).origin === base,
+      `university sitemap URL must stay on the canonical origin: ${loc}`,
+    );
+    await checkPage(loc, timeoutMs);
+  }
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const base = normalizeOrigin(args.base ?? DEFAULT_BASE);
   const robotsBase = normalizeOrigin(args["robots-base"] ?? base);
+  const apiBase = normalizeOrigin(args["api-base"] ?? DEFAULT_API_BASE);
   const sitemapUrl = args["sitemap-url"] ?? `${base}/sitemap.xml`;
   const timeoutMs = Number(args["timeout-ms"] ?? DEFAULT_TIMEOUT_MS);
+  const universitySitemapLimit = Number(
+    args["university-sitemap-limit"] ?? DEFAULT_UNIVERSITY_SITEMAP_LIMIT,
+  );
+  const universityMinVerifiedCount = Number(
+    args["university-min-verified-count"] ?? DEFAULT_UNIVERSITY_MIN_VERIFIED_COUNT,
+  );
   const validUniversityCode =
     args["valid-university-code"] ?? DEFAULT_VALID_UNIVERSITY_CODE;
   const invalidUniversityCode =
@@ -243,6 +334,16 @@ async function main() {
 
   const locs = await checkSitemap({ sitemapUrl, timeoutMs });
   console.log(`✓ sitemap XML OK (${locs.length} urls)`);
+
+  await checkUniversitySitemapEntries({
+    base,
+    apiBase,
+    locs,
+    timeoutMs,
+    limit: universitySitemapLimit,
+    minVerifiedCount: universityMinVerifiedCount,
+  });
+  console.log("✓ university sitemap entries are quality-filtered and self-canonical");
 
   for (const loc of locs) {
     await checkPage(loc, timeoutMs);

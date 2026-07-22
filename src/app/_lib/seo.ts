@@ -190,7 +190,10 @@ export function websiteJsonLd() {
   };
 }
 
-export function softwareApplicationJsonLd() {
+export function softwareApplicationJsonLd(rating?: {
+  ratingValue: number;
+  ratingCount: number;
+}) {
   return {
     "@context": "https://schema.org",
     "@type": "MobileApplication",
@@ -207,6 +210,15 @@ export function softwareApplicationJsonLd() {
       price: "0",
       priceCurrency: "KRW",
     },
+    aggregateRating: rating
+      ? {
+          "@type": "AggregateRating",
+          ratingValue: rating.ratingValue,
+          ratingCount: rating.ratingCount,
+          bestRating: 5,
+          worstRating: 1,
+        }
+      : undefined,
   };
 }
 

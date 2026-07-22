@@ -74,6 +74,7 @@ export type SometimeArticleListItem = Pick<
   | "author"
   | "viewCount"
   | "publishedAt"
+  | "updatedAt"
 >;
 
 export type CardNewsSection = {
@@ -95,8 +96,16 @@ export type CardNews = {
   readCount?: number;
   likeCount?: number;
   publishedAt?: string | null;
+  updatedAt?: string | null;
   layoutMode?: string | null;
   body?: string | null;
+};
+
+export type TopUniversity = {
+  id: string;
+  code: string;
+  name: string;
+  region?: string | null;
 };
 
 export type CommunityPostImage = {
@@ -230,6 +239,13 @@ export const getUniversityPage = cache(async (code: string) => {
   } catch {
     return null;
   }
+});
+
+export const getTopKrUniversities = cache(async (limit = 20) => {
+  const safeLimit = Math.min(Math.max(limit, 1), 50);
+  const payload = await fetchJson<TopUniversity[]>(`/universities/top?country=kr`);
+  const items = Array.isArray(payload) ? payload : [];
+  return items.slice(0, safeLimit);
 });
 
 export const getCardNewsList = cache(async (limit = 48) => {
