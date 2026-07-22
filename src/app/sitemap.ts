@@ -77,12 +77,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.8,
     },
-    {
-      url: `${SITE_URL}/event`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
   ];
 
   const [articles, cardNews] = await Promise.all([
@@ -91,7 +85,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   const blogEntries: MetadataRoute.Sitemap = articles
-    .filter((article) => Boolean(article.slug))
+    .filter((article) => Boolean(article.slug) && !article.slug.startsWith("jp-"))
     .map((article) => ({
       url: `${SITE_URL}/blog/${encodeURIComponent(article.slug)}`,
       lastModified: article.publishedAt ? new Date(article.publishedAt) : now,

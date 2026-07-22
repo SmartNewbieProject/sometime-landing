@@ -49,6 +49,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     keywords: article.seo?.keywords,
     authors: article.author?.name ? [article.author.name] : ["썸타임 에디터"],
     section: article.category,
+    noIndex: article.slug.startsWith("jp-"),
   });
 }
 

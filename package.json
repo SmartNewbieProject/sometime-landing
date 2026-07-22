@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "seo:public-smoke": "node scripts/seo-public-smoke.mjs",
     "import-csv": "tsx scripts/importCsvToSupabase.ts"
   },
   "dependencies": {

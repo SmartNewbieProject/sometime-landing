@@ -35,17 +35,19 @@ export default async function BlogIndexPage() {
     getHotCommunityPosts(),
   ]);
 
-  const storyItems: ContentPreview[] = articles.map((article) => ({
-    id: article.id,
-    href: `/blog/${encodeURIComponent(article.slug)}`,
-    image: pickImageFor(article.id, article.thumbnail, article.coverImage),
-    label: article.category,
-    title: article.title,
-    description: textExcerpt(article.excerpt ?? article.subtitle),
-    meta: formatDate(article.publishedAt),
-    source: "story",
-    score: article.viewCount ?? 0,
-  }));
+  const storyItems: ContentPreview[] = articles
+    .filter((article) => !article.slug.startsWith("jp-"))
+    .map((article) => ({
+      id: article.id,
+      href: `/blog/${encodeURIComponent(article.slug)}`,
+      image: pickImageFor(article.id, article.thumbnail, article.coverImage),
+      label: article.category,
+      title: article.title,
+      description: textExcerpt(article.excerpt ?? article.subtitle),
+      meta: formatDate(article.publishedAt),
+      source: "story",
+      score: article.viewCount ?? 0,
+    }));
 
   const cardNewsItems: ContentPreview[] = cardNews.map((item) => ({
     id: item.id,

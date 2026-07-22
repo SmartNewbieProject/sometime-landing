@@ -8,6 +8,12 @@ const API_BASE_URL =
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://info.some-in-univ.com";
 
+export const BLOG_INDEX_URL = `${SITE_URL}/blog`;
+
+export function blogArticleUrl(slug: string): string {
+  return `${BLOG_INDEX_URL}/${encodeURIComponent(slug)}`;
+}
+
 /** 로컬 브랜드 폴백 — CDN 403/미존재 시 사용 (preview_title 9MB 회피) */
 export const IMAGE_FALLBACKS = [
   "/images/intro1.png",
@@ -117,6 +123,17 @@ export type CommunityPost = {
   } | null;
 };
 
+export type UniversityPageData = {
+  university: {
+    name: string;
+    code: string;
+    region?: string | null;
+  };
+  stats: {
+    verifiedCount?: number;
+  };
+};
+
 type ApiList<T> = {
   items?: T[];
   data?: T[];
@@ -196,6 +213,23 @@ export async function getAllBlogArticles(): Promise<SometimeArticleListItem[]> {
 
 export const getBlogArticle = cache(async (slug: string) => {
   return fetchJson<SometimeArticle>(`/sometime-articles/${encodeURIComponent(slug)}`);
+});
+
+export const getUniversityPage = cache(async (code: string) => {
+  const webBaseUrl = API_BASE_URL.replace(/\/api\/?$/, "");
+  try {
+    const response = await fetch(
+      `${webBaseUrl}/web/university-data/${encodeURIComponent(code)}`,
+      {
+        next: { revalidate: 300 },
+        headers: { Accept: "application/json", "X-Country": "kr" },
+      },
+    );
+    if (!response.ok) return null;
+    return (await response.json()) as UniversityPageData;
+  } catch {
+    return null;
+  }
 });
 
 export const getCardNewsList = cache(async (limit = 48) => {
