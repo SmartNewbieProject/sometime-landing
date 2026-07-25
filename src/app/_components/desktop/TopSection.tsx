@@ -15,32 +15,6 @@ export default function TopSection() {
       <section className="h-[600px] bg-[url('/images/desktop-bg.png')] overflow-hidden w-full  bg-cover bg-center bg-no-repeat relative font-wantedSans">
         <div className="absolute inset-0 bg-gradient-to-br from-[rgba(245,242,255,0.15)] via-[rgba(250,248,255,0.10)] to-[rgba(255,255,255,0.05)] pointer-events-none" />
         <div className="absolute w-full h-full  bottom-0">
-          <div className="absolute bottom-0   -translate-x-1/2 left-1/2 z-10">
-            <Image
-              src="/images/phone-frame.png"
-              height={413}
-              width={430}
-              alt="phone frame"
-              className=" z-10  "
-              style={{ width: "auto", height: "auto" }}
-              priority
-            />
-            <motion.div
-              variants={floatVariants}
-              animate="animate"
-              whileHover={{ scale: 1.1 }}
-              className="absolute top-[80px] -right-[72px]"
-            >
-              <Image
-                src={"/images/send-letter.png"}
-                width={118}
-                height={118}
-                alt=""
-                style={{ width: "auto", height: "auto" }}
-                priority
-              />
-            </motion.div>
-          </div>
           <Image
             src="/images/desktop-header-logo.png"
             width={860}
