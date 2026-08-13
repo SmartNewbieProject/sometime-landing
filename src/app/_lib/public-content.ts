@@ -5,8 +5,7 @@ const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ??
   "https://api.some-in-univ.com/api";
 
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://info.some-in-univ.com";
+export const SITE_URL = "https://some-in-univ.com";
 
 export const BLOG_INDEX_URL = `${SITE_URL}/blog`;
 
@@ -133,6 +132,7 @@ export type CommunityPost = {
 };
 
 export type UniversityPageData = {
+  canonicalCode?: string;
   university: {
     name: string;
     code: string;

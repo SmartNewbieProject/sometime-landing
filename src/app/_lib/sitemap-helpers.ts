@@ -4,6 +4,7 @@ export const UNIVERSITY_SITEMAP_MIN_VERIFIED_COUNT = 20;
 export const STATIC_SITEMAP_LASTMOD = {
   "/": "2025-07-28T13:56:11.000Z",
   "/blog": "2026-07-22T16:24:51.000Z",
+  "/community": "2026-08-13T00:00:00.000Z",
   "/card-news": "2026-07-09T14:25:08.000Z",
   "/faq": "2026-07-09T15:46:09.000Z",
   "/safety": "2026-07-22T17:33:19.000Z",

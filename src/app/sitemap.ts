@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next";
-import { isApexCanonicalPath } from "../seo-canary-policy";
 import {
   getAllBlogArticles,
   getAllCardNews,
@@ -66,6 +65,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: latestCardNewsLastmod,
       changeFrequency: "daily",
       priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/community`,
+      lastModified: getStaticSitemapLastmod("/community"),
+      changeFrequency: "daily",
+      priority: 0.8,
     },
     {
       url: `${SITE_URL}/faq`,
@@ -162,9 +167,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
     .slice(0, UNIVERSITY_SITEMAP_LIMIT);
 
-  const infoCanonicalEntries = staticEntries.filter(
-    ({ url }) => !isApexCanonicalPath(new URL(url).pathname),
-  );
-
-  return [...infoCanonicalEntries, ...blogEntries, ...cardNewsEntries, ...universityEntries];
+  return [...staticEntries, ...blogEntries, ...cardNewsEntries, ...universityEntries];
 }

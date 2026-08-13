@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 const DESKTOP_DOWNLOAD_QR_URL =
-  "https://info.some-in-univ.com/download?surface=desktop_qr";
+  "https://some-in-univ.com/download?surface=desktop_qr";
 
 export function DesktopDownloadQrSection() {
   return (

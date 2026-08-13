@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-const DEFAULT_BASE = process.env.SEO_SMOKE_BASE_URL ?? "https://info.some-in-univ.com";
+const DEFAULT_BASE = process.env.SEO_SMOKE_BASE_URL ?? "https://some-in-univ.com";
+const LEGACY_BASE = "https://info.some-in-univ.com";
 const DEFAULT_API_BASE = process.env.SEO_SMOKE_API_BASE_URL ?? "https://api.some-in-univ.com";
 const DEFAULT_VALID_UNIVERSITY_CODE =
   process.env.SEO_SMOKE_VALID_UNIVERSITY_CODE ?? "DJU";
@@ -126,8 +127,8 @@ async function checkSitemap({ sitemapUrl, timeoutMs }) {
   ensure(locs.length > 0, "sitemap does not contain any <loc> entries");
 
   const sitemapOrigin = new URL(sitemapUrl).origin;
-  for (const path of ["/safety", "/verification"]) {
-    ensure(!locs.includes(`${sitemapOrigin}${path}`), `info sitemap must omit migrated path: ${path}`);
+  for (const loc of locs) {
+    ensure(new URL(loc).origin === sitemapOrigin, `sitemap URL must stay on canonical origin: ${loc}`);
   }
 
   for (const loc of locs) {
@@ -172,13 +173,13 @@ async function checkAppAuthoritySignals({ base, timeoutMs }) {
   }
 }
 
-async function checkApexCanaryRedirects({ base, timeoutMs }) {
-  for (const path of ["/safety", "/verification"]) {
-    const { response } = await fetchWithChecks(`${base}${path}`, timeoutMs, "manual");
-    ensure(response.status === 308, `${base}${path} must return 308`);
+async function checkLegacyRedirects({ base, paths, timeoutMs }) {
+  for (const path of paths) {
+    const { response } = await fetchWithChecks(`${LEGACY_BASE}${path}`, timeoutMs, "manual");
+    ensure(response.status === 308, `${LEGACY_BASE}${path} must return 308`);
     ensure(
-      response.headers.get("location") === `https://some-in-univ.com${path}`,
-      `${base}${path} must redirect one hop to the exact apex path`,
+      response.headers.get("location") === `${base}${path}`,
+      `${LEGACY_BASE}${path} must redirect one hop to the exact apex path`,
     );
   }
 }
@@ -377,8 +378,9 @@ async function main() {
   await checkAppAuthoritySignals({ base, timeoutMs });
   console.log("✓ official store links, Smart App Banner, and app schema are present");
 
-  await checkApexCanaryRedirects({ base, timeoutMs });
-  console.log("✓ info canary URLs redirect one hop to the apex canonical paths");
+  const redirectPaths = locs.map((loc) => new URL(loc).pathname);
+  await checkLegacyRedirects({ base, paths: redirectPaths, timeoutMs });
+  console.log("✓ all legacy info URLs redirect one hop to the apex canonical paths");
 
   await checkAppAssociations({ base, timeoutMs });
   console.log("✓ iOS and Android app association files are valid");

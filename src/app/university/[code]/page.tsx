@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ContentBreadcrumb } from "../../_components/public-content/ContentBreadcrumb";
 import { ContentHero, ContentShell } from "../../_components/public-content/ContentShell";
 import { JsonLd } from "../../_components/public-content/JsonLd";
 import { StoreInstallCta } from "../../_components/public-content/StoreInstallCta";
 import { getUniversityPage } from "../../_lib/public-content";
+import { canonicalUniversityPath } from "../../_lib/university-canonical";
 import { breadcrumbJsonLd, buildPageMetadata } from "../../_lib/seo";
 
 type PageProps = { params: Promise<{ code: string }> };
@@ -13,6 +14,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { code } = await params;
   const data = await getUniversityPage(code);
   if (!data) return { robots: { index: false, follow: false } };
+  const canonicalPath = canonicalUniversityPath(code, data);
+  if (canonicalPath) return { alternates: { canonical: canonicalPath }, robots: { index: false, follow: true } };
 
   return buildPageMetadata({
     title: `${data.university.name} 소개팅 — 썸타임 대학생 매칭`,
@@ -31,6 +34,8 @@ export default async function UniversityPage({ params }: PageProps) {
   const { code } = await params;
   const data = await getUniversityPage(code);
   if (!data) notFound();
+  const canonicalPath = canonicalUniversityPath(code, data);
+  if (canonicalPath) permanentRedirect(canonicalPath);
 
   const { university, stats } = data;
   const path = `/university/${encodeURIComponent(university.code)}`;

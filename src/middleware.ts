@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getCanonicalRedirect, isApexCanonicalPath } from "./seo-canary-policy";
+import { getCanonicalRedirect } from "./seo-canary-policy";
 
-const OFFICIAL_ORIGIN = "https://info.some-in-univ.com";
+const OFFICIAL_ORIGIN = "https://some-in-univ.com";
+const INTERNAL_RENDER_HOST = "sometime-landing.vercel.app";
 const INDEXABLE_HOSTS = new Set(["some-in-univ.com", "info.some-in-univ.com", "www.some-in-univ.com"]);
 
 export function middleware(request: NextRequest) {
@@ -14,7 +15,7 @@ export function middleware(request: NextRequest) {
   }
 
   // Preview / 임시 도메인은 공식 호스트로 통일 (SEO 중복 방지)
-  if (host?.endsWith(".vercel.app")) {
+  if (host?.endsWith(".vercel.app") && host !== INTERNAL_RENDER_HOST) {
     return NextResponse.redirect(
       new URL(`${pathname}${search}` || "/", OFFICIAL_ORIGIN),
       308,
@@ -30,15 +31,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (!host || INDEXABLE_HOSTS.has(host)) {
-    const response = NextResponse.next();
-    // 검색엔진이 정본 호스트를 빠르게 인지하도록 힌트
-    if (host && host !== "info.some-in-univ.com" && !isApexCanonicalPath(pathname)) {
-      response.headers.set(
-        "Link",
-        `<${OFFICIAL_ORIGIN}${pathname}>; rel="canonical"`,
-      );
-    }
-    return response;
+    return NextResponse.next();
   }
 
   return NextResponse.next();
