@@ -125,6 +125,11 @@ async function checkSitemap({ sitemapUrl, timeoutMs }) {
   const locs = [...text.matchAll(/<loc>(.*?)<\/loc>/gsi)].map((match) => decodeXmlText(match[1].trim()));
   ensure(locs.length > 0, "sitemap does not contain any <loc> entries");
 
+  const sitemapOrigin = new URL(sitemapUrl).origin;
+  for (const path of ["/safety", "/verification"]) {
+    ensure(!locs.includes(`${sitemapOrigin}${path}`), `info sitemap must omit migrated path: ${path}`);
+  }
+
   for (const loc of locs) {
     const parsed = new URL(loc);
     ensure(!parsed.pathname.startsWith("/jp/"), `sitemap must not include JP route: ${loc}`);
@@ -156,7 +161,7 @@ async function checkPage(url, timeoutMs) {
 }
 
 async function checkAppAuthoritySignals({ base, timeoutMs }) {
-  for (const path of ["/", "/download", "/safety", "/verification"]) {
+  for (const path of ["/", "/download"]) {
     const url = `${base}${path}`;
     const { response, text } = await fetchWithChecks(url, timeoutMs);
     ensure(response.status === 200, `app authority page must return 200: ${url}`);
@@ -164,6 +169,17 @@ async function checkAppAuthoritySignals({ base, timeoutMs }) {
     ensure(text.includes("play.google.com"), `missing official Google Play signal: ${url}`);
     ensure(text.includes("apple-itunes-app"), `missing Smart App Banner metadata: ${url}`);
     ensure(text.includes("MobileApplication"), `missing MobileApplication schema: ${url}`);
+  }
+}
+
+async function checkApexCanaryRedirects({ base, timeoutMs }) {
+  for (const path of ["/safety", "/verification"]) {
+    const { response } = await fetchWithChecks(`${base}${path}`, timeoutMs, "manual");
+    ensure(response.status === 308, `${base}${path} must return 308`);
+    ensure(
+      response.headers.get("location") === `https://some-in-univ.com${path}`,
+      `${base}${path} must redirect one hop to the exact apex path`,
+    );
   }
 }
 
@@ -360,6 +376,9 @@ async function main() {
 
   await checkAppAuthoritySignals({ base, timeoutMs });
   console.log("✓ official store links, Smart App Banner, and app schema are present");
+
+  await checkApexCanaryRedirects({ base, timeoutMs });
+  console.log("✓ info canary URLs redirect one hop to the apex canonical paths");
 
   await checkAppAssociations({ base, timeoutMs });
   console.log("✓ iOS and Android app association files are valid");
