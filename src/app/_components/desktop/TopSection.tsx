@@ -31,10 +31,10 @@ export default function TopSection() {
               sendGTMEvent({ event: "click_page" });
               router.push("https://some-in-univ.com");
             }}
-            className="bg-[#7A4AE2] z-30 absolute  leading-[15px] bottom-[30px] -translate-x-1/2 left-1/2 flex gap-[10px] items-center gap py-[18px] px-[44px] text-white text-[18px] font-semibold  font-wantedSans rounded-[30px]"
+            className="bg-[#7A4AE2] z-30 absolute bottom-[30px] left-1/2 w-max -translate-x-1/2 flex flex-nowrap items-center gap-[10px] py-[18px] px-[44px] text-white text-[18px] leading-none font-semibold font-wantedSans rounded-[30px] whitespace-nowrap max-md:px-6 max-md:py-3.5 max-md:text-[16px]"
           >
-            <div>매칭하러 가기</div>
-            <motion.div variants={arrowRightVariants} animate="animate">
+            <div className="whitespace-nowrap break-keep">매칭하러 가기</div>
+            <motion.div className="shrink-0" variants={arrowRightVariants} animate="animate">
               <RightArrow />
             </motion.div>
           </motion.button>
