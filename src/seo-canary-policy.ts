@@ -6,7 +6,7 @@ export const APEX_CANONICAL_STATIC_PATHS = [
   "/about",
   "/blog",
   "/card-news",
-  "/community",
+  "/stories",
   "/community-guidelines",
   "/download",
   "/faq",
@@ -44,6 +44,7 @@ const UNIVERSITY_CANONICAL_ALIASES = new Map<string, string>([
 const staticPaths = new Set<string>(APEX_CANONICAL_STATIC_PATHS);
 const APP_ONLY_PATHS = new Set([
   "/card-news/grid",
+  "/community",
   "/community/love-court",
   "/community/write",
   "/community/videos",
@@ -82,6 +83,10 @@ export function getCanonicalRedirect(
   const searchParams = new URLSearchParams(search);
   searchParams.delete(RETIRED_APEX_PROXY_PARAM);
   const normalized = normalizePath(pathname);
+  if (normalized === "/community") {
+    const listingSearch = searchParams.size > 0 ? `?${searchParams.toString()}` : "";
+    return `${APEX_CANONICAL_ORIGIN}/stories${listingSearch}`;
+  }
   if (normalized !== "/sitemap.xml" && !isApexCanonicalPath(normalized)) return null;
 
   const universityMatch = normalized.match(/^\/university\/([^/]+)$/);

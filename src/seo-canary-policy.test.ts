@@ -13,7 +13,7 @@ test("all indexable public route families are apex canonical", () => {
     "/about",
     "/blog",
     "/card-news",
-    "/community",
+    "/stories",
     "/community-guidelines",
     "/download",
     "/faq",
@@ -39,6 +39,7 @@ test("all indexable public route families are apex canonical", () => {
 test("app-only and non-indexable routes stay outside the SEO redirect set", () => {
   for (const path of [
     "/auth/login",
+    "/community",
     "/community/love-court",
     "/community/write",
     "/event",
@@ -52,6 +53,10 @@ test("app-only and non-indexable routes stay outside the SEO redirect set", () =
 });
 
 test("direct info requests redirect one hop and preserve public query parameters", () => {
+  assert.equal(
+    getCanonicalRedirect("info.some-in-univ.com", "/community", "?source=gsc"),
+    `${APEX_CANONICAL_ORIGIN}/stories?source=gsc`,
+  );
   assert.equal(
     getCanonicalRedirect("info.some-in-univ.com", "/blog/article", "?source=gsc"),
     `${APEX_CANONICAL_ORIGIN}/blog/article?source=gsc`,

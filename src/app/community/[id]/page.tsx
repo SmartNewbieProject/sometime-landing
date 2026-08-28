@@ -72,7 +72,7 @@ export default async function CommunityDetailPage({ params }: PageProps) {
           }),
           breadcrumbJsonLd([
             { name: "홈", path: "/" },
-            { name: "커뮤니티", path: "/community" },
+            { name: "커뮤니티", path: "/stories" },
             { name: post.title, path },
           ]),
         ]}
@@ -88,7 +88,7 @@ export default async function CommunityDetailPage({ params }: PageProps) {
             </li>
             <li aria-hidden="true">/</li>
             <li>
-              <Link href="/community" className="hover:text-[#7A4AE2]">
+              <Link href="/stories" className="hover:text-[#7A4AE2]">
                 커뮤니티
               </Link>
             </li>

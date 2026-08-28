@@ -17,7 +17,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "썸타임 커뮤니티 — 캠퍼스에서 오가는 이야기",
   description:
     "썸타임 커뮤니티에서 공개된 인기 이야기와 캠퍼스 연애 고민을 확인하세요. 대학생들의 진짜 고민과 일상을 모았습니다.",
-  path: "/community",
+  path: "/stories",
   keywords: ["썸타임 커뮤니티", "대학생 고민", "캠퍼스 이야기", "연애 고민", "학교 인증 커뮤니티"],
 });
 
@@ -74,7 +74,7 @@ export default async function CommunityIndexPage() {
         data={collectionPageJsonLd({
           name: "썸타임 커뮤니티",
           description: "공개된 인기 이야기와 캠퍼스 연애 고민",
-          path: "/community",
+          path: "/stories",
           items: communityItems.map((item) => ({ name: item.title, path: item.href })),
         })}
       />
