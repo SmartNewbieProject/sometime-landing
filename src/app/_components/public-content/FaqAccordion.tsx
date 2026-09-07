@@ -81,7 +81,7 @@ export function FaqAccordion({
                 hidden={!isOpen}
                 className="border-t border-[#F1ECFA] px-4 pb-4 pt-3 sm:px-5"
               >
-                <p className="text-[15px] font-medium leading-[26px] text-[#555]">{item.answer}</p>
+                <p className="break-keep text-pretty text-[15px] font-medium leading-[26px] text-[#555]">{item.answer}</p>
                 {item.relatedHref ? (
                   <Link
                     href={item.relatedHref}
