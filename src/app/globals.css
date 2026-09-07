@@ -38,7 +38,25 @@ button {
   --font-nanum-pen: "Nanum Pen Script", cursive;
 }
 
+.public-content-shell {
+  overflow-wrap: anywhere;
+}
+
+.public-content-shell > article,
 .public-markdown {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.public-content-shell h1,
+.public-content-shell h2,
+.public-content-shell h3 {
+  word-break: keep-all;
+}
+
+.public-markdown {
+  width: 100%;
+  overflow-wrap: anywhere;
   color: #352a3b;
   font-size: 18px;
   line-height: 1.9;
@@ -111,6 +129,8 @@ button {
 
 .public-markdown-table-wrap {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   overflow-x: auto;
   border-radius: 20px;
   border: 1px solid #eee8ff;

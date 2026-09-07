@@ -9,6 +9,7 @@ export type StoreCtaSurface =
   | "landing_content_hub"
   | "landing_content_detail"
   | "landing_download_hub"
+  | "landing_download_final"
   | "landing_public_guide"
   | "landing_university"
   | "landing_content_sticky"

@@ -38,6 +38,23 @@ test("Android click identifiers are embedded in the Play Install Referrer", () =
   assert.equal(referrer.get("touch_id"), "018f0000-0000-7000-8000-000000000002");
 });
 
+test("download hero and final CTA positions remain distinct in both store URLs", () => {
+  for (const store of ["ios", "android"] as const) {
+    for (const surface of ["landing_download_hub", "landing_download_final"] as const) {
+      const url = new URL(buildStoreUrl({ store, surface }));
+      assert.equal(url.searchParams.get("surface"), surface);
+      assert.equal(url.searchParams.get("utm_source"), `web_${surface}`);
+      if (store === "ios") {
+        assert.equal(url.searchParams.get("ct"), `web_${surface}`);
+      } else {
+        const referrer = new URLSearchParams(url.searchParams.get("referrer") ?? "");
+        assert.equal(referrer.get("surface"), surface);
+        assert.equal(referrer.get("utm_source"), `web_${surface}`);
+      }
+    }
+  }
+});
+
 test("canonical official store URLs stay stable for entity and schema signals", () => {
   assert.equal(APP_STORE_URL, "https://apps.apple.com/kr/app/id6746120889");
   assert.equal(GOOGLE_PLAY_URL, "https://play.google.com/store/apps/details?id=com.smartnewb.sometimes");

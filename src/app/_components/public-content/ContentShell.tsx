@@ -27,8 +27,8 @@ const footerLinks = [
 
 export function ContentShell({ children }: { children: ReactNode }) {
   return (
-    <main className="min-h-screen bg-white font-wantedSans text-black">
-      <header className="sticky top-0 z-20 border-b border-[#F1ECFA] bg-white/95 backdrop-blur">
+    <main className="public-content-shell min-h-screen min-w-0 w-full bg-white font-wantedSans text-black">
+      <header className="top-0 z-20 border-b border-[#F1ECFA] bg-white/95 backdrop-blur sm:sticky">
         <div className="mx-auto flex h-[58px] w-full max-w-[900px] items-center justify-between px-5">
           <Link href="/" aria-label="썸타임 홈">
             <Image
@@ -52,9 +52,9 @@ export function ContentShell({ children }: { children: ReactNode }) {
           </nav>
           <Link
             href="/download"
-            className="hidden rounded-[30px] bg-[#7A4AE2] px-[20px] py-[10px] text-[14px] font-semibold text-white sm:inline-flex"
+            className="inline-flex min-h-11 shrink-0 items-center rounded-[30px] bg-[#7A4AE2] px-[20px] py-[10px] text-[14px] font-semibold text-white"
           >
-            앱으로 이동
+            앱 다운로드
           </Link>
         </div>
         <nav className="mx-auto flex w-full max-w-[900px] gap-2 overflow-x-auto px-5 pb-3 text-[13px] font-semibold text-[#555] sm:hidden">

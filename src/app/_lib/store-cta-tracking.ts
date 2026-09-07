@@ -78,12 +78,23 @@ export function trackStoreCtaClick(input: {
     appendStoreClickIds({ href: clickUrl.toString(), store, attributionId, touchId }),
   );
 
+  if (!process.env.NEXT_PUBLIC_MIXPANEL_TOKEN) return attributedClickUrl.toString();
+
+  const page = typeof window !== "undefined" ? window.location : undefined;
+  const incoming = new URLSearchParams(page?.search ?? "");
   mixpanel.track("Store_CTA_Clicked", {
     attribution_id: attributionId,
     touch_id: touchId,
     utm_link_id: attributedClickUrl.searchParams.get("utm_link_id") ?? undefined,
     surface,
     store,
+    page_path: page?.pathname,
+    page_host: page?.host,
+    destination_url: attributedClickUrl.toString(),
+    incoming_utm_source: incoming.get("utm_source") ?? undefined,
+    incoming_utm_medium: incoming.get("utm_medium") ?? undefined,
+    incoming_utm_campaign: incoming.get("utm_campaign") ?? undefined,
+    // These existing UTMs describe the outbound store link, not incoming traffic.
     utm_source: attributedClickUrl.searchParams.get("utm_source") ?? attribution.utm_source,
     utm_medium: attributedClickUrl.searchParams.get("utm_medium") ?? attribution.utm_medium,
     utm_campaign: attributedClickUrl.searchParams.get("utm_campaign") ?? attribution.utm_campaign,
@@ -107,10 +118,5 @@ export function openStoreCtaInNewTab(
 ) {
   const href = trackStoreCtaClick({ ...input, href: event.currentTarget.href });
   event.currentTarget.href = href;
-
-  if (event.button !== undefined && event.button !== 0) return;
-  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-
-  event.preventDefault();
-  window.open(href, "_blank", "noopener,noreferrer");
+  // Let the anchor's target and the browser's modifier-key behavior navigate.
 }
