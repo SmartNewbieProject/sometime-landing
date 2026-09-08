@@ -7,6 +7,7 @@ import { JsonLd } from "../_components/public-content/JsonLd";
 import { DOWNLOAD_PAGE as PAGE } from "../_lib/public-info-pages";
 import { getAppStoreRating } from "../_lib/app-store-rating";
 import { DesktopDownloadQrSection } from "./DesktopDownloadQrSection";
+import { DownloadPreviewGallery } from "./DownloadPreviewGallery";
 import {
   absoluteUrl,
   breadcrumbJsonLd,
@@ -65,7 +66,7 @@ export default async function DownloadPage() {
         className="relative isolate overflow-hidden bg-[#F4F0FF]"
       >
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_75%_45%,rgba(173,145,234,0.28),transparent_65%)]" />
-        <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 pb-12 pt-10 sm:gap-12 sm:px-8 sm:pb-16 sm:pt-16 lg:grid-cols-2 lg:gap-8 lg:py-20">
+        <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 pb-12 pt-10 sm:gap-12 sm:px-8 sm:pb-16 sm:pt-16 lg:grid-cols-2 lg:gap-8 lg:py-12">
           <div className="relative z-10">
             <p className="font-pretendard text-sm font-semibold text-[#5B35B5]">
               학교 인증으로 만나는 대학생 소개팅
@@ -100,80 +101,39 @@ export default async function DownloadPage() {
             <DesktopDownloadQrSection />
           </div>
 
-          <figure className="mx-auto w-full max-w-[480px]">
-            <div className="relative isolate aspect-[1/1.15]">
+          <figure className="mx-auto w-full max-w-[380px] lg:max-w-[300px]">
+            <a href="/images/download/01-campus-moment.webp" target="_blank" rel="noopener noreferrer" aria-label="캠퍼스 일상 예시 이미지 크게 보기 (새 탭)" className="block rounded-[24px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7A4AE2]">
               <Image
-                src="/images/5.png"
-                alt="썸타임의 환영 문구와 대학 로고가 보이는 가입 화면 홍보 이미지"
-                width={1021}
-                height={2200}
-                sizes="(min-width: 1024px) 230px, (min-width: 640px) 230px, 44vw"
-                className="absolute top-[8%] left-[4%] h-auto w-[48%] -rotate-[8deg] drop-shadow-[0_24px_32px_rgba(61,33,118,0.14)]"
-              />
-              <Image
-                src="/images/7.png"
-                alt="카페와 독서 등 관심사를 선택하는 썸타임 앱 화면 홍보 이미지"
-                width={1021}
-                height={2200}
-                sizes="(min-width: 1024px) 250px, (min-width: 640px) 250px, 48vw"
+                src="/images/download/01-campus-moment.webp"
+                alt="수업 끝나고, 설렘 시작. AI로 생성한 캠퍼스 인물과 커피 약속을 나누는 가상 대화가 담긴 홍보용 예시 이미지"
+                width={990}
+                height={2151}
+                sizes="(min-width: 1024px) 300px, (min-width: 420px) 380px, calc(100vw - 40px)"
                 priority
-                className="absolute top-0 right-[5%] z-10 h-auto w-[52%] rotate-[6deg] drop-shadow-[0_24px_32px_rgba(61,33,118,0.14)]"
+                className="h-auto w-full rounded-[24px]"
               />
-              <Image
-                src="/images/heart-balloon.png"
-                alt=""
-                width={95}
-                height={91}
-                className="absolute top-[2%] left-[5%] z-10 h-auto w-16 sm:w-20"
-              />
-            </div>
-            <figcaption className="mt-6 text-center font-pretendard text-xs leading-5 text-[#625A68]">
-              썸타임 앱 홍보 화면 · 현재 앱 화면과 다를 수 있어요
+            </a>
+            <figcaption className="mt-4 font-pretendard text-xs leading-5 break-keep text-[#625A68]">
+              홍보용 예시 이미지 · 프로필과 대화는 이해를 돕기 위한 예시이며, 인물은 AI로 생성한 연출입니다. 현재 앱 화면과 다를 수 있어요.
             </figcaption>
           </figure>
         </div>
       </section>
 
-      <section aria-labelledby="download-features" className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-        <div>
-          <p className="font-pretendard text-sm font-semibold text-[#7A4AE2]">설렘의 시작은, 안심부터</p>
-          <h2 id="download-features" className="mt-4 text-[28px] font-extrabold leading-[1.3] tracking-[-0.04em] break-keep text-[#201823] sm:text-[40px]">
-            새로운 사람에게<br />
-            조금 더 편하게
-          </h2>
-          <Image
-            src="/images/big-univ-verify.png"
-            alt="대학 건물과 인증 표시가 있는 썸타임 캐릭터 일러스트"
-            width={1192}
-            height={931}
-            sizes="(min-width: 1024px) 430px, (min-width: 640px) 360px, 80vw"
-            className="mx-auto mt-8 h-auto w-full max-w-[360px] lg:max-w-none"
-          />
-        </div>
-        <div className="divide-y divide-[#EEE8FF] border-y border-[#EEE8FF]">
-          <article className="py-8">
-            <p className="font-pretendard text-xs font-semibold tracking-[0.08em] text-[#7A4AE2]">01 / 학교 인증</p>
-            <h3 className="mt-3 text-2xl font-bold leading-[1.4] break-keep text-[#201823]">대학생이라는 공통점부터</h3>
-            <p className="mt-3 max-w-md font-pretendard text-base leading-[1.7] break-keep text-[#625A68]">
-              프로필에서 대학 인증 완료 여부를 확인할 수 있어요.
-              캠퍼스의 일상을 이해하는 사람과 시작해보세요.
-            </p>
-            <Link href="/verification" className="mt-4 inline-flex min-h-11 items-center font-pretendard text-sm font-semibold text-[#7A4AE2] underline underline-offset-4 hover:text-[#5B35B5] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7A4AE2]">
-              학교 인증 알아보기 <span className="ml-2" aria-hidden="true">→</span>
-            </Link>
-          </article>
-          <article className="py-8">
-            <p className="font-pretendard text-xs font-semibold tracking-[0.08em] text-[#7A4AE2]">02 / 연락처 지인 차단</p>
-            <h3 className="mt-3 text-2xl font-bold leading-[1.4] break-keep text-[#201823]">아는 사람은 부담스러우니까</h3>
-            <p className="mt-3 max-w-md font-pretendard text-base leading-[1.7] break-keep text-[#625A68]">
-              연락처에 있는 지인을 매칭에서 제외하도록 설정할 수 있어요.
-              같은 학과·학교 제외 설정도 앱에서 선택하세요.
-            </p>
-            <Link href="/safety" className="mt-4 inline-flex min-h-11 items-center font-pretendard text-sm font-semibold text-[#7A4AE2] underline underline-offset-4 hover:text-[#5B35B5] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7A4AE2]">
-              안전한 이용 알아보기 <span className="ml-2" aria-hidden="true">→</span>
-            </Link>
-          </article>
-        </div>
+      <DownloadPreviewGallery />
+
+      <section aria-labelledby="download-features" className="mx-auto flex w-full max-w-6xl flex-col gap-4 border-t border-[#F1ECFA] px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <h2 id="download-features" className="text-xl font-bold leading-[1.4] break-keep text-[#201823]">
+          안심하고 시작할 수 있도록
+        </h2>
+        <nav aria-label="인증과 안전 안내" className="flex flex-wrap gap-x-6 gap-y-2">
+          <Link href="/verification" className="inline-flex min-h-11 items-center font-pretendard text-sm font-semibold text-[#7A4AE2] underline underline-offset-4 hover:text-[#5B35B5] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7A4AE2]">
+            학교 인증 알아보기 <span className="ml-2" aria-hidden="true">→</span>
+          </Link>
+          <Link href="/safety" className="inline-flex min-h-11 items-center font-pretendard text-sm font-semibold text-[#7A4AE2] underline underline-offset-4 hover:text-[#5B35B5] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7A4AE2]">
+            안전한 이용 알아보기 <span className="ml-2" aria-hidden="true">→</span>
+          </Link>
+        </nav>
       </section>
 
       <section aria-labelledby="download-faq" className="mx-auto grid w-full max-w-6xl gap-8 border-t border-[#F1ECFA] px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">

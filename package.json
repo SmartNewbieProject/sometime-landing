@@ -9,6 +9,8 @@
     "lint": "next lint",
     "seo:public-smoke": "node scripts/seo-public-smoke.mjs",
     "test:store-links": "tsx --test src/app/_lib/store-links.test.ts src/app/_lib/store-cta-tracking.test.ts src/app/_lib/content-store-cta.test.ts",
+    "test:public-web": "tsx --test src/app/_lib/*.test.ts src/seo-canary-policy.test.ts",
+    "test:assets": "bun test scripts/download-assets.test.mjs",
     "import-csv": "tsx scripts/importCsvToSupabase.ts"
   },
   "dependencies": {
@@ -22,6 +24,7 @@
     "framer-motion": "^12.23.9",
     "mixpanel-browser": "^2.81.0",
     "next": "^15.5.18",
+    "node-html-parser": "^9.0.4",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },

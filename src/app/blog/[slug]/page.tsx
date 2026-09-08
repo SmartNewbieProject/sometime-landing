@@ -6,22 +6,21 @@ import { JsonLd } from "../../_components/public-content/JsonLd";
 import { ContentBreadcrumb } from "../../_components/public-content/ContentBreadcrumb";
 import { ContentBanner } from "../../_components/public-content/ContentBanner";
 import { ReadingProgress } from "../../_components/public-content/ReadingProgress";
-import { FaqAccordion } from "../../_components/public-content/FaqAccordion";
-import { TrialChatCta } from "../../_components/public-content/TrialChatCta";
-import { ContextualStoreCta } from "../../_components/public-content/ContextualStoreCta";
 import {
   formatDate,
   getBlogArticle,
   pickBlogBannerImage,
   textExcerpt,
 } from "../../_lib/public-content";
-import { defaultDetailFaqs, faqPageJsonLd, splitContentAndFaq } from "../../_lib/faq";
+import { faqPageJsonLd, splitContentAndFaq } from "../../_lib/faq";
+import { contentSummary, detailEndAction } from "../../_lib/content-presentation";
+import { recoverNaverTables } from "../../_lib/naver-table-recovery";
 import {
   articleJsonLd,
   breadcrumbJsonLd,
   buildPageMetadata,
 } from "../../_lib/seo";
-import { getBannerAlt } from "../../_lib/banner-a11y";
+import { getBannerAlt, getBannerDimensions } from "../../_lib/banner-a11y";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -62,8 +61,11 @@ export default async function BlogArticlePage({ params }: PageProps) {
   const image = pickBlogBannerImage(article);
   const description = textExcerpt(article.excerpt ?? article.content);
   const path = `/blog/${encodeURIComponent(article.slug)}`;
-  const { body, faqs: inlineFaqs } = splitContentAndFaq(article.content);
-  const faqs = inlineFaqs.length > 0 ? inlineFaqs : defaultDetailFaqs("story");
+  const content = recoverNaverTables(article.slug, article.content);
+  const { faqs: inlineFaqs } = splitContentAndFaq(content);
+  const summary = contentSummary(article.excerpt || article.subtitle, content);
+  const publishedDate = formatDate(article.publishedAt);
+  const endAction = detailEndAction("story", article.title);
 
   return (
     <ContentShell>
@@ -106,52 +108,30 @@ export default async function BlogArticlePage({ params }: PageProps) {
           <h1 className="font-wantedSans text-4xl font-black leading-tight tracking-tight text-[#201823] sm:text-6xl">
             {article.title}
           </h1>
-          {article.excerpt || article.subtitle ? (
+          {summary ? (
             <p className="mt-5 text-lg leading-8 text-[#5f5567]">
-              {article.excerpt ?? article.subtitle}
+              {summary}
             </p>
           ) : null}
           <p className="mt-6 text-sm font-bold text-[#9a8fa2]">
             <span>{article.author?.name ?? "썸타임 에디터"}</span>
-            {" · "}
-            <time dateTime={article.publishedAt ?? undefined}>
-              {formatDate(article.publishedAt)}
-            </time>
+            {publishedDate ? <>{" · "}<time dateTime={article.publishedAt ?? undefined}>{publishedDate}</time></> : null}
           </p>
         </div>
 
-        <ContentBanner
+        {!content.includes(image) ? <ContentBanner
+          {...getBannerDimensions(article.thumbnail?.url === image ? article.thumbnail : article.coverImage?.url === image ? article.coverImage : null)}
           src={image}
           title={article.title}
           seed={article.id}
-          subtitle={article.subtitle}
-          excerpt={article.excerpt}
-        />
+          alt={article.thumbnail?.url === image ? article.thumbnail.alt : article.coverImage?.url === image ? article.coverImage.alt : undefined}
+        /> : null}
 
-        <MarkdownBody content={body} />
+        <MarkdownBody content={content} />
 
-        <ContextualStoreCta
-          title={article.title}
-          category={article.category}
-          keywords={article.seo?.keywords}
-          description={article.excerpt ?? article.subtitle}
-        />
-
-        <div className="mt-12">
-          <TrialChatCta contentType="story" contentId={article.slug} placement="detail_bottom" />
-        </div>
-
-        <div className="mt-10">
-          <FaqAccordion
-            items={faqs}
-            title={inlineFaqs.length > 0 ? "이 글 FAQ" : "함께 알아두면 좋아요"}
-            description={
-              inlineFaqs.length > 0
-                ? "이 글에서 짚어 본 질문들입니다."
-                : "학교 인증 소개팅을 시작하기 전에 자주 묻는 이야기예요."
-            }
-          />
-        </div>
+        <nav aria-label="이 글 다음으로" className="mt-10 border-t border-[#EEE8FF] pt-6">
+          <a href={endAction.href} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">{endAction.label}</a>
+        </nav>
       </article>
     </ContentShell>
   );

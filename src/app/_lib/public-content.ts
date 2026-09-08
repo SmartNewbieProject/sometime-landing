@@ -160,10 +160,51 @@ type ApiList<T> = {
 
 /** sometime-articles public API max limit */
 const ARTICLE_PAGE_LIMIT = 50;
+const PUBLIC_CONTENT_TIMEOUT_MS = 10_000;
 
-async function fetchJson<T>(path: string): Promise<T | null> {
+type ErrorEnvelope = {
+  success?: boolean;
+  errorCode?: string;
+};
+
+/**
+ * A public-content dependency failed. Only an upstream 404 is represented as
+ * null; every other failure must reach the route error boundary.
+ */
+export class PublicContentFetchError extends Error {
+  readonly path: string;
+  readonly status: number | null;
+  readonly errorCode?: string;
+
+  constructor({
+    path,
+    status,
+    message,
+    errorCode,
+    cause,
+  }: {
+    path: string;
+    status: number | null;
+    message: string;
+    errorCode?: string;
+    cause?: unknown;
+  }) {
+    super(message, { cause });
+    this.name = "PublicContentFetchError";
+    this.path = path;
+    this.status = status;
+    this.errorCode = errorCode;
+  }
+}
+
+async function fetchJson<T>(
+  path: string,
+  baseUrl = API_BASE_URL,
+): Promise<T | null> {
+  let response: Response;
   try {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
+    response = await fetch(`${baseUrl}${path}`, {
+      signal: AbortSignal.timeout(PUBLIC_CONTENT_TIMEOUT_MS),
       next: { revalidate: 300 },
       headers: {
         Accept: "application/json",
@@ -171,32 +212,80 @@ async function fetchJson<T>(path: string): Promise<T | null> {
         "X-Country": "kr",
       },
     });
-
-    if (!response.ok) return null;
-    const json = (await response.json()) as T & { success?: boolean; errorCode?: string };
-    // Nest 검증 실패 등이 200 아닌 경우 처리. 일부 에러 envelope 방어.
-    if (json && typeof json === "object" && "success" in json && json.success === false) {
-      return null;
-    }
-    return json as T;
-  } catch {
-    return null;
+  } catch (cause) {
+    throw new PublicContentFetchError({
+      path,
+      status: null,
+      message: `Public content request failed before a response: ${path}`,
+      cause,
+    });
   }
+
+  if (response.status === 404) return null;
+  if (!response.ok) {
+    throw new PublicContentFetchError({
+      path,
+      status: response.status,
+      message: `Public content request failed (${response.status} ${response.statusText}): ${path}`,
+    });
+  }
+
+  let json: T & ErrorEnvelope;
+  try {
+    json = (await response.json()) as T & ErrorEnvelope;
+  } catch (cause) {
+    throw new PublicContentFetchError({
+      path,
+      status: response.status,
+      message: `Public content response was not valid JSON: ${path}`,
+      cause,
+    });
+  }
+
+  if (!json || typeof json !== "object") {
+    throw new PublicContentFetchError({
+      path,
+      status: response.status,
+      message: `Public content API returned an invalid payload: ${path}`,
+    });
+  }
+  if (json.success === false) {
+    throw new PublicContentFetchError({
+      path,
+      status: response.status,
+      errorCode: json.errorCode,
+      message: `Public content API returned an error envelope: ${path}`,
+    });
+  }
+  return json as T;
 }
 
-function listItems<T>(payload: ApiList<T> | null | undefined): T[] {
+function invalidPayload(path: string): PublicContentFetchError {
+  return new PublicContentFetchError({
+    path,
+    status: 200,
+    message: `Public content API returned an invalid list payload: ${path}`,
+  });
+}
+
+function listItems<T>(payload: ApiList<T> | null, path: string): T[] {
   if (!payload) return [];
   if (Array.isArray(payload.items)) return payload.items;
   if (Array.isArray(payload.data)) return payload.data;
-  return [];
+  throw invalidPayload(path);
+}
+
+function arrayItems<T>(payload: T[] | null, path: string): T[] {
+  if (!payload) return [];
+  if (Array.isArray(payload)) return payload;
+  throw invalidPayload(path);
 }
 
 export const getBlogArticles = cache(async (limit = 48) => {
   const safeLimit = Math.min(Math.max(limit, 1), ARTICLE_PAGE_LIMIT);
-  const payload = await fetchJson<ApiList<SometimeArticleListItem>>(
-    `/sometime-articles?limit=${safeLimit}&page=1`,
-  );
-  return listItems(payload);
+  const path = `/sometime-articles?limit=${safeLimit}&page=1`;
+  const payload = await fetchJson<ApiList<SometimeArticleListItem>>(path);
+  return listItems(payload, path);
 });
 
 /** 사이트맵 등 전량 수집 — page 단위로 순회 (limit max 50) */
@@ -204,11 +293,10 @@ export async function getAllBlogArticles(): Promise<SometimeArticleListItem[]> {
   const all: SometimeArticleListItem[] = [];
   let page = 1;
 
-  while (page <= 20) {
-    const payload = await fetchJson<ApiList<SometimeArticleListItem>>(
-      `/sometime-articles?limit=${ARTICLE_PAGE_LIMIT}&page=${page}`,
-    );
-    const items = listItems(payload);
+  while (true) {
+    const path = `/sometime-articles?limit=${ARTICLE_PAGE_LIMIT}&page=${page}`;
+    const payload = await fetchJson<ApiList<SometimeArticleListItem>>(path);
+    const items = listItems(payload, path);
     all.push(...items);
 
     const hasNext =
@@ -226,56 +314,54 @@ export const getBlogArticle = cache(async (slug: string) => {
 
 export const getUniversityPage = cache(async (code: string) => {
   const webBaseUrl = API_BASE_URL.replace(/\/api\/?$/, "");
-  try {
-    const response = await fetch(
-      `${webBaseUrl}/web/university-data/${encodeURIComponent(code)}`,
-      {
-        next: { revalidate: 300 },
-        headers: { Accept: "application/json", "X-Country": "kr" },
-      },
-    );
-    if (!response.ok) return null;
-    return (await response.json()) as UniversityPageData;
-  } catch {
-    return null;
-  }
+  return fetchJson<UniversityPageData>(
+    `/web/university-data/${encodeURIComponent(code)}`,
+    webBaseUrl,
+  );
 });
 
 export const getTopKrUniversities = cache(async (limit = 20) => {
   const safeLimit = Math.min(Math.max(limit, 1), 50);
-  const payload = await fetchJson<TopUniversity[]>(`/universities/top?country=kr`);
-  const items = Array.isArray(payload) ? payload : [];
-  return items.slice(0, safeLimit);
+  const path = "/universities/top?country=kr";
+  const payload = await fetchJson<TopUniversity[]>(path);
+  return arrayItems(payload, path).slice(0, safeLimit);
 });
 
 export const getCardNewsList = cache(async (limit = 48) => {
   const safeLimit = Math.min(Math.max(limit, 1), 100);
-  const payload = await fetchJson<ApiList<CardNews>>(
-    `/posts/card-news?limit=${safeLimit}&includeReadState=false`,
-  );
-  return listItems(payload);
+  const path = `/posts/card-news?limit=${safeLimit}&includeReadState=false`;
+  const payload = await fetchJson<ApiList<CardNews>>(path);
+  return listItems(payload, path);
 });
 
 /** 카드뉴스 커서 페이지네이션 전량 (사이트맵용) */
 export async function getAllCardNews(): Promise<CardNews[]> {
   const all: CardNews[] = [];
   let cursor: string | null = null;
-  let guard = 0;
+  const seenCursors = new Set<string>();
 
-  while (guard < 30) {
+  while (true) {
     const qs = new URLSearchParams({
       limit: "50",
       includeReadState: "false",
     });
     if (cursor) qs.set("cursor", cursor);
 
-    const payload = await fetchJson<ApiList<CardNews>>(`/posts/card-news?${qs.toString()}`);
-    const items = listItems(payload);
+    const path = `/posts/card-news?${qs.toString()}`;
+    const payload = await fetchJson<ApiList<CardNews>>(path);
+    const items = listItems(payload, path);
     all.push(...items);
 
     if (!payload?.hasMore || !payload.nextCursor || items.length === 0) break;
+    if (seenCursors.has(payload.nextCursor)) {
+      throw new PublicContentFetchError({
+        path: `/posts/card-news?${qs.toString()}`,
+        status: 200,
+        message: "Public content API repeated a card-news cursor",
+      });
+    }
+    seenCursors.add(payload.nextCursor);
     cursor = payload.nextCursor;
-    guard += 1;
   }
 
   return all;
@@ -286,8 +372,9 @@ export const getCardNews = cache(async (id: string) => {
 });
 
 export const getHotCommunityPosts = cache(async () => {
-  const payload = await fetchJson<ApiList<CommunityPost>>("/articles/hot");
-  return listItems(payload);
+  const path = "/articles/hot";
+  const payload = await fetchJson<ApiList<CommunityPost>>(path);
+  return listItems(payload, path);
 });
 
 export const getCommunityPost = cache(async (id: string) => {

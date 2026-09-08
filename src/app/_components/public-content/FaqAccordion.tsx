@@ -56,10 +56,10 @@ export function FaqAccordion({
                   aria-expanded={isOpen}
                   aria-controls={panelId}
                   onClick={() => setOpenId(isOpen ? null : item.id)}
-                  className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left transition hover:bg-[#FCFAFF] sm:px-5"
+                  className="flex min-h-11 w-full items-center justify-between gap-4 px-4 py-4 text-left transition hover:bg-[#FCFAFF] sm:px-5"
                 >
-                  <span className="text-[15px] font-semibold leading-[22px] text-[#201823] sm:text-[16px] sm:leading-[24px]">
-                    <span className="mr-2 text-[#9B8EBD]" aria-hidden="true">
+                  <span className="text-[16px] font-semibold leading-[26px] text-[#201823] sm:text-[16px] sm:leading-[24px]">
+                    <span className="mr-2 text-[#625A68]" aria-hidden="true">
                       Q{index + 1}.
                     </span>
                     {item.question}
@@ -81,11 +81,11 @@ export function FaqAccordion({
                 hidden={!isOpen}
                 className="border-t border-[#F1ECFA] px-4 pb-4 pt-3 sm:px-5"
               >
-                <p className="break-keep text-pretty text-[15px] font-medium leading-[26px] text-[#555]">{item.answer}</p>
+                <p className="break-keep text-pretty text-[16px] font-medium leading-[28px] text-[#555]">{item.answer}</p>
                 {item.relatedHref ? (
                   <Link
                     href={item.relatedHref}
-                    className="mt-3 inline-flex text-[14px] font-semibold text-[#7A4AE2] underline-offset-4 hover:underline"
+                    className="mt-3 inline-flex min-h-11 items-center text-[14px] font-semibold text-[#7A4AE2] underline-offset-4 hover:underline"
                   >
                     {item.relatedLabel ?? "관련 글 보기"} →
                   </Link>

@@ -1,20 +1,23 @@
 export const UNIVERSITY_SITEMAP_LIMIT = 18;
 export const UNIVERSITY_SITEMAP_MIN_VERIFIED_COUNT = 20;
 
+// Significant public-content revisions, not build/request timestamps.
+// Advance the affected entry alongside a content change; app/API-owned pages
+// retain their own version until that owner's release is verified.
 export const STATIC_SITEMAP_LASTMOD = {
   "/": "2025-07-28T13:56:11.000Z",
-  "/blog": "2026-07-22T16:24:51.000Z",
-  "/stories": "2026-08-13T00:00:00.000Z",
-  "/card-news": "2026-07-09T14:25:08.000Z",
-  "/faq": "2026-07-09T15:46:09.000Z",
+  "/blog": "2026-09-08T00:00:00+09:00",
+  "/stories": "2026-09-08T00:00:00+09:00",
+  "/card-news": "2026-09-08T00:00:00+09:00",
+  "/faq": "2026-09-08T00:00:00+09:00",
   "/safety": "2026-07-22T17:33:19.000Z",
   "/verification": "2026-07-22T17:33:19.000Z",
-  "/privacy/easy": "2026-07-19T08:07:45.000Z",
-  "/community-guidelines": "2026-07-19T08:07:45.000Z",
-  "/press": "2026-07-19T08:07:45.000Z",
-  "/about": "2026-07-19T11:22:01.000Z",
-  "/download": "2026-07-22T18:03:42.000Z",
-  "/university": "2026-07-22T17:33:19.000Z",
+  "/privacy/easy": "2026-09-08T00:00:00+09:00",
+  "/community-guidelines": "2026-09-08T00:00:00+09:00",
+  "/press": "2026-09-08T00:00:00+09:00",
+  "/about": "2026-09-08T00:00:00+09:00",
+  "/download": "2026-09-08T00:00:00+09:00",
+  "/university": "2026-09-08T00:00:00+09:00",
 } as const;
 
 export type StaticSitemapPath = keyof typeof STATIC_SITEMAP_LASTMOD;

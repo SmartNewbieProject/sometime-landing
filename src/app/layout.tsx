@@ -4,6 +4,7 @@ import { Nanum_Pen_Script } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { AmplitudeProvider } from "./_components/AmplitudeProvider";
+import { MixpanelProvider } from "./_components/MixpanelProvider";
 import { SITE_URL } from "./_lib/public-content";
 import {
   DEFAULT_KEYWORDS,
@@ -92,76 +93,6 @@ const structuredData = [
   organizationJsonLd(),
   websiteJsonLd(),
   softwareApplicationJsonLd(),
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "썸타임은 대학생만 이용할 수 있나요?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "썸타임은 대학생의 안전한 만남을 위해 학교 인증을 중요한 기준으로 사용합니다. 진짜 대학생끼리 더 자연스럽게 대화하고 만날 수 있도록 설계했습니다.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "학교 인증 소개팅이 왜 중요한가요?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "학교 인증은 낯선 만남의 불안을 줄이고, 같은 생활권과 캠퍼스 문화를 공유하는 사람과 연결될 가능성을 높입니다.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "캠퍼스 매칭은 일반 소개팅 앱과 무엇이 다른가요?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "캠퍼스 매칭은 단순히 많은 사람을 보여주는 방식이 아니라 같은 지역, 인접 대학, 실제 만남 가능한 생활권을 고려해 대학생에게 맞는 연결을 돕습니다.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "썸타임은 무료로 이용할 수 있나요?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "썸타임은 무료로 시작할 수 있으며, 일부 기능은 유료로 제공됩니다. 유료 기능의 비용과 이용 조건은 앱에서 사용 전에 확인할 수 있습니다.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "대학생 소개팅 앱은 어떤 기준으로 골라야 하나요?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "학교 인증 여부, 실제 만남 가능한 생활권, 프로필 검수와 신고 대응, 부담 없는 매칭 구조를 함께 확인하는 것이 좋습니다.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "과팅과 소개팅 앱 중 무엇이 더 잘 맞나요?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "과팅은 친구들과 함께 시작하기 좋고, 소개팅 앱은 내 일정과 취향에 맞춰 천천히 알아가기 좋습니다. 대학생이라면 학교 인증과 생활권 매칭이 있는 앱을 고르는 것이 중요합니다.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "지방 대학생도 소개팅 앱에서 만날 수 있나요?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "가능합니다. 전국 단위로 사람만 많이 보여주는 앱보다 같은 지역과 인접 대학 생활권을 함께 보는 서비스가 실제 만남으로 이어질 가능성이 높습니다.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "무료 대학생 소개팅 앱도 괜찮나요?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "무료 여부보다 학교 인증, 운영 검수, 신고 대응, 매칭 품질을 먼저 확인하는 것이 좋습니다. 썸타임은 무료 매칭으로 시작 부담을 낮추고 있습니다.",
-        },
-      },
-    ],
-  },
 ];
 
 export default function RootLayout({
@@ -247,6 +178,7 @@ export default function RootLayout({
       <body
         className={`${pretendard.variable} ${wnatedSans.variable} ${nanumPenScript.variable} antialiased relative`}
       >
+        <MixpanelProvider />
         {children}
       </body>
 

@@ -10,7 +10,7 @@ export type InfoSection = {
   items?: string[];
 };
 
-export type InfoLink = { label: string; href: string };
+export type InfoLink = { label: string; href: string; download?: boolean };
 
 type InfoPageBodyProps = {
   badge: string;
@@ -91,8 +91,56 @@ export function InfoPageBody({
         ))}
       </div>
 
+      {links && links.length > 0 && (
+        <section className="mt-12 rounded-2xl bg-neutral-50 p-5 sm:mt-14 sm:p-6">
+          <h2 className="mb-3 font-wantedSans text-[18px] font-bold text-black">
+            바로가기와 관련 안내
+          </h2>
+          <ul className="grid gap-1 sm:grid-cols-2 sm:gap-x-5">
+            {links.map((link) => {
+              const className =
+                "inline-flex min-h-11 items-center py-2 text-[15px] font-medium leading-6 text-[#7A4AE2] underline underline-offset-4";
+
+              if (link.download) {
+                return (
+                  <li key={link.href}>
+                    <a href={link.href} download className={className}>
+                      {link.label}
+                    </a>
+                  </li>
+                );
+              }
+
+              if (link.href.startsWith("/")) {
+                return (
+                <li key={link.href}>
+                  <Link href={link.href} className={className}>
+                    {link.label}
+                  </Link>
+                </li>
+                );
+              }
+
+              const opensNewTab = link.href.startsWith("http");
+              return (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    target={opensNewTab ? "_blank" : undefined}
+                    rel={opensNewTab ? "noopener noreferrer" : undefined}
+                    className={className}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+
       {storeCtaSurface ? (
-        <div className="mt-14">
+        <div className="mt-12 sm:mt-14">
           <StoreInstallCta
             surface={storeCtaSurface}
             heading={storeCtaHeading}
@@ -100,39 +148,6 @@ export function InfoPageBody({
           />
         </div>
       ) : null}
-
-      {links && links.length > 0 && (
-        <section className="mt-14 rounded-2xl bg-neutral-50 p-6">
-          <h2 className="mb-3 font-wantedSans text-[18px] font-bold text-black">
-            함께 보면 좋은 문서
-          </h2>
-          <ul className="space-y-2">
-            {links.map((link) =>
-              link.href.startsWith("/") ? (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-[15px] font-medium text-[#7A4AE2] underline underline-offset-4"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ) : (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[15px] font-medium text-[#7A4AE2] underline underline-offset-4"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ),
-            )}
-          </ul>
-        </section>
-      )}
     </div>
   );
 }

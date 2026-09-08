@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import { SITE_URL } from "./public-content";
 import { APP_STORE_URL, GOOGLE_PLAY_URL } from "./store-links";
 
-export const DEFAULT_OG_PATH = "/preview_title.png";
+export const DEFAULT_OG_PATH = "/images/social/sometime-share-20260908.jpg";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}${DEFAULT_OG_PATH}`;
 
 export const SITE_NAME = "썸타임";
 export const SITE_TITLE =
   "썸타임 - 대학생 소개팅 앱 | 학교 인증 캠퍼스 매칭";
 export const SITE_DESCRIPTION =
-  "학교 인증을 기반으로 같은 지역, 인접 대학의 대학생을 연결하는 캠퍼스 소개팅 앱 썸타임. 안전한 대학생 소개팅, 캠퍼스 매칭, 매주 목/일 무료 매칭을 확인해보세요.";
+  "대학 인증 여부와 관심사를 확인하고 가까운 대학생과 새로운 인연을 시작하세요. 썸타임의 이용 안내와 공식 앱 다운로드를 확인할 수 있습니다.";
 
 export const DEFAULT_KEYWORDS = [
   "대학생 소개팅 앱",
@@ -82,6 +82,8 @@ export function buildPageMetadata({
 }: BuildPageMetadataInput): Metadata {
   const url = path.startsWith("http") ? path : absoluteUrl(path);
   const ogImage = absoluteUrl(image || DEFAULT_OG_PATH);
+  const imageDimensions = ogImage === DEFAULT_OG_IMAGE ? { width: 1200, height: 630 } : {};
+  const pageDescription = description.trim() || `${title}. ${SITE_DESCRIPTION}`;
   const ogAlt = imageAlt || title;
   const mime = guessImageMime(ogImage);
   const fullTitle = title.includes(SITE_NAME) ? title : undefined;
@@ -90,8 +92,7 @@ export function buildPageMetadata({
     {
       url: ogImage,
       secureUrl: ogImage.startsWith("https") ? ogImage : undefined,
-      width: 1200,
-      height: 630,
+      ...imageDimensions,
       alt: ogAlt,
       type: mime,
     },
@@ -99,7 +100,7 @@ export function buildPageMetadata({
 
   return {
     title: fullTitle ? { absolute: fullTitle } : title,
-    description,
+    description: pageDescription,
     keywords,
     authors: authors?.map((name) => ({ name })),
     category: section ?? undefined,
@@ -108,7 +109,7 @@ export function buildPageMetadata({
     },
     openGraph: {
       title,
-      description,
+      description: pageDescription,
       url,
       siteName: SITE_NAME,
       locale: "ko_KR",
@@ -122,13 +123,12 @@ export function buildPageMetadata({
     twitter: {
       card: "summary_large_image",
       title,
-      description,
+      description: pageDescription,
       images: [ogImage],
     },
     // 카카오/슬랙 등 일부 크롤러 호환 보조 메타
     other: {
-      "og:image:width": "1200",
-      "og:image:height": "630",
+      ...(ogImage === DEFAULT_OG_IMAGE ? { "og:image:width": "1200", "og:image:height": "630" } : {}),
       "og:image:alt": ogAlt,
       ...(mime ? { "og:image:type": mime } : {}),
     },

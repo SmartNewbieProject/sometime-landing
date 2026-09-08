@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { Fragment } from "react";
+import { normalizeSectionRichText } from "../../_lib/section-richtext";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
 import { ContentMedia } from "../../_components/public-content/ContentMedia";
@@ -7,22 +9,23 @@ import { JsonLd } from "../../_components/public-content/JsonLd";
 import { ContentBreadcrumb } from "../../_components/public-content/ContentBreadcrumb";
 import { ContentBanner } from "../../_components/public-content/ContentBanner";
 import { ReadingProgress } from "../../_components/public-content/ReadingProgress";
-import { FaqAccordion } from "../../_components/public-content/FaqAccordion";
-import { TrialChatCta } from "../../_components/public-content/TrialChatCta";
-import { ContextualStoreCta } from "../../_components/public-content/ContextualStoreCta";
 import {
+  type CardNewsSection,
   formatDate,
   getCardNews,
   pickCardNewsBannerImage,
   textExcerpt,
 } from "../../_lib/public-content";
-import { defaultDetailFaqs, faqPageJsonLd, splitContentAndFaq } from "../../_lib/faq";
+import { faqPageJsonLd, splitContentAndFaq } from "../../_lib/faq";
+import { contentSummary, detailEndAction } from "../../_lib/content-presentation";
+import { getCardNewsLifecycle } from "../../_lib/public-content-lifecycle";
+import { repairCardNews } from "../../_lib/public-content-repairs";
 import {
   articleJsonLd,
   breadcrumbJsonLd,
   buildPageMetadata,
 } from "../../_lib/seo";
-import { getBannerAlt } from "../../_lib/banner-a11y";
+import { getBannerAlt, getBannerDimensions } from "../../_lib/banner-a11y";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -30,8 +33,10 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const item = await getCardNews(id);
-  if (!item) return { robots: { index: false, follow: false } };
+  const lifecycle = getCardNewsLifecycle(id);
+  const sourceItem = await getCardNews(lifecycle.canonicalId ?? id);
+  if (!sourceItem) return { robots: { index: false, follow: false } };
+  const item = repairCardNews(sourceItem);
 
   const description = textExcerpt(item.description ?? item.subtitle ?? item.body);
   const image = pickCardNewsBannerImage(item);
@@ -53,13 +58,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CardNewsDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const item = await getCardNews(id);
-  if (!item) notFound();
+  const lifecycle = getCardNewsLifecycle(id);
+  if (lifecycle.canonicalId) permanentRedirect(`/card-news/${lifecycle.canonicalId}`);
+  const sourceItem = await getCardNews(id);
+  if (!sourceItem) notFound();
+  const item = repairCardNews(sourceItem);
 
   const image = pickCardNewsBannerImage(item);
   const rawBody = item.body?.trim() ?? "";
-  const { body, faqs: inlineFaqs } = splitContentAndFaq(rawBody);
-  const faqs = inlineFaqs.length > 0 ? inlineFaqs : defaultDetailFaqs("card-news");
+  const { faqs: inlineFaqs } = splitContentAndFaq(rawBody);
+  const summary = contentSummary(item.description || item.subtitle, rawBody);
+  const publishedDate = formatDate(item.publishedAt);
+  const endAction = detailEndAction("card-news", item.title, lifecycle.intent);
   const description = textExcerpt(item.description ?? item.subtitle ?? item.body);
   const path = `/card-news/${item.id}`;
   const sectionLabel = item.layoutMode === "longform" ? "롱폼" : "카드뉴스";
@@ -96,47 +106,60 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
         />
 
         <div className="mb-8">
+          {lifecycle.archive ? (
+            <aside role="note" data-content-archive className="mb-6 border-l-4 border-[#625A68] bg-[#f7f7f7] p-4 text-[#201823]">
+              <p className="font-bold">{lifecycle.archive.label}{" · "}<time dateTime={lifecycle.archive.endedOn}>{formatDate(lifecycle.archive.endedOn)}</time></p>
+              <p className="mt-2 text-sm leading-6">아래 내용은 당시 게시된 기록입니다. 현재 모집이나 혜택을 안내하는 글이 아닙니다.</p>
+            </aside>
+          ) : null}
           <p className="mb-4 text-sm font-black uppercase tracking-[0.2em] text-[#8a5cff]">
             {item.layoutMode === "longform" ? "LONGFORM" : "CARD NEWS"}
           </p>
           <h1 className="font-wantedSans text-4xl font-black leading-tight tracking-tight text-[#201823] sm:text-6xl">
             {item.title}
           </h1>
-          {item.description || item.subtitle ? (
+          {summary ? (
             <p className="mt-5 text-lg leading-8 text-[#5f5567]">
-              {item.description ?? item.subtitle}
+              {summary}
             </p>
           ) : null}
           <p className="mt-6 text-sm font-bold text-[#9a8fa2]">
-            <time dateTime={item.publishedAt ?? undefined}>{formatDate(item.publishedAt)}</time>
-            {" · "}좋아요 {item.likeCount ?? 0}
+            {publishedDate ? <><time dateTime={item.publishedAt ?? undefined}>{publishedDate}</time>{" · "}</> : null}
+            좋아요 {item.likeCount ?? 0}
           </p>
         </div>
 
-        <ContentBanner
+        {rawBody && !rawBody.includes(image) ? <ContentBanner
+          {...getBannerDimensions(item.backgroundImage?.url === image ? item.backgroundImage : null)}
           src={image}
           title={item.title}
           seed={item.id}
-          subtitle={item.subtitle}
-          excerpt={item.description}
-        />
+          alt={item.backgroundImage?.url === image ? item.backgroundImage.alt : undefined}
+        /> : null}
 
-        {body ? (
-          <MarkdownBody content={body} />
-        ) : (
+        {rawBody ? <MarkdownBody content={rawBody} /> : null}
+        {item.sections?.length ? (
           <div className="space-y-6">
-            {(item.sections ?? []).map((section) => (
+            {item.sections.map((section: CardNewsSection & { content?: string | null; order?: number }) => ({
+              ...section,
+              body: section.body ?? section.content,
+              richText: normalizeSectionRichText(section.body ?? section.content ?? ""),
+              sortOrder: section.sortOrder ?? section.order,
+            })).sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).map((section, index) => (
               <section
-                key={section.id ?? section.sortOrder}
-                className="rounded-[28px] border border-[#efe5f5] bg-white p-6 shadow-sm"
+                key={section.id ?? section.sortOrder ?? index}
+                className="mx-auto max-w-[640px] border-b border-[#efe5f5] pb-6"
               >
                 {section.imageUrl ? (
-                  <div className="relative mb-5 aspect-[16/10] overflow-hidden rounded-2xl">
+                  <div className="mb-5">
                     <ContentMedia
                       src={section.imageUrl}
-                      alt={getBannerAlt(section.title || item.title)}
+                      alt={`${section.title || item.title} — ${index + 1}/${item.sections?.length} 카드${section.body ? `: ${contentSummary(section.richText ?? section.body)}` : ""}`}
                       seed={`${item.id}-${section.id ?? section.sortOrder ?? 0}`}
-                      className="object-cover"
+                      className="rounded-2xl object-contain"
+                      fill={false}
+                      enlarge
+                      priority={index === 0 && !rawBody}
                       sizes="(min-width: 900px) 720px, 100vw"
                     />
                   </div>
@@ -146,39 +169,27 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
                     {section.title}
                   </h2>
                 ) : null}
-                {section.body ? (
-                  <p className="mt-3 leading-8 text-[#5f5567]">{section.body}</p>
+                {section.richText !== null ? (
+                  <div className="public-markdown">
+                    {section.richText ? section.richText.split("\n\n").map((paragraph, paragraphIndex) => (
+                      <p key={paragraphIndex}>
+                        {paragraph.split("\n").map((line, lineIndex) => (
+                          <Fragment key={lineIndex}>{lineIndex > 0 ? <br /> : null}{line}</Fragment>
+                        ))}
+                      </p>
+                    )) : null}
+                  </div>
+                ) : section.body ? (
+                  <MarkdownBody content={section.body} />
                 ) : null}
               </section>
             ))}
           </div>
-        )}
+        ) : null}
 
-        <ContextualStoreCta
-          title={item.title}
-          category={sectionLabel}
-          description={item.description ?? item.subtitle}
-        />
-
-        <div className="mt-12">
-          <TrialChatCta
-            contentType="card-news"
-            contentId={item.id}
-            placement="detail_bottom"
-          />
-        </div>
-
-        <div className="mt-10">
-          <FaqAccordion
-            items={faqs}
-            title={inlineFaqs.length > 0 ? "이 글 FAQ" : "함께 알아두면 좋아요"}
-            description={
-              inlineFaqs.length > 0
-                ? "이 콘텐츠에서 짚은 질문입니다."
-                : "카드뉴스를 읽은 뒤 자주 이어지는 질문이에요."
-            }
-          />
-        </div>
+        <nav aria-label="이 글 다음으로" className="mt-10 border-t border-[#EEE8FF] pt-6">
+          <a href={endAction.href} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">{endAction.label}</a>
+        </nav>
       </article>
     </ContentShell>
   );

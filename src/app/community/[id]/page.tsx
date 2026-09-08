@@ -5,7 +5,7 @@ import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
 import { ContentMedia } from "../../_components/public-content/ContentMedia";
 import { JsonLd } from "../../_components/public-content/JsonLd";
-import { ContextualStoreCta } from "../../_components/public-content/ContextualStoreCta";
+import { detailEndAction } from "../../_lib/content-presentation";
 import {
   formatDate,
   getCommunityPost,
@@ -56,6 +56,8 @@ export default async function CommunityDetailPage({ params }: PageProps) {
   const hasCover =
     Boolean(post.customBackgroundUrl) ||
     Boolean(post.images?.some((img) => img.imageUrl || img.url));
+  const publishedDate = formatDate(post.publishedAt);
+  const endAction = detailEndAction("community", post.title);
 
   return (
     <ContentShell>
@@ -105,17 +107,20 @@ export default async function CommunityDetailPage({ params }: PageProps) {
             {post.title}
           </h1>
           <p className="mt-6 text-sm font-bold text-[#9a8fa2]">
-            {post.author?.universityDetails?.name ?? "썸타임 커뮤니티"} ·{" "}
-            <time dateTime={post.publishedAt ?? undefined}>{formatDate(post.publishedAt)}</time>
+            {post.author?.universityDetails?.name ?? "썸타임 커뮤니티"}
+            {publishedDate ? <>{" · "}<time dateTime={post.publishedAt ?? undefined}>{publishedDate}</time></> : null}
           </p>
         </div>
 
         {hasCover ? (
-          <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-[32px] bg-[#f4edf8] shadow-[0_24px_90px_rgba(76,47,100,0.16)]">
+          <div className="mx-auto mb-10 max-w-[640px]">
             <ContentMedia
               src={image}
+              alt={`${post.title} — 작성자가 첨부한 사진`}
               seed={post.id}
-              className="object-cover"
+              className="rounded-2xl object-contain"
+              fill={false}
+              enlarge
               priority
               sizes="(min-width: 900px) 800px, 100vw"
             />
@@ -124,11 +129,9 @@ export default async function CommunityDetailPage({ params }: PageProps) {
 
         <MarkdownBody content={post.content ?? post.description ?? ""} />
 
-        <ContextualStoreCta
-          title={post.title}
-          category="커뮤니티"
-          description={post.description}
-        />
+        <nav aria-label="이 글 다음으로" className="mt-10 border-t border-[#EEE8FF] pt-6">
+          <a href={endAction.href} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">{endAction.label}</a>
+        </nav>
       </article>
     </ContentShell>
   );

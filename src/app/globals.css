@@ -40,11 +40,80 @@ button {
 
 .public-content-shell {
   overflow-wrap: anywhere;
+  word-break: keep-all;
+  text-wrap: pretty;
+  color-scheme: light;
 }
 
-.public-content-shell > article,
-.public-markdown {
+.public-content-shell :is(a, button, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid #5b35b5;
+  outline-offset: 4px;
+}
+
+.public-skip-link {
+  position: absolute;
+  top: 8px;
+  left: 20px;
+  z-index: 30;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  border-radius: 12px;
+  padding: 8px 16px;
+  background: #5b35b5;
+  color: white;
+  transform: translateY(-200%);
+}
+
+.public-skip-link:focus {
+  transform: translateY(0);
+}
+
+.public-page-button {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #eee8ff;
+  border-radius: 12px;
+  background: white;
+  color: #5b35b5;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 150ms, color 150ms;
+}
+
+.public-page-button:hover:not(:disabled) {
+  background: #f4f0ff;
+}
+
+.public-page-button[aria-current="page"] {
+  background: #5b35b5;
+  color: white;
+}
+
+.public-page-button:disabled {
+  cursor: default;
+  background: #fcfaff;
+  color: #625a68;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .public-content-shell *,
+  .public-content-shell *::before,
+  .public-content-shell *::after {
+    transition: none;
+    scroll-behavior: auto;
+  }
+}
+
+:where(.public-content-shell article),
+:where(.public-markdown) {
   min-width: 0;
+}
+
+.public-markdown {
   max-width: 100%;
 }
 
@@ -52,6 +121,7 @@ button {
 .public-content-shell h2,
 .public-content-shell h3 {
   word-break: keep-all;
+  text-wrap: balance;
 }
 
 .public-markdown {
@@ -59,7 +129,7 @@ button {
   overflow-wrap: anywhere;
   color: #352a3b;
   font-size: 18px;
-  line-height: 1.9;
+  line-height: 1.8;
 }
 
 .public-markdown > * + * {
@@ -120,11 +190,12 @@ button {
 }
 
 .public-markdown img {
-  width: 100%;
-  max-height: 620px;
-  object-fit: cover;
-  border-radius: 28px;
-  box-shadow: 0 24px 90px rgba(76, 47, 100, 0.14);
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+  border-radius: 12px;
 }
 
 .public-markdown-table-wrap {

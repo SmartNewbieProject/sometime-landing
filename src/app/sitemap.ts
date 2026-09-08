@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { getCardNewsLifecycle } from "./_lib/public-content-lifecycle";
 import {
   getAllBlogArticles,
   getAllCardNews,
@@ -18,9 +19,9 @@ export const revalidate = 300;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [articles, cardNews, topUniversities] = await Promise.all([
-    getAllBlogArticles().catch(() => [] as Awaited<ReturnType<typeof getAllBlogArticles>>),
-    getAllCardNews().catch(() => [] as Awaited<ReturnType<typeof getAllCardNews>>),
-    getTopKrUniversities(20).catch(() => [] as Awaited<ReturnType<typeof getTopKrUniversities>>),
+    getAllBlogArticles(),
+    getAllCardNews(),
+    getTopKrUniversities(20),
   ]);
 
   const latestBlogLastmod =
@@ -136,7 +137,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
   const cardNewsEntries: MetadataRoute.Sitemap = cardNews
-    .filter((item) => Boolean(item.id))
+    .filter((item) => Boolean(item.id) && !getCardNewsLifecycle(item.id).canonicalId)
     .map((item) => ({
       url: `${SITE_URL}/card-news/${item.id}`,
       lastModified: resolveContentLastmod({
