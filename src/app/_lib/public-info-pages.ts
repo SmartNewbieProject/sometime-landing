@@ -244,6 +244,19 @@ export const ABOUT_PAGE: PublicInfoPage = {
   ],
   sections: [
     {
+      id: "operator",
+      heading: "운영사",
+      body: [
+        "상호 스마트뉴비",
+        "대표 전준영",
+        "사업자등록번호 498-05-02914",
+        "통신판매업신고 제2026-대전유성-0328호",
+        "주소 대전광역시 유성구 동서대로 125, S9동 한밭인큐베이터타운 405호",
+        "문의 notify@smartnewb.com",
+        "서울 마포·서대문의 (주)썸타임은 동명의 다른 회사이며, 이 서비스의 운영사와 무관합니다.",
+      ],
+    },
+    {
       id: "how-it-works",
       heading: "이용 흐름",
       items: [
