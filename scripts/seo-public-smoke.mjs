@@ -2,6 +2,7 @@
 
 const DEFAULT_BASE = process.env.SEO_SMOKE_BASE_URL ?? "https://some-in-univ.com";
 const LEGACY_BASE = "https://info.some-in-univ.com";
+const RENDER_BASE = "https://sometime-landing.vercel.app";
 const DEFAULT_API_BASE = process.env.SEO_SMOKE_API_BASE_URL ?? "https://api.some-in-univ.com";
 const DEFAULT_VALID_UNIVERSITY_CODE =
   process.env.SEO_SMOKE_VALID_UNIVERSITY_CODE ?? "DJU";
@@ -148,6 +149,10 @@ async function checkPage(url, timeoutMs) {
     contentType.includes("text/html") || contentType.includes("application/xhtml+xml"),
     `page is not HTML: ${url} (${contentType || "unknown content-type"})`,
   );
+  ensure(
+    !/noindex/i.test(response.headers.get("x-robots-tag") ?? "") && !/noindex/i.test(text.match(/<meta[^>]*name=["']robots["'][^>]*>/i)?.[0] ?? ""),
+    `apex page must not be noindex: ${url}`,
+  );
 
   const canonicalHref = extractCanonicalHref(text, finalUrl);
   ensure(canonicalHref, `missing canonical link: ${finalUrl}`);
@@ -180,6 +185,19 @@ async function checkLegacyRedirects({ base, paths, timeoutMs }) {
     ensure(
       response.headers.get("location") === `${base}${path}`,
       `${LEGACY_BASE}${path} must redirect one hop to the exact apex path`,
+    );
+  }
+}
+
+async function checkRenderHostRedirects({ base, paths, timeoutMs }) {
+  for (const path of paths) {
+    const { response } = await fetchWithChecks(`${RENDER_BASE}${path}`, timeoutMs, "manual");
+    ensure(response.status === 308, `${RENDER_BASE}${path} must return 308`);
+    const expected =
+      path === "/community" ? `${base}/stories` : `${base}${path}`;
+    ensure(
+      response.headers.get("location") === expected,
+      `${RENDER_BASE}${path} must redirect one hop to ${expected}`,
     );
   }
 }
@@ -381,6 +399,9 @@ async function main() {
   const redirectPaths = locs.map((loc) => new URL(loc).pathname);
   await checkLegacyRedirects({ base, paths: redirectPaths, timeoutMs });
   console.log("✓ all legacy info URLs redirect one hop to the apex canonical paths");
+
+  await checkRenderHostRedirects({ base, paths: redirectPaths, timeoutMs });
+  console.log("✓ direct vercel.app render-host URLs redirect one hop to the apex canonical paths");
 
   await checkAppAssociations({ base, timeoutMs });
   console.log("✓ iOS and Android app association files are valid");

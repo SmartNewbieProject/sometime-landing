@@ -1,15 +1,24 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getCanonicalRedirect } from "./seo-canary-policy";
+import {
+  getCanonicalRedirect,
+  isInternalRenderRequest,
+  VERCEL_APP_RENDER_HOST,
+} from "./seo-canary-policy";
 
 const OFFICIAL_ORIGIN = "https://some-in-univ.com";
-const INTERNAL_RENDER_HOST = "sometime-landing.vercel.app";
+const INTERNAL_RENDER_HOST = VERCEL_APP_RENDER_HOST;
 const INDEXABLE_HOSTS = new Set(["some-in-univ.com", "info.some-in-univ.com", "www.some-in-univ.com"]);
 
 export function middleware(request: NextRequest) {
   const host = request.headers.get("host")?.split(":")[0]?.toLowerCase();
   const { pathname, search } = request.nextUrl;
 
-  const canonicalRedirect = getCanonicalRedirect(host, pathname, search);
+  const canonicalRedirect = getCanonicalRedirect(
+    host,
+    pathname,
+    search,
+    isInternalRenderRequest(request.headers),
+  );
   if (canonicalRedirect) {
     return NextResponse.redirect(new URL(canonicalRedirect), 308);
   }

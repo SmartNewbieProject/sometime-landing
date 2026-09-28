@@ -1,5 +1,9 @@
 export const APEX_CANONICAL_ORIGIN = "https://some-in-univ.com";
+export const VERCEL_APP_RENDER_HOST = "sometime-landing.vercel.app";
 const RETIRED_APEX_PROXY_PARAM = "__apex_proxy";
+
+const INTERNAL_REWRITE_MARKER_HEADER = "x-vercel-is-internal-rewrite";
+const INTERNAL_REWRITE_SIGNATURE_HEADER = "x-vercel-is-internal-rewrite-signature";
 
 export const APEX_CANONICAL_STATIC_PATHS = [
   "/",
@@ -73,12 +77,31 @@ export function isApexCanonicalPath(pathname: string): boolean {
   );
 }
 
+// Vercel edge stamps rewrite-proxied fetches (some-in-univ.com/blog/:slug ->
+// this deployment) with `x-vercel-is-internal-rewrite: true:<unix-ts>` plus a
+// signature companion. Direct visits never carry the pair unless forged — and
+// forging only serves the same public page the redirect would point at, so
+// presence is enough: it is a routing signal, not an auth boundary.
+export function isInternalRenderRequest(
+  headers: Pick<Headers, "get" | "has">,
+): boolean {
+  return (
+    headers.get(INTERNAL_REWRITE_MARKER_HEADER)?.startsWith("true:") === true &&
+    headers.has(INTERNAL_REWRITE_SIGNATURE_HEADER)
+  );
+}
+
 export function getCanonicalRedirect(
   host: string | undefined,
   pathname: string,
   search: string,
+  isInternalRender = false,
 ): string | null {
-  if (!host || host.toLowerCase() !== "info.some-in-univ.com") return null;
+  const normalizedHost = host?.toLowerCase();
+  const servesCanonicalElsewhere =
+    normalizedHost === "info.some-in-univ.com" ||
+    (normalizedHost === VERCEL_APP_RENDER_HOST && !isInternalRender);
+  if (!normalizedHost || !servesCanonicalElsewhere) return null;
 
   const searchParams = new URLSearchParams(search);
   searchParams.delete(RETIRED_APEX_PROXY_PARAM);
