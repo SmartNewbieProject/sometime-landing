@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContentShell } from "../_components/public-content/ContentShell";
+import { HomeProofSection } from "../_components/public-content/HomeProofSection";
 import { InfoPageBody } from "../_components/public-content/InfoPageBody";
 import { JsonLd } from "../_components/public-content/JsonLd";
 import { ABOUT_PAGE as PAGE } from "../_lib/public-info-pages";
@@ -51,6 +52,7 @@ export default function AboutPage() {
         links={PAGE.links}
         breadcrumbLabel={PAGE.breadcrumbLabel}
       />
+      <HomeProofSection />
     </ContentShell>
   );
 }
