@@ -18,6 +18,7 @@ const helpLinks = [
   { href: "/faq", label: "도움말" },
   { href: "/safety", label: "안전 가이드" },
   { href: "/verification", label: "학교 인증" },
+  { href: "/university", label: "학교별 안내" },
   { href: "/privacy/easy", label: "개인정보 안내" },
   { href: "/community-guidelines", label: "커뮤니티 가이드" },
   { href: "/about", label: "서비스 소개" },

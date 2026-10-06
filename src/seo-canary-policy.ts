@@ -17,6 +17,7 @@ export const APEX_CANONICAL_STATIC_PATHS = [
   "/press",
   "/privacy/easy",
   "/safety",
+  "/university",
   "/verification",
 ] as const;
 

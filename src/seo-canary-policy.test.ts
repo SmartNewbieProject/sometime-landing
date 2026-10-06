@@ -22,6 +22,7 @@ test("all indexable public route families are apex canonical", () => {
     "/press",
     "/privacy/easy",
     "/safety",
+    "/university",
     "/verification",
   ]);
 

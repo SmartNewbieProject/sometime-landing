@@ -3,25 +3,22 @@ import { getCardNewsLifecycle } from "./_lib/public-content-lifecycle";
 import {
   getAllBlogArticles,
   getAllCardNews,
-  getTopKrUniversities,
-  getUniversityPage,
   SITE_URL,
 } from "./_lib/public-content";
+import { getListedUniversities } from "./_lib/university-listing";
 import {
   getStaticSitemapLastmod,
   maxLastmod,
   resolveContentLastmod,
-  UNIVERSITY_SITEMAP_LIMIT,
-  UNIVERSITY_SITEMAP_MIN_VERIFIED_COUNT,
 } from "./_lib/sitemap-helpers";
 
 export const revalidate = 300;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [articles, cardNews, topUniversities] = await Promise.all([
+  const [articles, cardNews, listedUniversities] = await Promise.all([
     getAllBlogArticles(),
     getAllCardNews(),
-    getTopKrUniversities(20),
+    getListedUniversities(),
   ]);
 
   const latestBlogLastmod =
@@ -121,6 +118,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${SITE_URL}/university`,
+      lastModified: getStaticSitemapLastmod("/university"),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
   ];
 
   const blogEntries: MetadataRoute.Sitemap = articles
@@ -149,24 +152,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
-  const universityEntries: MetadataRoute.Sitemap = (
-    await Promise.all(
-      topUniversities.slice(0, 20).map(async (university) => {
-        const page = await getUniversityPage(university.code);
-        const verifiedCount = page?.stats.verifiedCount ?? 0;
-        if (!page || verifiedCount < UNIVERSITY_SITEMAP_MIN_VERIFIED_COUNT) return null;
-
-        return {
-          url: `${SITE_URL}/university/${encodeURIComponent(page.university.code)}`,
-          lastModified: getStaticSitemapLastmod("/university"),
-          changeFrequency: "weekly" as const,
-          priority: 0.65,
-        };
-      }),
-    )
-  )
-    .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
-    .slice(0, UNIVERSITY_SITEMAP_LIMIT);
+  const universityEntries: MetadataRoute.Sitemap = listedUniversities.map((university) => ({
+    url: `${SITE_URL}/university/${encodeURIComponent(university.code)}`,
+    lastModified: getStaticSitemapLastmod("/university"),
+    changeFrequency: "weekly" as const,
+    priority: 0.65,
+  }));
 
   return [...staticEntries, ...blogEntries, ...cardNewsEntries, ...universityEntries];
 }
