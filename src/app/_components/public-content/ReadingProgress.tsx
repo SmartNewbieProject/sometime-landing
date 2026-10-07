@@ -58,7 +58,7 @@ export function ReadingProgress({ targetSelector = "article" }: ReadingProgressP
       aria-valuetext={`${rounded}% 읽음`}
     >
       <div
-        className="h-full origin-left bg-gradient-to-r from-[#9B6CFF] via-[#7A4AE2] to-[#5B35B5] shadow-[0_0_12px_rgba(122,74,226,0.45)]"
+        className="h-full origin-left bg-[#7A4AE2]"
         style={{
           width: `${progress}%`,
           transition: "width 80ms linear",

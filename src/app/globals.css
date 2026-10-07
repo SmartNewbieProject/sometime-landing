@@ -127,13 +127,20 @@ button {
 .public-markdown {
   width: 100%;
   overflow-wrap: anywhere;
-  color: #352a3b;
-  font-size: 18px;
-  line-height: 1.8;
+  color: #2a2330;
+  font-size: 20px;
+  line-height: 1.85;
+  letter-spacing: -0.01em;
 }
 
 .public-markdown > * + * {
-  margin-top: 1.25rem;
+  margin-top: 1.5em;
+}
+
+@media (max-width: 640px) {
+  .public-markdown {
+    font-size: 19px;
+  }
 }
 
 .public-markdown h1,
@@ -141,9 +148,9 @@ button {
 .public-markdown h3 {
   color: #201823;
   font-family: var(--font-wantedSans), sans-serif;
-  font-weight: 900;
-  letter-spacing: 0;
-  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.4;
 }
 
 .public-markdown h1 {
@@ -151,33 +158,36 @@ button {
 }
 
 .public-markdown h2 {
-  margin-top: 3rem;
-  font-size: 1.8rem;
+  margin-top: 2em;
+  font-size: 1.5em;
 }
 
 .public-markdown h3 {
-  margin-top: 2.25rem;
-  font-size: 1.35rem;
+  margin-top: 1.75em;
+  font-size: 1.2em;
 }
 
 .public-markdown strong {
   color: #201823;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 .public-markdown a {
-  color: #6f44e8;
-  font-weight: 800;
+  color: #5b35b5;
+  font-weight: 600;
   text-decoration: underline;
+  text-decoration-thickness: 1px;
   text-underline-offset: 4px;
 }
 
 .public-markdown blockquote {
-  border-left: 4px solid #b58cff;
-  border-radius: 0 20px 20px 0;
-  background: rgba(255, 255, 255, 0.74);
-  padding: 1.2rem 1.4rem;
-  color: #5b5062;
+  border-left: 3px solid #7a4ae2;
+  padding: 0.1em 0 0.1em 1.1em;
+  color: #201823;
+  font-size: 1.2em;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: -0.02em;
 }
 
 .public-markdown ul {
@@ -195,7 +205,7 @@ button {
   max-width: 100%;
   height: auto;
   margin-inline: auto;
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
 .public-markdown-table-wrap {
@@ -203,10 +213,9 @@ button {
   min-width: 0;
   max-width: 100%;
   overflow-x: auto;
-  border-radius: 20px;
+  border-radius: 12px;
   border: 1px solid #eee8ff;
   background: #fcfaff;
-  box-shadow: 0 12px 40px rgba(122, 74, 226, 0.06);
   -webkit-overflow-scrolling: touch;
 }
 

@@ -42,39 +42,41 @@ export function ContentHome({
   const result = getContentPage(items, state);
   const pageHref = (page: number) => contentListHref(path, { category: state.category, page });
 
+  const tabClass = (active: boolean) =>
+    `-mb-px inline-flex min-h-11 shrink-0 items-center whitespace-nowrap border-b-2 px-3.5 text-[15px] font-semibold transition-colors duration-150 ${
+      active ? "border-[#201823] text-[#201823]" : "border-transparent text-[#625A68] hover:text-[#201823]"
+    }`;
+
   return (
-    <section className="mx-auto w-full max-w-[900px] px-5 pb-16 pt-8 sm:px-8 sm:pt-12" aria-labelledby={`${id}-title`}>
+    <section className="mx-auto w-full max-w-[768px] px-6 pb-16 pt-8 sm:pt-12" aria-labelledby={`${id}-title`}>
       <header className="max-w-2xl">
-        <p className="text-sm font-semibold tracking-wide text-[#5B35B5]">{eyebrow}</p>
-        <h1 id={`${id}-title`} className="mt-2 font-wantedSans text-4xl font-extrabold leading-tight tracking-tight text-[#201823] sm:text-5xl">
+        <p className="text-sm font-bold text-[#5B35B5]">{eyebrow}</p>
+        <h1 id={`${id}-title`} className="mt-2 font-wantedSans text-[32px] font-extrabold leading-[1.3] tracking-[-0.04em] text-[#201823] sm:text-4xl">
           {title}
         </h1>
-        <p className="mt-3 text-base leading-7 text-[#625A68]">{description}</p>
+        <p className="mt-2 text-[17px] leading-[1.7] text-[#625A68]">{description}</p>
       </header>
 
       <div className="scroll-mt-24 mt-6">
-        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-[#EEE8FF] pb-4">
-          <form action={path} method="get" className="flex min-w-0 max-w-full items-center gap-3">
-            <label htmlFor={`${id}-category`} className="shrink-0 text-sm font-semibold text-[#625A68]">분류</label>
-            <select
-              id={`${id}-category`}
-              key={state.category}
-              name="category"
-              defaultValue={state.category}
-              aria-controls={`${id}-list`}
-              className="min-h-11 min-w-0 max-w-full rounded-xl border border-[#EEE8FF] bg-[#FCFAFF] px-3 py-2 text-base font-semibold text-[#5B35B5]"
+        <nav aria-label="분류" aria-controls={`${id}-list`} className="flex gap-1 overflow-x-auto border-b border-[#EEE8FF] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <Link href={contentListHref(path, { category: "", page: 1 })} rel="nofollow" aria-current={state.category ? undefined : "true"} className={tabClass(!state.category)}>
+            전체
+          </Link>
+          {categories.map(({ label }) => (
+            <Link
+              key={label}
+              href={contentListHref(path, { category: label, page: 1 })}
+              rel="nofollow"
+              aria-current={state.category === label ? "true" : undefined}
+              className={tabClass(state.category === label)}
             >
-              <option value="">전체 ({items.length})</option>
-              {categories.map(({ label, count }) => (
-                <option key={label} value={label}>{categoryLabels[label] ?? label} ({count})</option>
-              ))}
-            </select>
-            <button type="submit" className="public-page-button shrink-0 px-3">보기</button>
-          </form>
-          <p role="status" aria-live="polite" aria-atomic="true" className="text-sm leading-6 text-[#625A68]">
-            {result.total === 0 ? "등록된 글 없음" : `${result.start + 1}–${result.start + result.items.length} / ${result.total}편`}
-          </p>
-        </div>
+              {categoryLabels[label] ?? label}
+            </Link>
+          ))}
+        </nav>
+        <p role="status" aria-live="polite" aria-atomic="true" className="mt-3 text-sm leading-6 text-[#625A68]">
+          {result.total === 0 ? "등록된 글 없음" : `${result.start + 1}–${result.start + result.items.length} / ${result.total}편`}
+        </p>
 
         <ol id={`${id}-list`} start={result.start + 1} className="divide-y divide-[#EEE8FF]">
           {result.items.map((item) => {
@@ -82,24 +84,21 @@ export function ContentHome({
             return (
               <li key={`${item.source}-${item.id}`}>
                 <article>
-                  <Link href={item.href} aria-label={item.title} title={item.title} className="group grid min-h-11 grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 gap-y-2 rounded-xl py-6 transition-colors duration-150 hover:bg-[#FCFAFF] sm:gap-x-6 sm:py-8">
-                    <div className="col-span-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm leading-6 text-[#625A68]">
-                      {item.archive ? <span className="rounded-md bg-[#F4F0FF] px-2 py-1 font-semibold text-[#5B35B5]">{item.archive.label} · <time dateTime={item.archive.endedOn}>{item.archive.endedOn}</time></span> : null}
-                      <span className="font-semibold text-[#5B35B5]">{categoryLabels[item.label] ?? item.label}</span>
-                      {item.meta ? <span>{item.meta}</span> : null}
-                    </div>
-                    <h2 className="col-span-2 font-wantedSans text-xl font-bold leading-8 tracking-tight text-[#201823] group-hover:text-[#5B35B5] sm:text-2xl sm:leading-9">
-                      {contentDisplayTitle(item.title)}
-                    </h2>
+                  <Link href={item.href} aria-label={item.title} title={item.title} className="group grid min-h-11 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-5 py-7">
                     <div className="min-w-0">
-                      {item.description ? <p className="line-clamp-2 text-base leading-7 text-[#625A68]">{item.description}</p> : null}
-                      <span className="mt-3 inline-flex items-center gap-2 text-sm font-semibold leading-6 text-[#5B35B5]">
-                        글 읽기 <span aria-hidden="true">→</span>
-                      </span>
+                      <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[13px] leading-5 text-[#625A68]">
+                        {item.archive ? <span className="rounded-md bg-[#F4F0FF] px-2 py-0.5 font-semibold text-[#5B35B5]">{item.archive.label} · <time dateTime={item.archive.endedOn}>{item.archive.endedOn}</time></span> : null}
+                        <span className="font-bold text-[#5B35B5]">{categoryLabels[item.label] ?? item.label}</span>
+                        {item.meta ? <><span aria-hidden="true">·</span><span>{item.meta}</span></> : null}
+                      </div>
+                      <h2 className="mt-1.5 font-wantedSans text-xl font-extrabold leading-[1.45] tracking-[-0.03em] text-[#201823] group-hover:text-[#5B35B5] sm:text-[22px]">
+                        {contentDisplayTitle(item.title)}
+                      </h2>
+                      {item.description ? <p className="mt-2 line-clamp-2 text-base leading-[1.65] text-[#625A68]">{item.description}</p> : null}
                     </div>
                     {hasImage ? (
-                      <div className="relative aspect-square w-20 rounded-xl bg-[#F4F0FF] sm:w-36">
-                        <ContentMedia src={item.image} seed={item.id} className="rounded-xl object-contain" sizes="(min-width: 640px) 144px, 80px" />
+                      <div className="relative aspect-square w-20 rounded-lg bg-[#F4F0FF] sm:w-28">
+                        <ContentMedia src={item.image} seed={item.id} className="rounded-lg object-cover" sizes="(min-width: 640px) 112px, 80px" />
                       </div>
                     ) : null}
                   </Link>

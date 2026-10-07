@@ -36,12 +36,12 @@ export function ContentBanner({
 
   return (
     <figure className="mb-10">
-      <div className="mx-auto max-w-[640px]">
+      <div className="mx-auto max-w-[680px]">
         <ContentMedia
           src={src}
           alt={resolvedAlt}
           seed={seed ?? title}
-          className="rounded-2xl object-contain"
+          className="rounded-lg object-contain"
           fill={false}
           width={width}
           height={height}
@@ -51,7 +51,7 @@ export function ContentBanner({
         />
       </div>
       {resolvedCaption ? (
-        <figcaption className="mt-3 px-1 text-[13px] font-medium leading-[20px] text-[#625A68]">
+        <figcaption className="mt-3 px-1 text-center text-sm leading-[22px] text-[#625A68]">
           {resolvedCaption}
         </figcaption>
       ) : null}

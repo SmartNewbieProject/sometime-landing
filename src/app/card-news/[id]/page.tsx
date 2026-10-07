@@ -9,6 +9,8 @@ import { JsonLd } from "../../_components/public-content/JsonLd";
 import { ContentBreadcrumb } from "../../_components/public-content/ContentBreadcrumb";
 import { ContentBanner } from "../../_components/public-content/ContentBanner";
 import { ReadingProgress } from "../../_components/public-content/ReadingProgress";
+import { ArticleHeader } from "../../_components/public-content/ArticleHeader";
+import { readingMinutes } from "../../_lib/reading-time";
 import {
   type CardNewsSection,
   formatDate,
@@ -96,7 +98,7 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
         ]}
       />
 
-      <article className="mx-auto w-full max-w-4xl px-5 pb-20 pt-12 sm:pt-20">
+      <article className="mx-auto w-full max-w-[728px] px-6 pb-20 pt-10 sm:pt-16">
         <ContentBreadcrumb
           items={[
             { href: "/", label: "홈" },
@@ -105,29 +107,22 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
           ]}
         />
 
-        <div className="mb-8">
-          {lifecycle.archive ? (
+        <ArticleHeader
+          category={sectionLabel}
+          title={item.title}
+          subtitle={summary || undefined}
+          authorName="썸타임"
+          publishedAt={item.publishedAt}
+          publishedLabel={publishedDate}
+          readingMinutes={item.layoutMode === "longform" ? readingMinutes(rawBody) : null}
+          extra={`좋아요 ${item.likeCount ?? 0}`}
+          notice={lifecycle.archive ? (
             <aside role="note" data-content-archive className="mb-6 border-l-4 border-[#625A68] bg-[#f7f7f7] p-4 text-[#201823]">
               <p className="font-bold">{lifecycle.archive.label}{" · "}<time dateTime={lifecycle.archive.endedOn}>{formatDate(lifecycle.archive.endedOn)}</time></p>
               <p className="mt-2 text-sm leading-6">아래 내용은 당시 게시된 기록입니다. 현재 모집이나 혜택을 안내하는 글이 아닙니다.</p>
             </aside>
           ) : null}
-          <p className="mb-4 text-sm font-black uppercase tracking-[0.2em] text-[#8a5cff]">
-            {item.layoutMode === "longform" ? "LONGFORM" : "CARD NEWS"}
-          </p>
-          <h1 className="font-wantedSans text-4xl font-black leading-tight tracking-tight text-[#201823] sm:text-6xl">
-            {item.title}
-          </h1>
-          {summary ? (
-            <p className="mt-5 text-lg leading-8 text-[#5f5567]">
-              {summary}
-            </p>
-          ) : null}
-          <p className="mt-6 text-sm font-bold text-[#9a8fa2]">
-            {publishedDate ? <><time dateTime={item.publishedAt ?? undefined}>{publishedDate}</time>{" · "}</> : null}
-            좋아요 {item.likeCount ?? 0}
-          </p>
-        </div>
+        />
 
         {rawBody && !rawBody.includes(image) ? <ContentBanner
           {...getBannerDimensions(item.backgroundImage?.url === image ? item.backgroundImage : null)}
@@ -148,7 +143,7 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
             })).sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).map((section, index) => (
               <section
                 key={section.id ?? section.sortOrder ?? index}
-                className="mx-auto max-w-[640px] border-b border-[#efe5f5] pb-6"
+                className="mx-auto max-w-[680px] border-b border-[#EEE8FF] pb-6"
               >
                 {section.imageUrl ? (
                   <div className="mb-5">
@@ -156,7 +151,7 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
                       src={section.imageUrl}
                       alt={`${section.title || item.title} — ${index + 1}/${item.sections?.length} 카드${section.body ? `: ${contentSummary(section.richText ?? section.body)}` : ""}`}
                       seed={`${item.id}-${section.id ?? section.sortOrder ?? 0}`}
-                      className="rounded-2xl object-contain"
+                      className="rounded-lg object-contain"
                       fill={false}
                       enlarge
                       priority={index === 0 && !rawBody}
@@ -165,7 +160,7 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
                   </div>
                 ) : null}
                 {section.title ? (
-                  <h2 className="font-wantedSans text-2xl font-black text-[#201823]">
+                  <h2 className="font-wantedSans text-2xl font-extrabold tracking-[-0.03em] text-[#201823]">
                     {section.title}
                   </h2>
                 ) : null}
@@ -188,7 +183,7 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
         ) : null}
 
         <nav aria-label="이 글 다음으로" className="mt-10 border-t border-[#EEE8FF] pt-6">
-          <a href={endAction.href} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">{endAction.label}</a>
+          <a href={endAction.href} className="inline-flex min-h-11 items-center font-semibold text-[#5B35B5] underline underline-offset-4">{endAction.label}</a>
         </nav>
       </article>
     </ContentShell>

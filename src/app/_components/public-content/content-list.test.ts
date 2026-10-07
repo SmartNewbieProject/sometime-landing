@@ -141,13 +141,16 @@ test("server HTML exposes every archive page and its actual article anchors with
   assert.equal(new Set(visited).size, items.length);
 });
 
-test("the category form works through GET and resets page by omitting its parameter", () => {
+test("category tabs are plain GET links that reset the page and mark the active category", () => {
   const html = renderArchive(fixture(35), 2, "tips");
-  assert.match(html, /<form[^>]*action="\/blog"[^>]*method="get"/);
-  assert.match(html, /<select[^>]*name="category"/);
+  assert.ok(!html.includes("<form"));
+  assert.ok(!html.includes("<select"));
   assert.ok(!html.includes('name="page"'));
+  // 분류 전환 링크는 page 를 생략해 첫 페이지로 돌아간다. 색인 제외 대상이라 nofollow.
+  assert.match(html, /<a[^>]*href="\/blog\?category=tips"[^>]*aria-current="true"|<a[^>]*aria-current="true"[^>]*href="\/blog\?category=tips"/);
+  assert.match(html, /<a[^>]*href="\/blog"[^>]*rel="nofollow"/);
   assert.ok(html.includes('href="/blog?category=tips&amp;page=3"'));
-  assert.ok(!html.includes('value="safety"'));
+  assert.ok(!html.includes('href="/blog?category=safety"'));
 });
 
 test("page metadata self-canonicalizes paginated archives and does not index filtered facets", async () => {

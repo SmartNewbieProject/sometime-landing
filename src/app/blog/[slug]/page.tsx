@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
 import { JsonLd } from "../../_components/public-content/JsonLd";
 import { ContentBreadcrumb } from "../../_components/public-content/ContentBreadcrumb";
 import { ContentBanner } from "../../_components/public-content/ContentBanner";
+import { ArticleHeader } from "../../_components/public-content/ArticleHeader";
+import { RelatedArticles } from "../../_components/public-content/RelatedArticles";
 import { ReadingProgress } from "../../_components/public-content/ReadingProgress";
 import {
   formatDate,
+  getAllBlogArticles,
   getBlogArticle,
   pickBlogBannerImage,
   textExcerpt,
@@ -15,6 +19,8 @@ import {
 import { faqPageJsonLd, splitContentAndFaq } from "../../_lib/faq";
 import { contentSummary, detailEndAction } from "../../_lib/content-presentation";
 import { recoverNaverTables } from "../../_lib/naver-table-recovery";
+import { readingMinutes } from "../../_lib/reading-time";
+import { pickRelatedArticles } from "../../_lib/related-articles";
 import {
   articleJsonLd,
   breadcrumbJsonLd,
@@ -53,6 +59,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   });
 }
 
+// 이어서 읽기는 보조 영역이다. 목록을 못 불러와도 글 본문은 보여 주되 원인은 로그로 남긴다.
+async function loadRelatedArticles(article: { slug: string; category: string }) {
+  try {
+    return pickRelatedArticles(await getAllBlogArticles(), article);
+  } catch (error) {
+    console.error(`Related articles failed to load for /blog/${article.slug}`, error);
+    return [];
+  }
+}
+
 export default async function BlogArticlePage({ params }: PageProps) {
   const { slug } = await params;
   const article = await getBlogArticle(decodeURIComponent(slug));
@@ -66,6 +82,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
   const summary = contentSummary(article.excerpt || article.subtitle, content);
   const publishedDate = formatDate(article.publishedAt);
   const endAction = detailEndAction("story", article.title);
+  const related = await loadRelatedArticles(article);
 
   return (
     <ContentShell>
@@ -92,7 +109,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
         ]}
       />
 
-      <article className="mx-auto w-full max-w-4xl px-5 pb-20 pt-12 sm:pt-20">
+      <article className="mx-auto w-full max-w-[728px] px-6 pb-20 pt-10 sm:pt-16">
         <ContentBreadcrumb
           items={[
             { href: "/", label: "홈" },
@@ -101,23 +118,15 @@ export default async function BlogArticlePage({ params }: PageProps) {
           ]}
         />
 
-        <div className="mb-8">
-          <p className="mb-4 text-sm font-black uppercase tracking-[0.2em] text-[#8a5cff]">
-            {article.category}
-          </p>
-          <h1 className="font-wantedSans text-4xl font-black leading-tight tracking-tight text-[#201823] sm:text-6xl">
-            {article.title}
-          </h1>
-          {summary ? (
-            <p className="mt-5 text-lg leading-8 text-[#5f5567]">
-              {summary}
-            </p>
-          ) : null}
-          <p className="mt-6 text-sm font-bold text-[#9a8fa2]">
-            <span>{article.author?.name ?? "썸타임 에디터"}</span>
-            {publishedDate ? <>{" · "}<time dateTime={article.publishedAt ?? undefined}>{publishedDate}</time></> : null}
-          </p>
-        </div>
+        <ArticleHeader
+          category={article.category}
+          title={article.title}
+          subtitle={summary || undefined}
+          authorName={article.author?.name ?? "썸타임 에디터"}
+          publishedAt={article.publishedAt}
+          publishedLabel={publishedDate}
+          readingMinutes={readingMinutes(content)}
+        />
 
         {!content.includes(image) ? <ContentBanner
           {...getBannerDimensions(article.thumbnail?.url === image ? article.thumbnail : article.coverImage?.url === image ? article.coverImage : null)}
@@ -129,8 +138,20 @@ export default async function BlogArticlePage({ params }: PageProps) {
 
         <MarkdownBody content={content} />
 
-        <nav aria-label="이 글 다음으로" className="mt-10 border-t border-[#EEE8FF] pt-6">
-          <a href={endAction.href} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">{endAction.label}</a>
+        <aside aria-label="앱 안내" className="mt-12 flex flex-col gap-4 border-y border-[#EEE8FF] py-7 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-lg font-bold leading-[1.5] tracking-[-0.02em] text-[#201823]">
+            썸타임
+            <span className="block text-[15px] font-medium text-[#625A68]">학교 인증 표시를 확인하는 대학생 소개팅 앱</span>
+          </p>
+          <Link href="/download" className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl bg-[#7A4AE2] px-5 text-[15px] font-semibold text-white transition-colors duration-150 hover:bg-[#5B35B5]">
+            앱 다운로드
+          </Link>
+        </aside>
+
+        <RelatedArticles articles={related} />
+
+        <nav aria-label="이 글 다음으로" className="mt-8">
+          <a href={endAction.href} className="inline-flex min-h-11 items-center font-semibold text-[#5B35B5] underline underline-offset-4">{endAction.label}</a>
         </nav>
       </article>
     </ContentShell>

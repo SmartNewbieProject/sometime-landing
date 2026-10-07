@@ -117,3 +117,16 @@ Reproduce with existing Bun 1.4+, qrencode, and macOS Swift/AppKit/Vision:
 `bun scripts/download-assets.mjs <drops-directory> <supplied-social-png>`.
 The script reports source SHA-256 hashes, dimensions, byte counts, and decoded QR.
 Validate with `bun test scripts/download-assets.test.mjs`; no new dependencies.
+
+## 10. Article reading column (2026-10-08)
+Public article pages (blog, card-news, community details) and archive lists follow a
+Medium-style reading layout without changing the palette. Column 680px (article shell
+`max-w-[728px]` + 24px gutters); H1 32/44px, 800, -0.04em; subtitle 18/21px in body
+gray; body 20px (19px under 640px) / 1.85 in ink `#2A2330`, links `#5B35B5` with a thin
+underline; blockquote is a 3px `#7A4AE2` left bar, no fill; images 8px radius. The byline
+row (initial circle, author, date, reading time, copy-link) comes from ArticleHeader;
+reading time is computed from the body (500 chars/min) and omitted when there is no body.
+Archive lists are a single 768px feed with category links as tabs (GET links, `nofollow`,
+filtered pages stay noindex). Blog details end with the app CTA row, "이어서 읽기"
+(RelatedArticles: same category first, no `naver-`/`jp-` posts) and the context end action.
+No serif Korean web font: it would undo the first-load budget.

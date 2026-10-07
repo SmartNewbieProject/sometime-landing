@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
+import { ArticleHeader } from "../../_components/public-content/ArticleHeader";
+import { readingMinutes } from "../../_lib/reading-time";
 import { ContentMedia } from "../../_components/public-content/ContentMedia";
 import { JsonLd } from "../../_components/public-content/JsonLd";
 import { detailEndAction } from "../../_lib/content-presentation";
@@ -80,8 +82,8 @@ export default async function CommunityDetailPage({ params }: PageProps) {
         ]}
       />
 
-      <article className="mx-auto w-full max-w-4xl px-5 pb-20 pt-12 sm:pt-20">
-        <nav aria-label="breadcrumb" className="mb-6 text-sm font-medium text-[#9a8fa2]">
+      <article className="mx-auto w-full max-w-[728px] px-6 pb-20 pt-10 sm:pt-16">
+        <nav aria-label="breadcrumb" className="mb-6 text-sm font-medium text-[#625A68]">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
               <Link href="/" className="hover:text-[#7A4AE2]">
@@ -95,30 +97,26 @@ export default async function CommunityDetailPage({ params }: PageProps) {
               </Link>
             </li>
             <li aria-hidden="true">/</li>
-            <li className="line-clamp-1 text-[#666]">{post.title}</li>
+            <li className="line-clamp-1 text-[#201823]">{post.title}</li>
           </ol>
         </nav>
 
-        <div className="mb-8">
-          <p className="mb-4 text-sm font-black uppercase tracking-[0.2em] text-[#8a5cff]">
-            COMMUNITY
-          </p>
-          <h1 className="font-wantedSans text-4xl font-black leading-tight tracking-tight text-[#201823] sm:text-6xl">
-            {post.title}
-          </h1>
-          <p className="mt-6 text-sm font-bold text-[#9a8fa2]">
-            {post.author?.universityDetails?.name ?? "썸타임 커뮤니티"}
-            {publishedDate ? <>{" · "}<time dateTime={post.publishedAt ?? undefined}>{publishedDate}</time></> : null}
-          </p>
-        </div>
+        <ArticleHeader
+          category="커뮤니티"
+          title={post.title}
+          authorName={post.author?.universityDetails?.name ?? "썸타임 커뮤니티"}
+          publishedAt={post.publishedAt}
+          publishedLabel={publishedDate}
+          readingMinutes={readingMinutes(post.content ?? post.description)}
+        />
 
         {hasCover ? (
-          <div className="mx-auto mb-10 max-w-[640px]">
+          <div className="mx-auto mb-10 max-w-[680px]">
             <ContentMedia
               src={image}
               alt={`${post.title} — 작성자가 첨부한 사진`}
               seed={post.id}
-              className="rounded-2xl object-contain"
+              className="rounded-lg object-contain"
               fill={false}
               enlarge
               priority
@@ -130,7 +128,7 @@ export default async function CommunityDetailPage({ params }: PageProps) {
         <MarkdownBody content={post.content ?? post.description ?? ""} />
 
         <nav aria-label="이 글 다음으로" className="mt-10 border-t border-[#EEE8FF] pt-6">
-          <a href={endAction.href} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">{endAction.label}</a>
+          <a href={endAction.href} className="inline-flex min-h-11 items-center font-semibold text-[#5B35B5] underline underline-offset-4">{endAction.label}</a>
         </nav>
       </article>
     </ContentShell>

@@ -16,8 +16,8 @@ export function ContentBreadcrumb({ items }: ContentBreadcrumbProps) {
   if (items.length === 0) return null;
 
   return (
-    <nav aria-label="현재 위치" className="mb-7">
-      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] font-medium leading-[20px] text-[#9B8EBD]">
+    <nav aria-label="현재 위치" className="mb-6">
+      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium leading-[20px] text-[#625A68]">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
@@ -40,7 +40,7 @@ export function ContentBreadcrumb({ items }: ContentBreadcrumbProps) {
                 </Link>
               ) : (
                 <span
-                  className={isLast ? "line-clamp-1 max-w-[min(100%,280px)] text-[#666]" : undefined}
+                  className={isLast ? "line-clamp-1 max-w-[min(100%,280px)] text-[#201823]" : undefined}
                   aria-current={isLast ? "page" : undefined}
                 >
                   {item.label}
