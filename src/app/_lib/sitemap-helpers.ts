@@ -5,7 +5,7 @@ export const UNIVERSITY_SITEMAP_MIN_VERIFIED_COUNT = 20;
 // Advance the affected entry alongside a content change; app/API-owned pages
 // retain their own version until that owner's release is verified.
 export const STATIC_SITEMAP_LASTMOD = {
-  "/": "2025-07-28T13:56:11.000Z",
+  "/": "2026-10-08T02:51:00+09:00",
   "/blog": "2026-09-08T00:00:00+09:00",
   "/stories": "2026-09-08T00:00:00+09:00",
   "/card-news": "2026-09-08T00:00:00+09:00",
@@ -19,6 +19,15 @@ export const STATIC_SITEMAP_LASTMOD = {
   "/download": "2026-09-08T00:00:00+09:00",
   "/university": "2026-09-08T00:00:00+09:00",
 } as const;
+
+// Mirrors of Naver posts carry X-Robots-Tag: noindex (app vercel.json /blog/naver-:id), and jp-
+// posts belong to the Japan site. A sitemap must not submit URLs that tell Google not to index.
+const NON_SITEMAP_BLOG_SLUG_PREFIXES = ["naver-", "jp-"] as const;
+
+export function isSitemapBlogSlug(slug: string | null | undefined): slug is string {
+  if (!slug) return false;
+  return !NON_SITEMAP_BLOG_SLUG_PREFIXES.some((prefix) => slug.startsWith(prefix));
+}
 
 export type StaticSitemapPath = keyof typeof STATIC_SITEMAP_LASTMOD;
 

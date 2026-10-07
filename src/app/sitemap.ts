@@ -8,6 +8,7 @@ import {
 import { getListedUniversities } from "./_lib/university-listing";
 import {
   getStaticSitemapLastmod,
+  isSitemapBlogSlug,
   maxLastmod,
   resolveContentLastmod,
 } from "./_lib/sitemap-helpers";
@@ -21,10 +22,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getListedUniversities(),
   ]);
 
+  const sitemapArticles = articles.filter((article) => isSitemapBlogSlug(article.slug));
+
   const latestBlogLastmod =
     maxLastmod(
       getStaticSitemapLastmod("/blog"),
-      ...articles.map((article) =>
+      ...sitemapArticles.map((article) =>
         resolveContentLastmod({
           updatedAt: article.updatedAt,
           publishedAt: article.publishedAt,
@@ -126,9 +129,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const blogEntries: MetadataRoute.Sitemap = articles
-    .filter((article) => Boolean(article.slug) && !article.slug.startsWith("jp-"))
-    .map((article) => ({
+  const blogEntries: MetadataRoute.Sitemap = sitemapArticles.map((article) => ({
       url: `${SITE_URL}/blog/${encodeURIComponent(article.slug)}`,
       lastModified: resolveContentLastmod({
         updatedAt: article.updatedAt,

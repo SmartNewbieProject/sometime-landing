@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   getStaticSitemapLastmod,
+  isSitemapBlogSlug,
   maxLastmod,
   resolveContentLastmod,
   STATIC_SITEMAP_LASTMOD,
@@ -47,4 +48,17 @@ test("maxLastmod returns the latest valid candidate", () => {
 
   assert.ok(latest);
   assert.equal(latest?.toISOString(), "2026-07-21T12:30:00.000Z");
+});
+
+test("sitemap blog slugs exclude noindex naver mirrors, jp posts and empty slugs", () => {
+  assert.equal(isSitemapBlogSlug("naver-224354328060"), false);
+  assert.equal(isSitemapBlogSlug("jp-intro"), false);
+  assert.equal(isSitemapBlogSlug(""), false);
+  assert.equal(isSitemapBlogSlug(null), false);
+  assert.equal(isSitemapBlogSlug("college-dating-guide"), true);
+  assert.equal(isSitemapBlogSlug("my-naver-note"), true);
+});
+
+test("home lastmod reflects the 2026-10-08 keyword-first head rewrite", () => {
+  assert.equal(getStaticSitemapLastmod("/").toISOString(), "2026-10-07T17:51:00.000Z");
 });
