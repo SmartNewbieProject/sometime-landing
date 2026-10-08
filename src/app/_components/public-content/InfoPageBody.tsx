@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ContentBreadcrumb } from "./ContentBreadcrumb";
+import { PageHeader } from "./PageHeader";
+import { READING_BODY, READING_H2, READING_LINK, READING_SHELL } from "./reading-styles";
 import { StoreInstallCta } from "./StoreInstallCta";
 import type { StoreCtaSurface } from "@/app/_lib/store-links";
 
@@ -37,50 +39,43 @@ export function InfoPageBody({
   showMobileSticky = false,
 }: InfoPageBodyProps) {
   return (
-    <div className="mx-auto w-full max-w-4xl px-5 pb-20 pt-12 sm:pt-16">
+    <div className={READING_SHELL}>
       <ContentBreadcrumb
         items={[{ href: "/", label: "홈" }, { label: breadcrumbLabel }]}
       />
 
-      <header className="mb-12">
-        <p className="mb-3 text-[14px] font-semibold tracking-wide text-[#7A4AE2]">
-          {badge}
-        </p>
-        <h1 className="font-wantedSans text-[34px] font-bold leading-[46px] text-black sm:text-[40px] sm:leading-[52px]">
-          {title}
-        </h1>
-        <div className="mt-5 space-y-2">
-          {answer.map((line) => (
-            <p
-              key={line}
-              className="text-[16px] leading-[26px] text-neutral-600"
-            >
-              {line}
-            </p>
-          ))}
-        </div>
-      </header>
+      <PageHeader
+        eyebrow={badge}
+        title={title}
+        lead={
+          <div className="space-y-2">
+            {answer.map((line) => (
+              <p key={line}>{line}</p>
+            ))}
+          </div>
+        }
+      />
 
       <div className="space-y-12">
         {sections.map((section) => (
           <section key={section.id} id={section.id}>
-            <h2 className="mb-4 font-wantedSans text-[22px] font-bold leading-[32px] text-black sm:text-[24px]">
+            <h2 className={`mb-4 ${READING_H2}`}>
               {section.heading}
             </h2>
             {section.body?.map((paragraph) => (
               <p
                 key={paragraph}
-                className="mb-3 text-[16px] leading-[26px] text-neutral-700"
+                className={`mb-4 ${READING_BODY}`}
               >
                 {paragraph}
               </p>
             ))}
             {section.items && (
-              <ul className="list-disc space-y-2 pl-5">
+              <ul className="list-disc space-y-2 pl-6">
                 {section.items.map((item) => (
                   <li
                     key={item}
-                    className="text-[15px] leading-[24px] text-neutral-700"
+                    className={READING_BODY}
                   >
                     {item}
                   </li>
@@ -92,14 +87,14 @@ export function InfoPageBody({
       </div>
 
       {links && links.length > 0 && (
-        <section className="mt-12 rounded-2xl bg-neutral-50 p-5 sm:mt-14 sm:p-6">
-          <h2 className="mb-3 font-wantedSans text-[18px] font-bold text-black">
+        <section className="mt-12 border-t border-[#EEE8FF] pt-8 sm:mt-14">
+          <h2 className="mb-3 text-[15px] font-bold text-[#625A68]">
             바로가기와 관련 안내
           </h2>
           <ul className="grid gap-1 sm:grid-cols-2 sm:gap-x-5">
             {links.map((link) => {
               const className =
-                "inline-flex min-h-11 items-center py-2 text-[15px] font-medium leading-6 text-[#7A4AE2] underline underline-offset-4";
+                `inline-flex min-h-11 items-center py-2 text-[16px] leading-6 ${READING_LINK}`;
 
               if (link.download) {
                 return (

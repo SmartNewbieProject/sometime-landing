@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { ContentBreadcrumb } from "../../_components/public-content/ContentBreadcrumb";
+import { PageHeader } from "../../_components/public-content/PageHeader";
+import { READING_BODY, READING_H2, READING_LINK, READING_SHELL } from "../../_components/public-content/reading-styles";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { JsonLd } from "../../_components/public-content/JsonLd";
 import { StoreInstallCta } from "../../_components/public-content/StoreInstallCta";
@@ -64,19 +66,16 @@ export default async function UniversityPage({ params }: PageProps) {
           },
         ]}
       />
-      <div className="mx-auto w-full max-w-4xl px-5 pb-20 pt-12 sm:pt-16">
+      <div className={READING_SHELL}>
         <ContentBreadcrumb
           items={[{ href: "/", label: "홈" }, { label: `${displayName} 소개팅` }]}
         />
-        <header className="pb-8 pt-5 sm:pb-10 sm:pt-8">
-          <p className="text-[13px] font-bold tracking-[0.12em] text-[#7A4AE2]">UNIVERSITY MATCHING</p>
-          <h1 className="mt-3 break-keep text-[34px] font-black leading-[1.3] text-[#201823] sm:text-[44px]">
-            {displayName} 소개팅
-          </h1>
-          <p className="mt-4 max-w-2xl break-keep text-[16px] leading-7 text-[#625A68]">
-            {displayName} 학교 정보를 바탕으로 썸타임의 학교 인증 방법과 공식 앱 이용 경로를 안내해요.
-          </p>
-        </header>
+        <PageHeader
+          eyebrow="UNIVERSITY MATCHING"
+          title={`${displayName} 소개팅`}
+          lead={`${displayName} 학교 정보를 바탕으로 썸타임의 학교 인증 방법과 공식 앱 이용 경로를 안내해요.`}
+          className="mb-8"
+        />
 
         <StoreInstallCta
           surface="landing_university"
@@ -85,32 +84,32 @@ export default async function UniversityPage({ params }: PageProps) {
         />
 
         <section aria-labelledby="school-information" className="mt-10">
-          <h2 id="school-information" className="text-[22px] font-bold leading-8 text-[#201823]">
+          <h2 id="school-information" className={READING_H2}>
             등록된 학교 정보
           </h2>
-          <div className={`mt-4 grid gap-3 ${regionLabel ? "sm:grid-cols-2" : ""}`}>
-          <div className="rounded-[24px] border border-[#EEE8FF] bg-[#FCFAFF] p-6">
-              <p className="text-[14px] font-semibold text-[#625A68]">학교</p>
-              <p className="mt-2 break-keep text-[20px] font-bold text-black">{university.name}</p>
-          </div>
+          <dl className="mt-4 divide-y divide-[#EEE8FF] border-y border-[#EEE8FF]">
+            <div className="py-4">
+              <dt className="text-sm font-semibold text-[#625A68]">학교</dt>
+              <dd className="mt-1 break-keep text-xl font-bold tracking-[-0.02em] text-[#201823]">{university.name}</dd>
+            </div>
             {regionLabel ? (
-              <div className="rounded-[24px] border border-[#EEE8FF] bg-[#FCFAFF] p-6">
-                <p className="text-[14px] font-semibold text-[#625A68]">서비스 학교 데이터 등록 지역</p>
-                <p className="mt-2 break-keep text-[20px] font-bold text-black">{regionLabel}</p>
+              <div className="py-4">
+                <dt className="text-sm font-semibold text-[#625A68]">서비스 학교 데이터 등록 지역</dt>
+                <dd className="mt-1 break-keep text-xl font-bold tracking-[-0.02em] text-[#201823]">{regionLabel}</dd>
               </div>
             ) : null}
-          </div>
+          </dl>
         </section>
 
         <section className="mt-10" aria-labelledby="before-starting">
-          <h2 id="before-starting" className="text-[22px] font-bold leading-8 text-[#201823]">
+          <h2 id="before-starting" className={READING_H2}>
             시작하기 전에 확인하세요
           </h2>
-          <p className="mt-3 break-keep text-[16px] leading-7 text-[#625A68]">
+          <p className={`mt-4 break-keep ${READING_BODY}`}>
             실제 이용 가능 여부, 추천 범위와 매칭 결과는 시점과 앱 설정에 따라 달라질 수 있으므로
             앱의 현재 안내를 확인해 주세요.
           </p>
-          <Link href="/verification" className="mt-3 inline-flex min-h-11 items-center font-semibold text-[#5B35B5] underline underline-offset-4">
+          <Link href="/verification" className={`mt-3 inline-flex min-h-11 items-center ${READING_LINK}`}>
             학교 인증 방법 보기
           </Link>
         </section>

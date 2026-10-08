@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useId, useState } from "react";
 import type { FaqItem } from "@/app/_lib/faq";
+import { READING_H2, READING_LINK } from "./reading-styles";
 
 type FaqAccordionProps = {
   items: FaqItem[];
@@ -25,20 +26,20 @@ export function FaqAccordion({
 
   return (
     <section
-      className={`rounded-[28px] border border-[#EEE8FF] bg-[#FCFAFF] p-6 sm:p-8 ${className}`}
+      className={className}
       aria-labelledby={`${baseId}-heading`}
     >
       <h2
         id={`${baseId}-heading`}
-        className="font-wantedSans text-[22px] font-bold leading-[30px] text-black sm:text-[26px] sm:leading-[34px]"
+        className={READING_H2}
       >
         {title}
       </h2>
       {description ? (
-        <p className="mt-2 text-[15px] font-medium leading-[24px] text-[#666]">{description}</p>
+        <p className="mt-2 text-[17px] leading-[1.7] text-[#625A68]">{description}</p>
       ) : null}
 
-      <div className="mt-6 flex flex-col gap-2">
+      <div className="mt-4 divide-y divide-[#EEE8FF] border-y border-[#EEE8FF]">
         {items.map((item, index) => {
           const panelId = `${baseId}-panel-${item.id}`;
           const buttonId = `${baseId}-btn-${item.id}`;
@@ -47,7 +48,7 @@ export function FaqAccordion({
           return (
             <div
               key={item.id}
-              className="overflow-hidden rounded-[18px] border border-[#EEE8FF] bg-white"
+              className="overflow-hidden"
             >
               <h3 className="m-0">
                 <button
@@ -56,16 +57,16 @@ export function FaqAccordion({
                   aria-expanded={isOpen}
                   aria-controls={panelId}
                   onClick={() => setOpenId(isOpen ? null : item.id)}
-                  className="flex min-h-11 w-full items-center justify-between gap-4 px-4 py-4 text-left transition hover:bg-[#FCFAFF] sm:px-5"
+                  className="flex min-h-11 w-full items-center justify-between gap-4 py-5 text-left transition-colors duration-150"
                 >
-                  <span className="text-[16px] font-semibold leading-[26px] text-[#201823] sm:text-[16px] sm:leading-[24px]">
+                  <span className="text-[18px] font-bold leading-[1.6] tracking-[-0.02em] text-[#201823]">
                     <span className="mr-2 text-[#625A68]" aria-hidden="true">
                       Q{index + 1}.
                     </span>
                     {item.question}
                   </span>
                   <span
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#F4F0FF] text-[18px] font-medium text-[#7A4AE2] transition ${
+                    className={`flex size-8 shrink-0 items-center justify-center rounded-full bg-[#F4F0FF] text-[18px] font-medium text-[#5B35B5] transition ${
                       isOpen ? "rotate-45" : ""
                     }`}
                     aria-hidden="true"
@@ -79,13 +80,13 @@ export function FaqAccordion({
                 role="region"
                 aria-labelledby={buttonId}
                 hidden={!isOpen}
-                className="border-t border-[#F1ECFA] px-4 pb-4 pt-3 sm:px-5"
+                className="pb-5"
               >
-                <p className="break-keep text-pretty text-[16px] font-medium leading-[28px] text-[#555]">{item.answer}</p>
+                <p className="break-keep text-pretty text-[19px] leading-[1.85] tracking-[-0.01em] text-[#2A2330] sm:text-xl">{item.answer}</p>
                 {item.relatedHref ? (
                   <Link
                     href={item.relatedHref}
-                    className="mt-3 inline-flex min-h-11 items-center text-[14px] font-semibold text-[#7A4AE2] underline-offset-4 hover:underline"
+                    className={`mt-3 inline-flex min-h-11 items-center text-[15px] ${READING_LINK}`}
                   >
                     {item.relatedLabel ?? "관련 글 보기"} →
                   </Link>

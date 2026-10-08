@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageHeader } from "../_components/public-content/PageHeader";
+import { READING_BODY, READING_H2, READING_LINK, READING_SHELL } from "../_components/public-content/reading-styles";
 import { ContentShell } from "../_components/public-content/ContentShell";
 import { ContentBreadcrumb } from "../_components/public-content/ContentBreadcrumb";
 import { JsonLd } from "../_components/public-content/JsonLd";
@@ -66,50 +68,43 @@ export default function SafetyPage() {
         ]}
       />
 
-      <div className="mx-auto w-full max-w-4xl px-5 pb-20 pt-12 sm:pt-16">
+      <div className={READING_SHELL}>
         <ContentBreadcrumb
           items={[{ href: "/", label: "홈" }, { label: "안전 안내" }]}
         />
 
-        <header className="mb-12">
-          <p className="mb-3 text-[14px] font-semibold tracking-wide text-[#7A4AE2]">
-            SAFETY
-          </p>
-          <h1 className="font-wantedSans text-[34px] font-bold leading-[46px] text-black sm:text-[40px] sm:leading-[52px]">
-            썸타임 안전 안내
-          </h1>
-          <div className="mt-5 space-y-2">
-            {SAFETY_ANSWER.map((line) => (
-              <p
-                key={line}
-                className="text-[16px] leading-[26px] text-neutral-600"
-              >
-                {line}
-              </p>
-            ))}
-          </div>
-        </header>
+        <PageHeader
+          eyebrow="SAFETY"
+          title="썸타임 안전 안내"
+          lead={
+            <div className="space-y-2">
+              {SAFETY_ANSWER.map((line) => (
+                <p key={line}>{line}</p>
+              ))}
+            </div>
+          }
+        />
 
         <div className="space-y-12">
           {SAFETY_SECTIONS.map((section) => (
             <section key={section.id} id={section.id}>
-              <h2 className="mb-4 font-wantedSans text-[22px] font-bold leading-[32px] text-black sm:text-[24px]">
+              <h2 className={`mb-4 ${READING_H2}`}>
                 {section.heading}
               </h2>
               {section.body?.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className="mb-3 text-[16px] leading-[26px] text-neutral-700"
+                  className={`mb-4 ${READING_BODY}`}
                 >
                   {paragraph}
                 </p>
               ))}
               {section.items && (
-                <ul className="list-disc space-y-2 pl-5">
+                <ul className="list-disc space-y-2 pl-6">
                   {section.items.map((item) => (
                     <li
                       key={item}
-                      className="text-[15px] leading-[24px] text-neutral-700"
+                      className={READING_BODY}
                     >
                       {item}
                     </li>
@@ -120,8 +115,8 @@ export default function SafetyPage() {
           ))}
         </div>
 
-        <section className="mt-14 rounded-2xl bg-neutral-50 p-6">
-          <h2 className="mb-3 font-wantedSans text-[18px] font-bold text-black">
+        <section className="mt-14 border-t border-[#EEE8FF] pt-8">
+          <h2 className="mb-3 text-[15px] font-bold text-[#625A68]">
             더 자세한 규칙이 궁금하다면
           </h2>
           <ul className="space-y-2">
@@ -130,7 +125,7 @@ export default function SafetyPage() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-[15px] font-medium text-[#7A4AE2] underline underline-offset-4"
+                    className={`inline-flex min-h-11 items-center text-[16px] ${READING_LINK}`}
                   >
                     {link.label}
                   </Link>
@@ -141,7 +136,7 @@ export default function SafetyPage() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[15px] font-medium text-[#7A4AE2] underline underline-offset-4"
+                    className={`inline-flex min-h-11 items-center text-[16px] ${READING_LINK}`}
                   >
                     {link.label}
                   </a>

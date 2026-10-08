@@ -130,3 +130,12 @@ Archive lists are a single 768px feed with category links as tabs (GET links, `n
 filtered pages stay noindex). Blog details end with the app CTA row, "이어서 읽기"
 (RelatedArticles: same category first, no `naver-`/`jp-` posts) and the context end action.
 No serif Korean web font: it would undo the first-load budget.
+
+### 10.1 Guide pages share the reading tokens (2026-10-08)
+FAQ, safety, about/verification/privacy/guidelines/press (InfoPageBody), event and the
+university pages use the same shell and type as article pages: `READING_SHELL` (728px
+column), `PageHeader` (eyebrow, 32/44px title, lead), and `READING_BODY`/`READING_H2`/
+`READING_LINK` from `public-content/reading-styles.ts`. Boxed cards, tinted panels and
+bordered accordion tiles became hairline-divided lists. `/download` keeps its own
+split-hero composition (section 4) and `StoreInstallCta` keeps its lilac surface, which the
+official badge artwork needs.
