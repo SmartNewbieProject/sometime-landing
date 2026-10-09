@@ -1,0 +1,71 @@
+{
+  "_comment": "발행 전 본문 검사 규칙. level=error 는 발행을 막고 warn 은 보고만 한다. 근거는 reason 에 적는다.",
+  "thresholds": {
+    "metaTitleMax": 60,
+    "metaDescriptionMax": 160,
+    "metaDescriptionMin": 70,
+    "bodyCharsError": 600,
+    "bodyCharsWarn": 1500,
+    "internalLinksError": 1,
+    "internalLinksWarn": 3,
+    "externalLinksWarn": 3,
+    "keywordDensityWarnPercent": 2.5,
+    "imageBytesWarn": 600000
+  },
+  "defaultAuthor": {
+    "id": "sometime-team",
+    "name": "썸타임 팀",
+    "role": "편집팀"
+  },
+  "categories": [
+    "story",
+    "interview",
+    "tips",
+    "team",
+    "update",
+    "safety"
+  ],
+  "banned": [
+    {
+      "pattern": "AI\\s*(가|로|를)?\\s*(골라|추천|매칭|짝)",
+      "level": "error",
+      "reason": "LLM 은 사람을 고르지 않는다(MATCHING.md:940). Select/Fit Judge 플래그도 꺼져 있어 AI 매칭 주장은 사실과 다르다."
+    },
+    {
+      "pattern": "100\\s*%\\s*(안전|보장|인증)",
+      "level": "error",
+      "reason": "근거 없는 절대 표현"
+    },
+    {
+      "pattern": "원나잇|섹파|fwb|유부녀",
+      "level": "error",
+      "reason": "브랜드·심사 정책 위험 키워드"
+    },
+    {
+      "pattern": "무조건|반드시 성공|성공 보장|환불 보장",
+      "level": "warn",
+      "reason": "과장·보장 표현은 근거를 붙이거나 완화한다"
+    },
+    {
+      "pattern": "1\\s*위|최고의|업계 최초",
+      "level": "warn",
+      "reason": "순위·최상급 주장은 출처와 기준일이 필요하다"
+    }
+  ],
+  "lifecycle": {
+    "observeDays": 28,
+    "decideDays": 56,
+    "minImpressions": 100,
+    "lowCtr": 0.03
+  },
+  "radar": {
+    "minImpressions": 10,
+    "improveMinImpressions": 20,
+    "improvePositionMin": 4,
+    "improvePositionMax": 15,
+    "improveMaxCtr": 0.04,
+    "createPositionOver": 15,
+    "clusterSimilarity": 0.5,
+    "brand": "썸타임|sometime|섬타임|some-in-univ"
+  }
+}

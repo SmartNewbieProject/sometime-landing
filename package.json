@@ -11,7 +11,15 @@
     "test:store-links": "tsx --test src/app/_lib/store-links.test.ts src/app/_lib/store-cta-tracking.test.ts src/app/_lib/content-store-cta.test.ts",
     "test:public-web": "tsx --test src/app/_lib/*.test.ts src/seo-canary-policy.test.ts",
     "test:assets": "bun test scripts/download-assets.test.mjs",
-    "import-csv": "tsx scripts/importCsvToSupabase.ts"
+    "import-csv": "tsx scripts/importCsvToSupabase.ts",
+    "blog:doctor": "node scripts/blog/doctor.mjs",
+    "blog:radar": "node scripts/blog/radar.mjs",
+    "blog:lint": "node scripts/blog/publish.mjs lint",
+    "blog:draft": "node scripts/blog/publish.mjs draft",
+    "blog:publish": "node scripts/blog/publish.mjs publish",
+    "blog:verify": "node scripts/blog/publish.mjs verify",
+    "blog:report": "node scripts/blog/report.mjs",
+    "test:blog": "node --test scripts/blog/*.test.mjs"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.21.1",

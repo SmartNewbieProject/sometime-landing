@@ -1,0 +1,12 @@
+{
+  "_comment": "블로그 키워드 지도. status: planned | draft | published | rejected. publish/draft 명령이 slug 가 같은 항목의 상태를 자동으로 갱신하고, 없으면 추가한다. 변경 후 커밋한다.",
+  "entries": [
+    { "id": "P3", "keyword": "소개팅 애프터", "keywords": ["소개팅 애프터", "애프터 신청", "소개팅 후 연락"], "status": "draft", "slug": "blind-date-aepteo-guide", "intent": "애프터 신청 타이밍·문장 (연락 텀·답장은 기존 카드뉴스 담당)", "evidence": "플래너 소개팅 애프터 5,000 구간" },
+    { "id": "P1", "keyword": "과팅", "keywords": ["과팅", "대학생 미팅", "미팅 앱", "미팅 어플"], "status": "planned", "intent": "과팅·미팅 가이드(대학생)", "evidence": "플래너 과팅 5,000 구간, 우리 노출 0. 작성 전 과팅 앱·어플·사이트를 플래너에서 조회" },
+    { "id": "P2", "keyword": "소개팅 어플 추천", "keywords": ["소개팅 어플 추천", "소개팅 앱 추천", "소개팅 앱 비교"], "status": "planned", "intent": "고르는 기준 체크리스트(순위표 아님)", "evidence": "플래너 각 500 구간, 경쟁 중간" },
+    { "id": "P4", "keyword": "소개팅 거절 후 다시 연락", "keywords": ["소개팅 거절 후 다시 연락", "소개팅 거절 후 재연락"], "status": "planned", "intent": "P3 하위 주제", "evidence": "플래너 각 500 구간, 경쟁 낮음" },
+    { "id": "P5", "keyword": "대학생 소개팅 앱 후기", "keywords": ["대학생 소개팅 앱 후기"], "status": "planned", "intent": "실제 후기·운영 데이터가 있을 때만", "evidence": "GSC 65회 순위 7.6, CTR 1.5%" },
+    { "id": "P6", "keyword": "로테이션 소개팅", "keywords": ["로테이션 소개팅 대학생", "대학생 로테이션 소개팅"], "status": "planned", "intent": "오프라인 행사가 계속될 때만", "evidence": "GSC 두 변형 합쳐 약 135회, 순위 9~12" },
+    { "id": "X-mbti", "keyword": "mbti 소개팅", "keywords": ["mbti 소개팅"], "status": "rejected", "intent": "앱에 MBTI 기능이 확인되지 않아 보류" }
+  ]
+}
