@@ -72,3 +72,15 @@ test('a narrow map entry does not swallow the broader head query', () => {
   assert.deepEqual(r.create.map((c) => c.rep), ['대학생 소개팅']);
   assert.deepEqual(r.covered, []);
 });
+
+test('index state drives the verdict: unindexed after a week, indexed-but-no-impressions waits, unknown asks for a manual check', () => {
+  const base = { impressions: 0, clicks: 0, position: 0 };
+  assert.equal(judgeArticle({ ...base, ageDays: 3, indexState: { verdict: 'NEUTRAL', coverageState: 'URL is unknown to Google' } }).verdict, '관찰 중');
+  const unindexed = judgeArticle({ ...base, ageDays: 9, indexState: { verdict: 'NEUTRAL', coverageState: '크롤링됨 - 현재 색인이 생성되지 않음' } });
+  assert.equal(unindexed.verdict, '미색인');
+  assert.match(unindexed.reason, /크롤링됨/);
+  assert.equal(judgeArticle({ ...base, ageDays: 30, indexState: { verdict: 'PASS', coverageState: '제출되고 색인이 생성되었습니다.' } }).verdict, '노출 대기');
+  const unknown = judgeArticle({ ...base, ageDays: 30, indexState: null });
+  assert.equal(unknown.verdict, '색인 확인');
+  assert.match(unknown.reason, /조회하지 못했/);
+});

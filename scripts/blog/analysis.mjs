@@ -77,12 +77,19 @@ export function buildRadar(rows, map) {
   return { improve: improve.sort(byImp), create: create.sort(byImp), covered: covered.sort(byImp) };
 }
 
-/** 발행 글 한 편의 상태 판정. 기준은 rules.json lifecycle. */
-export function judgeArticle({ ageDays, impressions, clicks, position }) {
+/** 발행 글 한 편의 상태 판정. 기준은 rules.json lifecycle. indexState 는 URL 검사 결과({verdict,coverageState}) 또는 null(조회 불가). */
+export function judgeArticle({ ageDays, impressions, clicks, position, indexState = null }) {
   const t = rules.lifecycle;
   const ctr = impressions ? clicks / impressions : 0;
+  const indexed = indexState?.verdict === 'PASS';
+  if (indexState && !indexed && ageDays >= t.indexCheckDays) {
+    return { verdict: '미색인', reason: `발행 ${ageDays}일인데 Google 이 색인하지 않았다: ${indexState.coverageState || indexState.verdict}` };
+  }
   if (ageDays < t.observeDays) return { verdict: '관찰 중', reason: `발행 ${ageDays}일(${t.observeDays}일 전에는 판정하지 않는다)` };
-  if (impressions === 0) return { verdict: '색인 확인', reason: '노출 0 — Search Console URL 검사로 색인 여부부터 본다' };
+  if (impressions === 0) {
+    if (indexed) return { verdict: '노출 대기', reason: '색인은 됐지만 노출이 없다 — 검색어와 순위가 아직 잡히지 않았다' };
+    return { verdict: '색인 확인', reason: indexState ? `노출 0, ${indexState.coverageState || indexState.verdict}` : '노출 0 — URL 검사를 조회하지 못했으니 Search Console 에서 직접 본다' };
+  }
   if (ageDays < t.decideDays) return { verdict: '관찰 중', reason: `발행 ${ageDays}일(${t.decideDays}일에 판정)` };
   if (impressions < t.minImpressions) return { verdict: '접기 검토', reason: `${ageDays}일간 노출 ${impressions} < ${t.minImpressions}` };
   if (ctr < t.lowCtr && position <= 10) return { verdict: '제목·설명 보강', reason: `순위 ${position.toFixed(1)}인데 CTR ${(ctr * 100).toFixed(1)}%` };

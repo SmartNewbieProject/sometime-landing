@@ -56,7 +56,8 @@
     "observeDays": 28,
     "decideDays": 56,
     "minImpressions": 100,
-    "lowCtr": 0.03
+    "lowCtr": 0.03,
+    "indexCheckDays": 7
   },
   "radar": {
     "minImpressions": 10,

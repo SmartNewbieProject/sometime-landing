@@ -19,7 +19,9 @@
     "blog:publish": "node scripts/blog/publish.mjs publish",
     "blog:verify": "node scripts/blog/publish.mjs verify",
     "blog:report": "node scripts/blog/report.mjs",
-    "test:blog": "node --test scripts/blog/*.test.mjs"
+    "test:blog": "node --test scripts/blog/*.test.mjs",
+    "blog:inspect": "node scripts/blog/inspect.mjs",
+    "blog:setup": "node scripts/blog/setup.mjs"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.21.1",

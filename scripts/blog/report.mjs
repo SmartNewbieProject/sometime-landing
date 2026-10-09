@@ -4,7 +4,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { judgeArticle, readMap } from './analysis.mjs';
-import { fetchGsc } from './gsc.mjs';
+import { fetchGsc, gscToken, inspectUrl } from './gsc.mjs';
 import { DEFAULT_API } from './env.mjs';
 import { SITE } from './lib.mjs';
 
@@ -14,6 +14,13 @@ const map = readMap(path.join(ROOT, 'content', 'keyword-map.json'));
 const published = map.entries.filter((e) => e.status === 'published' && e.slug);
 const drafts = map.entries.filter((e) => e.status === 'draft' && e.slug);
 const rows = fetchGsc({ days: 92 });
+let inspectToken = null;
+let inspectError = null;
+try {
+  inspectToken = gscToken();
+} catch (e) {
+  inspectError = e instanceof Error ? e.message.split('\n')[0] : String(e);
+}
 const decode = (u) => {
   try {
     return decodeURIComponent(new URL(u).pathname);
@@ -41,12 +48,22 @@ for (const e of published) {
   const impressions = mine.reduce((s, r) => s + r.impressions, 0);
   const clicks = mine.reduce((s, r) => s + r.clicks, 0);
   const position = impressions ? mine.reduce((s, r) => s + r.position * r.impressions, 0) / impressions : 0;
-  const j = judgeArticle({ ageDays, impressions, clicks, position });
+  let indexState = null;
+  let indexLine = `- 색인: 조회 못 함(${inspectError ?? '알 수 없음'})`;
+  if (inspectToken) {
+    try {
+      indexState = await inspectUrl(`${SITE}/blog/${e.slug}`, { token: inspectToken });
+      indexLine = `- 색인: ${indexState.verdict} · ${indexState.coverageState}${indexState.lastCrawlTime ? ` · 마지막 크롤 ${indexState.lastCrawlTime.slice(0, 10)}` : ''}${indexState.googleCanonical && indexState.googleCanonical !== `${SITE}/blog/${e.slug}` ? ` · 구글 canonical 이 다르다: ${indexState.googleCanonical}` : ''}`;
+    } catch (err) {
+      indexLine = `- 색인: 조회 실패(${err instanceof Error ? err.message : err})`;
+    }
+  }
+  const j = judgeArticle({ ageDays, impressions, clicks, position, indexState });
   const topQ = mine.sort((a, b) => b.impressions - a.impressions).slice(0, 3).map((r) => `${r.query}(${r.impressions})`).join(', ');
-  console.log(`## ${e.slug} — ${j.verdict}\n- ${SITE}/blog/${e.slug} · 발행 ${ageDays}일\n- 노출 ${impressions} · 클릭 ${clicks} · 순위 ${impressions ? position.toFixed(1) : '-'}\n- 판정 근거: ${j.reason}\n- 상위 검색어: ${topQ || '없음'}\n`);
+  console.log(`## ${e.slug} — ${j.verdict}\n- ${SITE}/blog/${e.slug} · 발행 ${ageDays}일\n- 노출 ${impressions} · 클릭 ${clicks} · 순위 ${impressions ? position.toFixed(1) : '-'}\n${indexLine}\n- 판정 근거: ${j.reason}\n- 상위 검색어: ${topQ || '없음'}\n`);
 }
 for (const e of drafts) {
   const res = await fetch(`${api}/sometime-articles/${encodeURIComponent(e.slug)}`, { headers: { 'X-Country': 'kr' }, signal: AbortSignal.timeout(30000) });
   if (res.ok) console.log(`! ${e.slug}: 지도에는 draft 인데 이미 공개돼 있다. status 를 published 로 고친다.`);
 }
-console.log('\n색인 여부는 이 보고서로 알 수 없다(URL 검사 API 미연결). "색인 확인" 판정이면 Search Console 에서 직접 본다.');
+console.log('\n색인 여부는 Search Console URL 검사 API(읽기 전용)로 조회한다. 조회에 실패하면 해당 글은 "색인 확인" 판정이 되므로 Search Console 에서 직접 본다.');

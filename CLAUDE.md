@@ -16,13 +16,15 @@
 사람은 **주제 선택, 초안 확인, 발행 승인**만 한다. 나머지는 명령 하나씩이다. 자세한 절차는 `.claude/skills/blog-publisher/SKILL.md`.
 
 ```
+npm run blog:setup                         # (최초 1회, 사용자가 `! npm run blog:setup`) .env.local 생성
 npm run blog:doctor                        # 준비 점검(환경변수·Search Console·API·Admin 로그인)
 npm run blog:radar                         # 다음에 쓸 글 / 고칠 글 후보 (Search Console 92일)
 npm run blog:lint    -- content/drafts/x.html   # 변환+SEO·사실성 검사 (쓰기 없음)
 npm run blog:draft   -- content/drafts/x.html   # 비공개 저장
 npm run blog:publish -- content/drafts/x.html   # 발행 + 라이브 검증 (--id <id> | --update)
 npm run blog:verify  -- <slug>                  # 라이브 검증만
-npm run blog:report                        # 발행 글 성과 판정(관찰/유지/보강/접기)
+npm run blog:inspect -- <slug|URL>         # 색인 상태(URL 검사 API, 읽기 전용)
+npm run blog:report                        # 색인+성과 판정(미색인/관찰/유지/보강/접기)
 npm run test:blog                          # 하네스 단위 테스트
 ```
 
@@ -30,6 +32,7 @@ npm run test:blog                          # 하네스 단위 테스트
 
 - 키워드 지도 `content/keyword-map.json` 은 `publish`/`draft` 가 상태를 자동 갱신한다. 바뀐 파일을 커밋한다.
 - 같은 검색 의도의 기존 글이 있으면(`gsc-overlap`·`cannibalization` 경고) 새 글 전에 사용자에게 묻는다. 새 글보다 기존 글 보강이 나을 수 있다.
+- 검색량 근거는 `content/planner/*.csv`(키워드 플래너 구간값). 조회 절차는 SKILL.md 5절.
 - 판정 기준은 `scripts/blog/rules.json` 의 `lifecycle`(28일 관찰, 56일에 판정, 노출 100 미만이면 접기 검토). 근거 없이 바꾸지 않는다.
 - 규칙(`rules.json`)과 사이트 렌더러(`MarkdownBody`, `splitContentAndFaq`)가 어긋나면 하네스가 아니라 사이트 쪽 사실을 먼저 확인한다.
 

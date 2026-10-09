@@ -10,7 +10,7 @@ description: 썸타임 블로그(some-in-univ.com/blog) 키워드 분석 → 초
 ## 0. 준비 (처음 한 번 + 막힐 때)
 
 `npm run blog:doctor`. ✖ 가 있으면 그것부터 푼다.
-- 환경변수: 사용자가 `.env.local`(chmod 600)에 `BLOG_ADMIN_EMAIL`, `BLOG_ADMIN_PASSWORD` 를 채운다(`.env.example` 참고). 내가 만들거나 값을 묻지 않는다.
+- 환경변수: 사용자가 이 세션 터미널에서 `! npm run blog:setup` 을 실행해 `.env.local`(chmod 600)을 만든다(비밀번호는 화면에 안 찍힌다). 내가 만들거나 값을 묻지 않는다. 변수 목록은 `.env.example`.
 - Search Console: `gcloud` 로그인된 계정이 서비스 계정을 임퍼소네이션할 수 있어야 한다(`scripts/blog/gsc_query.py` 머리말).
 
 ## 1. 키워드 → 후보
@@ -40,9 +40,18 @@ npm run blog:publish -- content/drafts/x.html --id <id>     # draft 로 만든 �
 - 바뀐 `content/keyword-map.json`(자동 갱신)과 초안을 커밋한다. 비밀 값이 섞이지 않았는지 `git diff --cached` 로 본다.
 - 수동으로 남는 일: Search Console → URL 검사 → 색인 생성 요청(Google 은 API 없음).
 
-## 4. 성과 판정 (발행 4주 뒤부터)
+## 4. 성과 판정 (발행 직후부터 색인, 4주 뒤부터 성과)
 
-`npm run blog:report`. 판정은 `rules.json` lifecycle: 28일 전 관찰 / 노출 0 이면 색인 확인 / 56일에 노출 100 미만이면 접기 검토 / 순위 10 이내인데 CTR 3% 미만이면 제목·설명 보강 / 그 외 유지. 접거나 보강하는 결정은 사용자가 한다. 색인 여부는 이 보고서로 알 수 없다.
+`npm run blog:report` 는 Search Console 노출·클릭과 **URL 검사 API(읽기 전용)의 색인 상태**를 함께 본다. 단독 조회는 `npm run blog:inspect -- <slug|URL>`. 판정은 `rules.json` lifecycle: 발행 7일이 지났는데 색인이 안 됐으면 `미색인`(coverageState 를 그대로 보고) / 28일 전 관찰 / 노출 0 인데 색인됨이면 `노출 대기`, 색인 확인 불가면 `색인 확인` / 56일에 노출 100 미만이면 접기 검토 / 순위 10 이내인데 CTR 3% 미만이면 제목·설명 보강 / 그 외 유지. 접거나 보강하는 결정은 사용자가 한다. `미색인` 이면 Search Console 에서 색인 생성 요청을 사람이 한다(요청 API 는 없다). 조회 실패는 성공으로 치지 않고 보고서에 그대로 적힌다.
+
+## 5. 키워드 플래너 구간값 (검색량 근거)
+
+`blog:radar` 표의 "플래너 구간" 열은 `content/planner/*.csv` 에서 **정확히 같은 키워드**만 찾는다(비슷한 키워드 값으로 대신하지 않는다). 광고 지출이 없으면 플래너는 50/500/5,000 같은 구간값만 준다. Google Ads API 는 개발자 토큰이 없어 연결하지 못했으므로 화면 조회를 쓴다.
+
+1. `blog:radar` 끝의 "플래너 미조회 키워드" 목록을 복사한다.
+2. Aside 에이전트에 다음처럼 시킨다: "Google Ads 키워드 플래너(검색량 및 예상 전환수 확인)에서 아래 키워드의 월간 검색량·경쟁도·상단 입찰가를 조회하고 CSV 로 내려받아라. 허용: 키워드 입력, 조회, 내보내기. 금지: 캠페인·키워드 추가, 결제·광고 설정 변경."
+3. 헤더를 `keyword,currency,avg_monthly_searches_bucket_value,competition,top_of_page_bid_low_krw,top_of_page_bid_high_krw` 로 맞춰 `content/planner/<YYYY-MM-DD>.csv` 로 저장하고 커밋한다. 같은 키워드는 파일명이 늦은 쪽이 이긴다.
+4. `blog:radar` 를 다시 돌린다.
 
 ## 하지 않는 것
 
