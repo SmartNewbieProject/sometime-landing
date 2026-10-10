@@ -1,6 +1,7 @@
 "use client";
 
 import mixpanel from "mixpanel-browser";
+import { classifyReferrer } from "./referrer-channel";
 import {
   appendStoreClickIds,
   buildStoreAttribution,
@@ -12,6 +13,8 @@ import {
 } from "./store-links";
 
 let initialized = false;
+// document.referrer 는 클라이언트 라우팅으로 바뀌지 않는다. 첫 조회만 외부 유입으로 센다.
+let entryViewPending = true;
 
 const TRACKING_VALUE_LIMIT = 255;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -101,12 +104,20 @@ export function trackLandingPageView({
   if (attributionId) mixpanel.identify(attributionId);
 
   const page = typeof window !== "undefined" ? window.location : undefined;
+  const isEntryView = entryViewPending;
+  entryViewPending = false;
+  const referrer = isEntryView
+    ? classifyReferrer(typeof document !== "undefined" ? document.referrer : undefined, page?.host)
+    : undefined;
   mixpanel.track("Landing_Page_Viewed", {
     env: resolveLandingEnvironment(page?.hostname),
     attribution_id: attributionId ?? undefined,
     page: normalizedPathname ?? undefined,
     page_path: normalizedPathname ?? undefined,
     page_host: page?.host,
+    is_entry_view: isEntryView,
+    referrer_channel: referrer?.channel,
+    referrer_source: referrer?.source,
     ...incomingAttribution(searchParams),
   });
 }
