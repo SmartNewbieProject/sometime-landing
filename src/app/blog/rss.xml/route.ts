@@ -1,5 +1,6 @@
 import { getAllBlogArticles, getBlogArticle, BLOG_INDEX_URL, blogArticleUrl } from "../../_lib/public-content";
 import type { SometimeArticle, SometimeArticleListItem } from "../../_lib/public-content";
+import { isSitemapBlogSlug } from "../../_lib/sitemap-helpers";
 
 export const revalidate = 300;
 
@@ -32,11 +33,8 @@ function fallbackArticle(summary: SometimeArticleListItem): SometimeArticle {
 
 export async function GET() {
   const summaries = (await getAllBlogArticles())
-    .filter(
-      (article) =>
-        Boolean(article.slug && article.publishedAt) &&
-        !article.slug.startsWith("jp-"),
-    )
+    // Same rule as the sitemap: Naver mirrors are noindex, so the feed must not advertise them.
+    .filter((article) => isSitemapBlogSlug(article.slug) && Boolean(article.publishedAt))
     .sort(
       (a, b) =>
         new Date(b.publishedAt ?? 0).valueOf() - new Date(a.publishedAt ?? 0).valueOf(),
