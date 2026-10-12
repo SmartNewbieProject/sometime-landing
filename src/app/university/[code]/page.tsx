@@ -10,7 +10,8 @@ import { StoreInstallCta } from "../../_components/public-content/StoreInstallCt
 import { getUniversityPage } from "../../_lib/public-content";
 import { canonicalUniversityPath } from "../../_lib/university-canonical";
 import { absoluteUrl, breadcrumbJsonLd, buildPageMetadata } from "../../_lib/seo";
-import { UNIVERSITY_REGION_LABELS, universityDisplayName } from "../../_lib/university-display";
+import { publicVerifiedCountFloor, UNIVERSITY_REGION_LABELS, universityDisplayName } from "../../_lib/university-display";
+import { getListedUniversities } from "../../_lib/university-listing";
 
 type PageProps = { params: Promise<{ code: string }> };
 
@@ -22,10 +23,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (canonicalPath) return { alternates: { canonical: canonicalPath }, robots: { index: false, follow: true } };
 
   const displayName = universityDisplayName(data.university);
+  const verifiedFloor = publicVerifiedCountFloor(data.stats.verifiedCount);
 
   return buildPageMetadata({
     title: `${displayName} 소개팅 — 썸타임 대학생 매칭`,
-    description: `${displayName} 학생을 위한 학교 인증 기반 대학생 소개팅과 지역 매칭 정보를 확인하세요.`,
+    description: verifiedFloor
+      ? `${displayName} 학생 ${verifiedFloor}명 이상이 썸타임에서 학교 인증을 마쳤어요. 학교 인증 기반 대학생 소개팅과 지역 매칭 정보를 확인하세요.`
+      : `${displayName} 학생을 위한 학교 인증 기반 대학생 소개팅과 지역 매칭 정보를 확인하세요.`,
     path: `/university/${encodeURIComponent(data.university.code)}`,
     keywords: [
       `${displayName} 소개팅`,
@@ -47,6 +51,12 @@ export default async function UniversityPage({ params }: PageProps) {
   const path = `/university/${encodeURIComponent(university.code)}`;
   const regionLabel = university.region ? UNIVERSITY_REGION_LABELS[university.region] : undefined;
   const displayName = universityDisplayName(university);
+  const verifiedFloor = publicVerifiedCountFloor(data.stats.verifiedCount);
+  const regionPeers = university.region
+    ? (await getListedUniversities())
+        .filter((peer) => peer.region === university.region && peer.code !== university.code)
+        .slice(0, 6)
+    : [];
 
   return (
     <ContentShell>
@@ -98,8 +108,33 @@ export default async function UniversityPage({ params }: PageProps) {
                 <dd className="mt-1 break-keep text-xl font-bold tracking-[-0.02em] text-[#201823]">{regionLabel}</dd>
               </div>
             ) : null}
+            {verifiedFloor ? (
+              <div className="py-4">
+                <dt className="text-sm font-semibold text-[#625A68]">썸타임 학교 인증 완료</dt>
+                <dd className="mt-1 break-keep text-xl font-bold tracking-[-0.02em] text-[#201823]">
+                  {verifiedFloor.toLocaleString("ko-KR")}명 이상
+                </dd>
+              </div>
+            ) : null}
           </dl>
         </section>
+
+        {regionPeers.length > 0 ? (
+          <section aria-labelledby="region-peers" className="mt-10">
+            <h2 id="region-peers" className={READING_H2}>
+              {regionLabel ?? "같은 지역"}에서 썸타임을 쓰는 다른 학교
+            </h2>
+            <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+              {regionPeers.map((peer) => (
+                <li key={peer.code}>
+                  <Link href={`/university/${encodeURIComponent(peer.code)}`} className={`inline-flex min-h-11 items-center ${READING_LINK}`}>
+                    {universityDisplayName(peer)} 소개팅
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <section className="mt-10" aria-labelledby="before-starting">
           <h2 id="before-starting" className={READING_H2}>

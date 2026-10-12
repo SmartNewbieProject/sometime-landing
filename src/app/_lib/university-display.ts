@@ -39,3 +39,12 @@ export function universityDisplayName({ name, code, region }: UniversityIdentity
   }
   return `${name}(${label})`;
 }
+
+// Per-school counts are shown only from 30 verified users (docs R4: no small-n figures),
+// and rounded down to tens so the page never states more than the data supports.
+const VERIFIED_COUNT_PUBLIC_MIN = 30;
+
+export function publicVerifiedCountFloor(count?: number | null): number | null {
+  if (count == null || count < VERIFIED_COUNT_PUBLIC_MIN) return null;
+  return Math.floor(count / 10) * 10;
+}

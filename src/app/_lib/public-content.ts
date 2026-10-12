@@ -200,6 +200,7 @@ export class PublicContentFetchError extends Error {
 async function fetchJson<T>(
   path: string,
   baseUrl = API_BASE_URL,
+  options: { emptyBodyIsNotFound?: boolean } = {},
 ): Promise<T | null> {
   let response: Response;
   try {
@@ -232,7 +233,9 @@ async function fetchJson<T>(
 
   let json: T & ErrorEnvelope;
   try {
-    json = (await response.json()) as T & ErrorEnvelope;
+    const text = await response.text();
+    if (!text && options.emptyBodyIsNotFound) return null;
+    json = JSON.parse(text) as T & ErrorEnvelope;
   } catch (cause) {
     throw new PublicContentFetchError({
       path,
@@ -314,9 +317,12 @@ export const getBlogArticle = cache(async (slug: string) => {
 
 export const getUniversityPage = cache(async (code: string) => {
   const webBaseUrl = API_BASE_URL.replace(/\/api\/?$/, "");
+  // An unknown code comes back as 200 with an empty body, not 404. Treat it as not found
+  // so the page answers 404 instead of a 500 from the JSON parse.
   return fetchJson<UniversityPageData>(
     `/web/university-data/${encodeURIComponent(code)}`,
     webBaseUrl,
+    { emptyBodyIsNotFound: true },
   );
 });
 

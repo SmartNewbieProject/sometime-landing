@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { universityDisplayName } from "./university-display";
+import { publicVerifiedCountFloor, universityDisplayName } from "./university-display";
 
 test("a university whose name is unique keeps its plain name", () => {
   assert.equal(universityDisplayName({ name: "한밭대학교", code: "HBU", region: "DJN" }), "한밭대학교");
@@ -34,4 +34,12 @@ test("a shared-name campus without a region label fails instead of repeating the
     () => universityDisplayName({ name: "단국대학교", code: "CADKU", region: "ZZZ" }),
     /no label/,
   );
+});
+
+test("verified counts are public only from 30 and rounded down to tens", () => {
+  assert.equal(publicVerifiedCountFloor(undefined), null);
+  assert.equal(publicVerifiedCountFloor(29), null);
+  assert.equal(publicVerifiedCountFloor(30), 30);
+  assert.equal(publicVerifiedCountFloor(73), 70);
+  assert.equal(publicVerifiedCountFloor(321), 320);
 });
