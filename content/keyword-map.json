@@ -28,7 +28,8 @@
       "intent": "과팅·미팅 가이드(대학생)",
       "evidence": "플래너 과팅 5,000 구간, 우리 노출 0. 작성 전 과팅 앱·어플·사이트를 플래너에서 조회",
       "slug": "gwating-guide",
-      "note": "gwating-guide 항목이 이 계획을 발행했다"
+      "note": "gwating-guide 항목이 이 계획을 발행했다",
+      "publishedAt": "2026-10-12T20:53:46.342Z"
     },
     {
       "id": "P2",
@@ -42,7 +43,8 @@
       "intent": "고르는 기준 체크리스트(순위표 아님)",
       "evidence": "플래너 각 500 구간, 경쟁 중간",
       "slug": "university-dating-app-guide",
-      "note": "university-dating-app-guide 항목이 이 계획을 발행했다"
+      "note": "university-dating-app-guide 항목이 이 계획을 발행했다",
+      "publishedAt": "2026-10-12T21:03:56.983Z"
     },
     {
       "id": "P4",
@@ -55,7 +57,8 @@
       "intent": "P3 하위 주제",
       "evidence": "플래너 각 500 구간, 경쟁 낮음",
       "slug": "sogaeting-no-contact",
-      "note": "sogaeting-no-contact 항목이 이 계획을 발행했다"
+      "note": "sogaeting-no-contact 항목이 이 계획을 발행했다",
+      "publishedAt": "2026-10-12T20:48:40.958Z"
     },
     {
       "id": "P5",
@@ -78,7 +81,8 @@
       "intent": "오프라인 행사가 계속될 때만",
       "evidence": "GSC 두 변형 합쳐 약 135회, 순위 9~12",
       "slug": "rotation-sogaeting",
-      "note": "rotation-sogaeting 항목이 이 계획을 발행했다"
+      "note": "rotation-sogaeting 항목이 이 계획을 발행했다",
+      "publishedAt": "2026-10-12T20:58:51.795Z"
     },
     {
       "id": "X-mbti",
