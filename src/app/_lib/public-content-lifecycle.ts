@@ -34,6 +34,8 @@ const LIFECYCLE_BY_CARD_NEWS_ID = {
   "01a00e54-98d0-72ce-abae-d127ddfc4b81": { intent: "notice" },
   "019e89de-ae5d-7fc4-a42f-5502c406360f": { intent: "notice" },
   "019d4900-d4c1-7db1-bec7-6e90d446c8c2": { intent: "notice" },
+  // Titled "썸타임 팁" but the body announces the matching and chat-pricing change.
+  "01a0fb62-9007-708e-a3bf-21a183b4a1c0": { intent: "notice" },
   // Recruiting posts for dated offline events; end dates are not recorded in the source.
   "01a1059c-d2ed-7419-ab68-c0f60753a586": { intent: "campaign" },
   "019fcb6a-3d84-7a39-be62-321f08c09ad8": { intent: "campaign" },
