@@ -37,6 +37,18 @@ test("only universities at or above the verified threshold are listed", async ()
   );
 });
 
+test("larger universities win the capped slots regardless of API order", async () => {
+  const counts: Record<string, number> = {};
+  for (let i = 0; i < 22; i += 1) counts[`U${String(i).padStart(2, "0")}`] = 30;
+  counts.U21 = 73; // listed last by the API, like SELSNU
+  useFakeApi(counts);
+
+  const listed = await getListedUniversities();
+
+  assert.equal(listed[0].code, "U21");
+  assert.equal(listed.length, 18);
+});
+
 test("the listing is capped at the sitemap limit", async () => {
   const counts: Record<string, number> = {};
   for (let i = 0; i < 20; i += 1) counts[`U${String(i).padStart(2, "0")}`] = 30;

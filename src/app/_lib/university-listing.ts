@@ -8,7 +8,9 @@ export type ListedUniversity = {
   verifiedCount: number;
 };
 
-const CANDIDATE_POOL_SIZE = 20;
+// The top endpoint is ordered by region, not by size, so take the whole pool (API max 50)
+// and rank by verified users. A pool of 20 cut off SELSNU (73 verified, 18 GSC clicks).
+const CANDIDATE_POOL_SIZE = 50;
 
 /** sitemap 과 /university 목록이 같은 학교 집합을 보도록 선정 기준을 한곳에 둔다. */
 export async function getListedUniversities(): Promise<ListedUniversity[]> {
@@ -26,5 +28,7 @@ export async function getListedUniversities(): Promise<ListedUniversity[]> {
       verifiedCount,
     });
   }
-  return listed.slice(0, UNIVERSITY_SITEMAP_LIMIT);
+  return listed
+    .sort((a, b) => b.verifiedCount - a.verifiedCount)
+    .slice(0, UNIVERSITY_SITEMAP_LIMIT);
 }
