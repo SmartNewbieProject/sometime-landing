@@ -28,6 +28,15 @@ const LIFECYCLE_BY_CARD_NEWS_ID = {
     archive: { label: "종료된 행사", endedOn: "2026-09-05" },
   },
   // Consumer-facing legal and operational notices remain public records.
+  // Release round-ups are notices too: they describe a version, not a question people search.
+  "01a0eadf-17fe-701f-937f-0f542c18f6b8": { intent: "notice" },
+  "01a12d95-21a1-7d67-a6ac-e576a19ed5d4": { intent: "notice" },
+  "01a00e54-98d0-72ce-abae-d127ddfc4b81": { intent: "notice" },
+  "019e89de-ae5d-7fc4-a42f-5502c406360f": { intent: "notice" },
+  "019d4900-d4c1-7db1-bec7-6e90d446c8c2": { intent: "notice" },
+  // Recruiting posts for dated offline events; end dates are not recorded in the source.
+  "01a1059c-d2ed-7419-ab68-c0f60753a586": { intent: "campaign" },
+  "019fcb6a-3d84-7a39-be62-321f08c09ad8": { intent: "campaign" },
   "01a0122f-ad89-7163-b359-4c4e49ae3ba0": { intent: "notice" },
   "019fc652-600c-7864-812c-e603e791e9af": { intent: "notice" },
   "019fbd19-4538-770b-ad58-2b8c92c221d6": { intent: "notice" },

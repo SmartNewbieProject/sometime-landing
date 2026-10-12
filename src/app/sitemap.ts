@@ -141,7 +141,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
   const cardNewsEntries: MetadataRoute.Sitemap = cardNews
-    .filter((item) => Boolean(item.id) && !getCardNewsLifecycle(item.id).canonicalId)
+    .filter((item) => {
+      if (!item.id) return false;
+      const lifecycle = getCardNewsLifecycle(item.id);
+      return lifecycle.intent === "editorial" && !lifecycle.canonicalId;
+    })
     .map((item) => ({
       url: `${SITE_URL}/card-news/${item.id}`,
       lastModified: resolveContentLastmod({

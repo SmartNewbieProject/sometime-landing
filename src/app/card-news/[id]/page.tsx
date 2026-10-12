@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const path = `/card-news/${item.id}`;
   const sectionLabel = item.layoutMode === "longform" ? "롱폼" : "카드뉴스";
 
-  return buildPageMetadata({
+  const metadata = buildPageMetadata({
     title: item.title,
     description,
     path,
@@ -56,6 +56,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     keywords: ["카드뉴스", "썸타임", "대학생", sectionLabel],
     section: sectionLabel,
   });
+  // Notices and campaigns stay readable as public records but are not search landing pages.
+  if (lifecycle.intent !== "editorial") return { ...metadata, robots: { index: false, follow: true } };
+  return metadata;
 }
 
 export default async function CardNewsDetailPage({ params }: PageProps) {
