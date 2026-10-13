@@ -1,6 +1,16 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildPageMetadata, DEFAULT_OG_IMAGE } from "./seo";
+import {
+  articleJsonLd,
+  buildPageMetadata,
+  collectionPageJsonLd,
+  DEFAULT_OG_IMAGE,
+  ORGANIZATION_ID,
+  ORGANIZATION_SAME_AS,
+  organizationJsonLd,
+  softwareApplicationJsonLd,
+  websiteJsonLd,
+} from "./seo";
 import { metadata as eventMetadata } from "../event/layout";
 
 test("seasonal campaign keeps its actual info-origin canonical, not the app event route", () => {
@@ -30,6 +40,34 @@ test("custom content images do not claim unverified dimensions", () => {
     type: "image/png",
   }]);
   assert.equal(metadata.other?.["og:image:width"], undefined);
+});
+
+test("Organization JSON-LD is declared once with a stable @id and unified sameAs", () => {
+  const org = organizationJsonLd();
+  assert.equal(org["@id"], "https://some-in-univ.com/#organization");
+  assert.equal(org["@id"], ORGANIZATION_ID);
+  assert.ok(org.sameAs.includes("https://youtube.com/@sometime_in_univ"));
+  assert.equal(org.sameAs.length, new Set(org.sameAs).size);
+  assert.deepEqual([...org.sameAs], [...ORGANIZATION_SAME_AS]);
+});
+
+test("other schemas reference the organization by @id instead of nesting it", () => {
+  const ref = { "@id": ORGANIZATION_ID };
+  assert.deepEqual(websiteJsonLd().publisher, ref);
+  assert.deepEqual(softwareApplicationJsonLd().publisher, ref);
+  assert.deepEqual(
+    articleJsonLd({ title: "Example", description: "Description", path: "/blog/example" }).publisher,
+    ref,
+  );
+  assert.deepEqual(
+    collectionPageJsonLd({
+      name: "스토리",
+      description: "Description",
+      path: "/blog",
+      items: [],
+    }).publisher,
+    ref,
+  );
 });
 
 test("empty descriptions have one nonempty consistent fallback", () => {

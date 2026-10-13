@@ -37,8 +37,8 @@ export function StoreBadge({ store, surface }: { store: Store; surface: StoreCta
 
 export function StoreInstallCta({
   surface,
-  heading = "공식 스토어에서 썸타임을 시작하세요",
-  description = "학교 인증 대학생 소개팅 앱 썸타임을 iPhone과 Android에서 무료로 설치할 수 있어요.",
+  heading = "앱 받기",
+  description = "바로 깔 거면 아래 버튼 누르면 돼요.",
   compact = false,
   showMobileSticky = false,
 }: Props) {
@@ -55,7 +55,7 @@ export function StoreInstallCta({
           <StoreBadge store="ios" surface={surface} />
           <StoreBadge store="android" surface={surface} />
         </div>
-        <p className="mt-4 text-[12px] font-medium text-[#7B7380]">스마트뉴비가 운영하는 썸타임 공식 앱입니다.</p>
+        <p className="mt-4 text-[12px] font-medium text-[#7B7380]">만든 곳은 스마트뉴비예요.</p>
       </section>
       {showMobileSticky ? <MobileStoreInstallBar /> : null}
     </>
@@ -68,9 +68,9 @@ function MobileStoreInstallBar() {
       <Image src="/images/logo.png" width={42} height={42} alt="" className="h-10 w-10 shrink-0 rounded-[11px]" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-[14px] font-black text-[#201823]">썸타임 공식 앱</p>
-        <p className="truncate text-[12px] font-medium text-[#6B6472]">대학생 인증 소개팅 시작하기</p>
+        <p className="truncate text-[12px] font-medium text-[#6B6472]">학교 인증한 대학생 소개팅</p>
       </div>
-      <Link href="/download" className="inline-flex min-h-11 shrink-0 items-center rounded-[12px] bg-[#7A4AE2] px-4 text-[13px] font-bold text-white">앱 다운로드</Link>
+      <Link href="/download" className="inline-flex min-h-11 shrink-0 items-center rounded-[12px] bg-[#7A4AE2] px-4 text-[13px] font-bold text-white">앱 받기</Link>
     </aside>
   );
 }

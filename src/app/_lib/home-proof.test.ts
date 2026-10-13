@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  formatHomeProofAsOf,
   formatHomeProofCount,
   formatHomeProofReviewMeta,
   formatHomeProofUniversity,
+  HOME_PROOF_STAT_SOURCE,
   type HomeProof,
   parseHomeProof,
 } from "./home-proof";
@@ -58,10 +60,10 @@ test("rejects a non-object payload", () => {
   assert.throws(() => parseHomeProof(null), /verifiedCountFloor/);
 });
 
-test("count copy is cumulative and never says current users", () => {
+test("count copy is a floor with a plus, never current users", () => {
   const line = formatHomeProofCount(proof);
 
-  assert.equal(line, "총 3,000명 이상이 학교 인증을 완료했어요");
+  assert.equal(line, "학교 인증한 사람 3,000명+");
   assert.doesNotMatch(line, /이용/);
 });
 
@@ -81,9 +83,16 @@ test("rejects a missing or too-small university count instead of inventing one",
   );
 });
 
-test("university copy is a cumulative at-least statement", () => {
+test("university copy is a floor with a plus", () => {
   const line = formatHomeProofUniversity(proof);
 
-  assert.equal(line, "270개 이상 대학에서 인증을 완료했어요");
+  assert.equal(line, "270개+ 대학");
   assert.doesNotMatch(line, /참여|이용/);
+});
+
+test("as-of label stays visible next to the combined store+web source", () => {
+  assert.equal(formatHomeProofAsOf(proof), "2026-10-05 기준");
+  assert.match(HOME_PROOF_STAT_SOURCE, /Google Play/);
+  assert.match(HOME_PROOF_STAT_SOURCE, /App Store/);
+  assert.match(HOME_PROOF_STAT_SOURCE, /web/);
 });
