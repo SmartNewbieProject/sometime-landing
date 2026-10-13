@@ -1,7 +1,27 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildPageMetadata, DEFAULT_OG_IMAGE } from "./seo";
+import {
+  articleJsonLd,
+  buildPageMetadata,
+  DEFAULT_OG_IMAGE,
+  ORGANIZATION_ID,
+  ORGANIZATION_SAME_AS,
+  organizationJsonLd,
+  softwareApplicationJsonLd,
+  websiteJsonLd,
+} from "./seo";
 import { metadata as eventMetadata } from "../event/layout";
+import { APP_STORE_URL, GOOGLE_PLAY_URL } from "./store-links";
+
+function collectByType(value: unknown, type: string): Record<string, unknown>[] {
+  if (Array.isArray(value)) return value.flatMap((item) => collectByType(item, type));
+  if (value && typeof value === "object") {
+    const node = value as Record<string, unknown>;
+    const self = node["@type"] === type ? [node] : [];
+    return [...self, ...Object.values(node).flatMap((item) => collectByType(item, type))];
+  }
+  return [];
+}
 
 test("seasonal campaign keeps its actual info-origin canonical, not the app event route", () => {
   assert.equal(eventMetadata.alternates?.canonical, "https://info.some-in-univ.com/event");
@@ -37,4 +57,31 @@ test("empty descriptions have one nonempty consistent fallback", () => {
   assert.ok(metadata.description?.trim());
   assert.equal(metadata.description, metadata.openGraph?.description);
   assert.equal(metadata.description, metadata.twitter?.description);
+});
+
+test("Organization is declared once with a stable @id and unified sameAs", () => {
+  const organization = organizationJsonLd();
+  const website = websiteJsonLd();
+  const article = articleJsonLd({
+    title: "Example",
+    description: "Description",
+    path: "/blog/university-dating-app-guide",
+  });
+  const application = softwareApplicationJsonLd();
+  const pageGraph = [organization, website, application, article];
+
+  assert.equal(organization["@id"], ORGANIZATION_ID);
+  assert.equal(ORGANIZATION_ID, "https://some-in-univ.com/#organization");
+  assert.deepEqual(organization.sameAs, [
+    APP_STORE_URL,
+    GOOGLE_PLAY_URL,
+    "https://www.instagram.com/sometime.in.univ/",
+    "https://blog.naver.com/smartnewb",
+    "https://youtube.com/@sometime_in_univ",
+  ]);
+  assert.ok(ORGANIZATION_SAME_AS.includes("https://youtube.com/@sometime_in_univ"));
+  assert.deepEqual(website.publisher, { "@id": ORGANIZATION_ID });
+  assert.deepEqual(article.publisher, { "@id": ORGANIZATION_ID });
+  assert.deepEqual(application.publisher, { "@id": ORGANIZATION_ID });
+  assert.equal(collectByType(pageGraph, "Organization").length, 1);
 });

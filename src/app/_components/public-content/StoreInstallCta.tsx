@@ -55,7 +55,7 @@ export function StoreInstallCta({
           <StoreBadge store="ios" surface={surface} />
           <StoreBadge store="android" surface={surface} />
         </div>
-        <p className="mt-4 text-[12px] font-medium text-[#7B7380]">스마트뉴비가 운영하는 썸타임 공식 앱입니다.</p>
+        <p className="mt-4 text-[12px] font-medium text-[#7B7380]">스마트뉴비가 만든 썸타임 공식 앱이에요.</p>
       </section>
       {showMobileSticky ? <MobileStoreInstallBar /> : null}
     </>

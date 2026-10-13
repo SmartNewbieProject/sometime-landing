@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
-  formatHomeProofCount,
   formatHomeProofReviewMeta,
-  formatHomeProofUniversity,
+  formatHomeProofStats,
+  HOME_PROOF_MATCHING_BODY,
+  HOME_PROOF_TITLE,
+  HOME_PROOF_VERIFICATION_BODY,
   type HomeProof,
   parseHomeProof,
 } from "./home-proof";
@@ -58,10 +60,22 @@ test("rejects a non-object payload", () => {
   assert.throws(() => parseHomeProof(null), /verifiedCountFloor/);
 });
 
-test("count copy is cumulative and never says current users", () => {
-  const line = formatHomeProofCount(proof);
+test("home proof copy stays in 해요체 and keeps the allowed facts", () => {
+  assert.equal(HOME_PROOF_TITLE, "가입 전에 다들 궁금해하는 것");
+  assert.equal(
+    HOME_PROOF_VERIFICATION_BODY,
+    "가입할 때 학교 고르고, 학교 메일이나 학생증·재학증명서로 인증하면 끝이에요.",
+  );
+  assert.equal(HOME_PROOF_MATCHING_BODY, "매칭이 열릴 때마다 한 명씩 무료로 추천해 줘요.");
+});
 
-  assert.equal(line, "총 3,000명 이상이 학교 인증을 완료했어요");
+test("count copy is cumulative and never says current users", () => {
+  const line = formatHomeProofStats(proof);
+
+  assert.equal(
+    line,
+    "학교 인증한 사람 3,000명+ · 대학 270곳+ (Google Play·App Store·웹 합산, 2026-10-05 기준)",
+  );
   assert.doesNotMatch(line, /이용/);
 });
 
@@ -82,8 +96,10 @@ test("rejects a missing or too-small university count instead of inventing one",
 });
 
 test("university copy is a cumulative at-least statement", () => {
-  const line = formatHomeProofUniversity(proof);
+  const line = formatHomeProofStats(proof);
 
-  assert.equal(line, "270개 이상 대학에서 인증을 완료했어요");
+  assert.match(line, /대학 270곳\+/);
+  assert.match(line, /Google Play·App Store·웹 합산/);
+  assert.match(line, /2026-10-05 기준/);
   assert.doesNotMatch(line, /참여|이용/);
 });

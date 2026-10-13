@@ -1,7 +1,6 @@
 import {
-  formatHomeProofCount,
   formatHomeProofReviewMeta,
-  formatHomeProofUniversity,
+  formatHomeProofStats,
   getHomeProof,
   HOME_PROOF_MATCHING_BODY,
   HOME_PROOF_MATCHING_HEADING,
@@ -44,12 +43,8 @@ export async function HomeProofSection() {
 
       <div className="pt-6">
         <p className="font-wantedSans text-[20px] font-bold leading-[30px] text-black">
-          {formatHomeProofCount(proof)}
+          {formatHomeProofStats(proof)}
         </p>
-        <p className="mt-1 font-wantedSans text-[16px] font-bold leading-[26px] text-black">
-          {formatHomeProofUniversity(proof)}
-        </p>
-        <p className="mt-1 text-[13px] leading-[20px] text-neutral-500">{proof.asOf} 기준</p>
 
         <div className="mt-8 space-y-8">
           <div>

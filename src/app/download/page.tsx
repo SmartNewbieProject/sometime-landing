@@ -165,7 +165,7 @@ export default async function DownloadPage() {
           <StoreBadge store="ios" surface="landing_download_final" />
           <StoreBadge store="android" surface="landing_download_final" />
         </div>
-        <p className="mt-4 font-pretendard text-xs leading-5 text-[#625A68]">스마트뉴비가 운영하는 썸타임 공식 앱</p>
+        <p className="mt-4 font-pretendard text-xs leading-5 text-[#625A68]">스마트뉴비가 만든 썸타임 공식 앱이에요.</p>
       </section>
     </ContentShell>
   );

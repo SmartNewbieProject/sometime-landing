@@ -6,19 +6,19 @@ import { bubbleVariants } from "@/app/_lib/motion";
 const guideItems = [
   {
     title: "대학생 소개팅 앱 추천 기준",
-    body: "가입자 수보다 학교 인증, 실제 만남 가능한 생활권, 운영 검수를 먼저 확인하는 게 좋아요.",
+    body: "앱 깔기 전에 제일 먼저 볼 건 \"진짜 대학생 맞아?\"예요.",
   },
   {
     title: "학교 인증 소개팅",
-    body: "실제 대학생인지 확인되는 구조가 첫 대화의 불안을 줄이고 신뢰를 높여요.",
+    body: "학교 메일이나 학생증·재학증명서로 인증한 사람끼리만 연결돼요.",
   },
   {
     title: "캠퍼스 소개팅 차이",
-    body: "같은 지역, 인접 대학 생활권을 보면 대화 소재와 실제 만남 가능성이 함께 높아져요.",
+    body: "같은 지역, 가까운 학교 위주로 떠요. 통학권이면 학식 얘기가 바로 나와요.",
   },
   {
-    title: "안전한 대학생 소개팅",
-    body: "프로필, 피드백, 신고 대응을 계속 살피는 운영 기준이 있어야 마음 놓고 시작할 수 있어요.",
+    title: "프로필 검수·신고",
+    body: "가입한 뒤에도 프로필 검수랑 신고 처리는 계속 봐요.",
   },
 ];
 
@@ -50,9 +50,9 @@ export default function SeoGuide() {
         variants={bubbleVariants}
         className="mb-[18px] text-center text-[12px] font-medium leading-[20px] text-[#666]"
       >
-        학교 인증, 캠퍼스 매칭, 안전한 운영 기준이
+        앱 깔기 전에 학교 인증이랑
         <br />
-        함께 있어야 마음 놓고 시작할 수 있어요.
+        가까운 학교 사람이 뜨는지를 봐요.
       </motion.p>
 
       <div className="flex w-full max-w-[330px] flex-col gap-[9px]">
@@ -76,8 +76,8 @@ export default function SeoGuide() {
         variants={bubbleVariants}
         className="mt-[14px] max-w-[320px] text-center text-[11px] font-medium leading-[18px] text-[#777]"
       >
-        과팅보다 조용한 1:1 만남을 원하거나, 지방 대학생 소개팅처럼 실제로 만날 수
-        있는 거리의 인연을 찾는 분께 잘 맞아요.
+        과팅보다 1:1로 천천히 보고 싶거나, 통학권에서 만나고 싶은 사람에게
+        맞아요.
       </motion.p>
 
       <motion.div
