@@ -1,4 +1,5 @@
 import {
+  formatHomeProofAsOf,
   formatHomeProofCount,
   formatHomeProofReviewMeta,
   formatHomeProofUniversity,
@@ -6,6 +7,7 @@ import {
   HOME_PROOF_MATCHING_BODY,
   HOME_PROOF_MATCHING_HEADING,
   HOME_PROOF_REVIEWS_HEADING,
+  HOME_PROOF_STAT_SOURCE,
   HOME_PROOF_TITLE,
   HOME_PROOF_VERIFICATION_BODY,
   HOME_PROOF_VERIFICATION_HEADING,
@@ -44,12 +46,11 @@ export async function HomeProofSection() {
 
       <div className="pt-6">
         <p className="font-wantedSans text-[20px] font-bold leading-[30px] text-black">
-          {formatHomeProofCount(proof)}
+          {formatHomeProofCount(proof)} · {formatHomeProofUniversity(proof)}
         </p>
-        <p className="mt-1 font-wantedSans text-[16px] font-bold leading-[26px] text-black">
-          {formatHomeProofUniversity(proof)}
+        <p className="mt-1 text-[13px] leading-[20px] text-neutral-500">
+          {formatHomeProofAsOf(proof)} · {HOME_PROOF_STAT_SOURCE}
         </p>
-        <p className="mt-1 text-[13px] leading-[20px] text-neutral-500">{proof.asOf} 기준</p>
 
         <div className="mt-8 space-y-8">
           <div>

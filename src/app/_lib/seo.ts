@@ -154,17 +154,29 @@ export function jsonLdScript(data: Record<string, unknown> | Record<string, unkn
   };
 }
 
+export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+
+export const ORGANIZATION_SAME_AS = [
+  APP_STORE_URL,
+  GOOGLE_PLAY_URL,
+  "https://www.instagram.com/sometime.in.univ/",
+  "https://blog.naver.com/smartnewb",
+  "https://youtube.com/@sometime_in_univ",
+] as const;
+
+export function organizationRef() {
+  return { "@id": ORGANIZATION_ID };
+}
+
 export function organizationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": ORGANIZATION_ID,
     name: SITE_NAME,
     url: SITE_URL,
     logo: absoluteUrl("/images/info-logo.png"),
-    sameAs: [
-      APP_STORE_URL,
-      GOOGLE_PLAY_URL,
-    ],
+    sameAs: [...ORGANIZATION_SAME_AS],
     contactPoint: {
       "@type": "ContactPoint",
       email: "notify@smartnewb.com",
@@ -182,11 +194,7 @@ export function websiteJsonLd() {
     url: SITE_URL,
     description: SITE_DESCRIPTION,
     inLanguage: "ko-KR",
-    publisher: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
+    publisher: organizationRef(),
   };
 }
 
@@ -204,6 +212,7 @@ export function softwareApplicationJsonLd(rating?: {
     url: SITE_URL,
     downloadUrl: [APP_STORE_URL, GOOGLE_PLAY_URL],
     sameAs: [APP_STORE_URL, GOOGLE_PLAY_URL],
+    publisher: organizationRef(),
     image: DEFAULT_OG_IMAGE,
     offers: {
       "@type": "Offer",
@@ -270,14 +279,7 @@ export function articleJsonLd({
       "@type": "Person",
       name: authorName || "썸타임 에디터",
     },
-    publisher: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      logo: {
-        "@type": "ImageObject",
-        url: absoluteUrl("/images/info-logo.png"),
-      },
-    },
+    publisher: organizationRef(),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": absoluteUrl(path),
@@ -311,6 +313,7 @@ export function collectionPageJsonLd({
       name: SITE_NAME,
       url: SITE_URL,
     },
+    publisher: organizationRef(),
     mainEntity: {
       "@type": "ItemList",
       itemListElement: items.slice(0, 24).map((item, index) => ({
