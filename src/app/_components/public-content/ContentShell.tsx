@@ -72,6 +72,7 @@ export function ContentShell({ children }: { children: ReactNode }) {
             <p>스마트뉴비 · 대표 전준영 · 사업자등록번호 498-05-02914</p>
             <p>대전광역시 유성구 동서대로 125, S9동 한밭인큐베이터타운 405호</p>
             <p>통신판매업신고 제2026-대전유성-0328호</p>
+            <p>호스팅서비스 제공자 Vercel Inc.</p>
             <a href="mailto:notify@smartnewb.com" className="inline-flex min-h-11 items-center text-[#5B35B5] underline underline-offset-4">문의 notify@smartnewb.com</a>
           </div>
         </div>
