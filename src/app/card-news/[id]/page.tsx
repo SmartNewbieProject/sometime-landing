@@ -10,6 +10,8 @@ import { ContentBreadcrumb } from "../../_components/public-content/ContentBread
 import { ContentBanner } from "../../_components/public-content/ContentBanner";
 import { ReadingProgress } from "../../_components/public-content/ReadingProgress";
 import { ArticleHeader } from "../../_components/public-content/ArticleHeader";
+import { NoticeHtmlFrame } from "../../_components/public-content/NoticeHtmlFrame";
+import { buildNoticeDocument } from "../../_lib/notice-document";
 import { readingMinutes } from "../../_lib/reading-time";
 import {
   type CardNewsSection,
@@ -68,6 +70,7 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
 
   const image = pickCardNewsBannerImage(item);
   const rawBody = item.body?.trim() ?? "";
+  const noticeDocument = buildNoticeDocument(item.noticeHtml);
   const { faqs: inlineFaqs } = splitContentAndFaq(rawBody);
   const summary = contentSummary(item.description || item.subtitle, rawBody);
   const publishedDate = formatDate(item.publishedAt);
@@ -124,7 +127,7 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
           ) : null}
         />
 
-        {rawBody && !rawBody.includes(image) ? <ContentBanner
+        {!noticeDocument && rawBody && !rawBody.includes(image) ? <ContentBanner
           {...getBannerDimensions(item.backgroundImage?.url === image ? item.backgroundImage : null)}
           src={image}
           title={item.title}
@@ -132,7 +135,11 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
           alt={item.backgroundImage?.url === image ? item.backgroundImage.alt : undefined}
         /> : null}
 
-        {rawBody ? <MarkdownBody content={rawBody} /> : null}
+        {noticeDocument ? (
+          <NoticeHtmlFrame html={noticeDocument} title={item.title} />
+        ) : rawBody ? (
+          <MarkdownBody content={rawBody} />
+        ) : null}
         {item.sections?.length ? (
           <div className="space-y-6">
             {item.sections.map((section: CardNewsSection & { content?: string | null; order?: number }) => ({

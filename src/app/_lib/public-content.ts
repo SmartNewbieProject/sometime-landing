@@ -1,4 +1,5 @@
 import { cache } from "react";
+import type { NoticeHtml } from "./notice-document";
 
 const API_BASE_URL =
   process.env.SOMETIME_PUBLIC_CONTENT_API_URL ??
@@ -98,6 +99,7 @@ export type CardNews = {
   updatedAt?: string | null;
   layoutMode?: string | null;
   body?: string | null;
+  noticeHtml?: NoticeHtml | null;
 };
 
 export type TopUniversity = {
@@ -368,7 +370,7 @@ export async function getAllCardNews(): Promise<CardNews[]> {
 }
 
 export const getCardNews = cache(async (id: string) => {
-  return fetchJson<CardNews>(`/posts/card-news/${encodeURIComponent(id)}`);
+  return fetchJson<CardNews>(`/posts/card-news/${encodeURIComponent(id)}?capability=notice-html-v1`);
 });
 
 export const getHotCommunityPosts = cache(async () => {
