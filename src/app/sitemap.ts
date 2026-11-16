@@ -110,6 +110,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5,
     },
     {
+      url: `${SITE_URL}/reviews`,
+      lastModified: getStaticSitemapLastmod("/reviews"),
+      changeFrequency: "daily",
+      priority: 0.8,
+    },
+    {
       url: `${SITE_URL}/about`,
       lastModified: getStaticSitemapLastmod("/about"),
       changeFrequency: "monthly",
