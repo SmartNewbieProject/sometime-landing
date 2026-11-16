@@ -17,6 +17,7 @@ export const STATIC_SITEMAP_LASTMOD = {
   "/press": "2026-09-08T00:00:00+09:00",
   "/about": "2026-09-08T00:00:00+09:00",
   "/reviews": "2026-11-16T00:00:00+09:00",
+  "/college-meeting": "2026-11-16T00:00:00+09:00",
   "/download": "2026-09-08T00:00:00+09:00",
   "/university": "2026-09-08T00:00:00+09:00",
 } as const;

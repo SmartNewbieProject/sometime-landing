@@ -24,6 +24,7 @@ export function detailEndAction(kind: "story" | "card-news" | "community", title
   if (intent === "notice" || /환불|오류|장애|보상|문의|고객|가격|구슬/.test(title)) return { href: "mailto:notify@smartnewb.com", label: "고객센터에 이용 문의" };
   if (/학생증|학교 인증|학교인증/.test(title)) return { href: "/verification", label: "학교 인증 안내 보기" };
   if (/안전|차단/.test(title)) return { href: "/safety", label: "안전한 이용 안내 보기" };
+  if (/미팅|과팅/.test(title)) return { href: "/college-meeting", label: "대학생 미팅 안내 보기" };
   if (/로테이션/.test(title)) return { href: "/rotation", label: "로테이션 소개팅 안내 확인" };
   if (intent === "campaign" || /모집|이벤트/.test(title)) return { href: "/card-news", label: "다른 소식 확인" };
   return kind === "story"
