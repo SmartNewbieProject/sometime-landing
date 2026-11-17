@@ -17,6 +17,7 @@ const HEADER = `# 썸타임
 
 - [썸타임이란](${SITE_URL}/about): 서비스 소개, 이용 흐름, 운영사 정보, 인증 현황
 - [자주 묻는 질문](${SITE_URL}/faq): 이용 대상, 학교 인증, 요금, 사진 공개, 신고·차단
+- [소개팅 어플 순위](${SITE_URL}/dating-app-ranking): App Store 소셜 차트 순위·평점으로 본 소개팅 앱 6개 비교와 고르는 기준
 - [대학생 미팅](${SITE_URL}/college-meeting): 금·토 저녁 2:2 미팅 신청 방법, 만나는 동네, 비용 원칙
 - [썸타임 후기](${SITE_URL}/reviews): App Store·Google Play 평점과 대표 후기
 - [학교 인증 안내](${SITE_URL}/verification): 인증 경로 두 가지와 제출 자료 처리 원칙

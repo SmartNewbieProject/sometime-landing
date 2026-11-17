@@ -157,6 +157,10 @@ async function fetchJson(path: string): Promise<unknown> {
   return response.json();
 }
 
+export async function getReviewSummary(): Promise<ReviewSummary> {
+  return parseReviewSummary(await fetchJson("/public-reviews/summary"));
+}
+
 export async function getPublicReviewsPage(): Promise<PublicReviewsPage> {
   const [summary, couple, store] = await Promise.all([
     fetchJson("/public-reviews/summary"),
