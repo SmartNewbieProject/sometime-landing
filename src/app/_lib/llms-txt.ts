@@ -18,7 +18,7 @@ const HEADER = `# 썸타임
 - [썸타임이란](${SITE_URL}/about): 서비스 소개, 이용 흐름, 운영사 정보, 인증 현황
 - [자주 묻는 질문](${SITE_URL}/faq): 이용 대상, 학교 인증, 요금, 사진 공개, 신고·차단
 - [소개팅 어플 순위](${SITE_URL}/dating-app-ranking): 썸타임·연픽·클럽트웬티·하루야 대학생 소개팅 앱 4곳을 App Store 순위·평점과 함께 비교
-- [대학생 미팅](${SITE_URL}/college-meeting): 금·토 저녁 2:2 미팅 신청 방법, 만나는 동네, 비용 원칙
+- [대학생 미팅](${SITE_URL}/college-meeting): 2:2 미팅 대신 시간·장소를 먼저 정해 1:1로 만나는 썸타임 약속 안내(올리는 법, 비용, 규칙)
 - [썸타임 후기](${SITE_URL}/reviews): App Store·Google Play 평점과 대표 후기
 - [학교 인증 안내](${SITE_URL}/verification): 인증 경로 두 가지와 제출 자료 처리 원칙
 - [안전 안내](${SITE_URL}/safety): 신고·차단, 위반 조치, 미성년자 보호, 위급 연락처
