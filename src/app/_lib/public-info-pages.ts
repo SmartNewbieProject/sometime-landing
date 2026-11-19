@@ -69,6 +69,7 @@ export const VERIFICATION_PAGE: PublicInfoPage = {
     },
   ],
   links: [
+    { label: "대학생 소개팅 앱 4곳 비교", href: "/dating-app-ranking" },
     { label: "썸타임 안전 안내", href: "/safety" },
     { label: "자주 묻는 질문", href: "/faq" },
   ],
@@ -275,6 +276,7 @@ export const ABOUT_PAGE: PublicInfoPage = {
     },
   ],
   links: [
+    { label: "대학생 소개팅 앱 4곳 비교", href: "/dating-app-ranking" },
     { label: "학교 인증 방법", href: "/verification" },
     { label: "썸타임 안전 안내", href: "/safety" },
     { label: "쉬운 개인정보 안내", href: "/privacy/easy" },
@@ -315,6 +317,7 @@ export const DOWNLOAD_PAGE: PublicInfoPage = {
     },
   ],
   links: [
+    { label: "대학생 소개팅 앱 4곳 비교", href: "/dating-app-ranking" },
     { label: "썸타임 소개", href: "/about" },
     { label: "썸타임 안전 안내", href: "/safety" },
   ],
@@ -403,6 +406,7 @@ export const COLLEGE_MEETING_PAGE: PublicInfoPage = {
     },
   ],
   links: [
+    { label: "대학생 소개팅 앱 4곳 비교", href: "/dating-app-ranking" },
     { label: "썸타임 후기", href: "/reviews" },
     { label: "학교 인증 안내", href: "/verification" },
     { label: "썸타임 안전 안내", href: "/safety" },

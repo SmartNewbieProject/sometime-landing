@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { isOtherAppPath } from "@/app/_lib/other-app-paths";
 import { ContentBreadcrumb } from "./ContentBreadcrumb";
 import { PageHeader } from "./PageHeader";
 import { READING_BODY, READING_H2, READING_LINK, READING_SHELL } from "./reading-styles";
@@ -96,10 +97,10 @@ export function InfoPageBody({
               const className =
                 `inline-flex min-h-11 items-center py-2 text-[16px] leading-6 ${READING_LINK}`;
 
-              if (link.download) {
+              if (link.download || isOtherAppPath(link.href)) {
                 return (
                   <li key={link.href}>
-                    <a href={link.href} download className={className}>
+                    <a href={link.href} download={link.download || undefined} className={className}>
                       {link.label}
                     </a>
                   </li>

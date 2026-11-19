@@ -19,6 +19,8 @@ test("summary falls back to body when the supplied preview is empty", () => {
 
 test("detail actions route operational intent away from acquisition", () => {
   assert.equal(detailEndAction("story", "과팅 준비 가이드").href, "/college-meeting");
+  assert.equal(detailEndAction("story", "대학생 소개팅 어플 추천 TOP 4").href, "/dating-app-ranking");
+  assert.equal(detailEndAction("story", "소개팅 앱 알바 구별하는 법").href, "/dating-app-ranking");
   assert.equal(detailEndAction("story", "대학 미팅 애프터 멘트").href, "/college-meeting");
   assert.equal(detailEndAction("card-news", "환불 정책").href, "mailto:notify@smartnewb.com");
   assert.equal(new URL(detailEndAction("card-news", "이용약관 변경").href).hostname, "ruby-composer-6d2.notion.site");
