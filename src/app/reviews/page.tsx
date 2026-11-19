@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { isOtherAppPath } from "../_lib/other-app-paths";
 import { ContentBreadcrumb } from "../_components/public-content/ContentBreadcrumb";
 import { ContentShell } from "../_components/public-content/ContentShell";
 import { JsonLd } from "../_components/public-content/JsonLd";
@@ -36,6 +37,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 const RELATED_LINKS = [
+  { label: "대학생 소개팅 앱 4곳 비교", href: "/dating-app-ranking" },
   { label: "자주 묻는 질문", href: "/faq" },
   { label: "학교 인증 방식", href: "/verification" },
   { label: "안전 안내", href: "/safety" },
@@ -148,16 +150,19 @@ export default async function ReviewsPage() {
           <section className="border-t border-[#EEE8FF] pt-8">
             <h2 className="mb-3 text-[15px] font-bold text-[#625A68]">가입 전에 같이 보면 좋은 안내</h2>
             <ul className="grid gap-1 sm:grid-cols-2 sm:gap-x-5">
-              {RELATED_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className={`inline-flex min-h-11 items-center py-2 text-[16px] leading-6 ${READING_LINK}`}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              {RELATED_LINKS.map((link) => {
+                const Tag = isOtherAppPath(link.href) ? "a" : Link;
+                return (
+                  <li key={link.href}>
+                    <Tag
+                      href={link.href}
+                      className={`inline-flex min-h-11 items-center py-2 text-[16px] leading-6 ${READING_LINK}`}
+                    >
+                      {link.label}
+                    </Tag>
+                  </li>
+                );
+              })}
             </ul>
           </section>
         </div>
