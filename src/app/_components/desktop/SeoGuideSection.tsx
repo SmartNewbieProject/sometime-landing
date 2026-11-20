@@ -83,6 +83,10 @@ const fitItems = [
 
 const relatedLinks = [
   {
+    label: "대학생 소개팅 어플 추천 4곳 비교",
+    href: "https://some-in-univ.com/dating-app-ranking",
+  },
+  {
     label: "한 학교 한 친구 운영 원칙",
     href: "https://some-in-univ.com/blog/하나의-대학교-한-명의-친구-운영은-늘-현실이었어요",
   },
