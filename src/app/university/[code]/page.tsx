@@ -9,7 +9,8 @@ import { JsonLd } from "../../_components/public-content/JsonLd";
 import { StoreInstallCta } from "../../_components/public-content/StoreInstallCta";
 import { getUniversityPage } from "../../_lib/public-content";
 import { canonicalUniversityPath } from "../../_lib/university-canonical";
-import { absoluteUrl, breadcrumbJsonLd, buildPageMetadata } from "../../_lib/seo";
+import { absoluteUrl, breadcrumbJsonLd, buildPageMetadata, websiteRef } from "../../_lib/seo";
+import { STATIC_SITEMAP_LASTMOD } from "../../_lib/sitemap-helpers";
 import { UNIVERSITY_REGION_LABELS, universityDisplayName } from "../../_lib/university-display";
 
 type PageProps = { params: Promise<{ code: string }> };
@@ -47,6 +48,31 @@ export default async function UniversityPage({ params }: PageProps) {
   const path = `/university/${encodeURIComponent(university.code)}`;
   const regionLabel = university.region ? UNIVERSITY_REGION_LABELS[university.region] : undefined;
   const displayName = universityDisplayName(university);
+  const faqs = [
+    {
+      question: `${displayName} 학생은 썸타임 학교 인증을 어떻게 진행하나요?`,
+      answer:
+        "학교 이메일 인증 또는 학생증·재학증명서 제출 두 가지 경로 중 하나를 선택해 인증할 수 있어요. 인증이 끝나기 전에는 프로필이 다른 이용자에게 보이지 않아요.",
+    },
+    {
+      question: `${displayName} 같은 학교나 같은 학과 사람을 피할 수 있나요?`,
+      answer:
+        "네. 앱 안에서 '같은 학교 제외'와 '같은 학과 제외' 설정을 각각 켜고 끌 수 있고, 모바일 앱에서는 연락처 해시 기반 지인 차단도 선택해 이용할 수 있어요.",
+    },
+    {
+      question: `${displayName} 학생도 무료로 시작할 수 있나요?`,
+      answer:
+        "네. 무료로 가입해 시작할 수 있고 일부 기능은 유료예요. 필요한 조건과 비용은 앱에서 사용 전에 안내해요.",
+    },
+  ];
+  const relatedLinks = [
+    { label: "지인 차단·같은 학교 제외 안내", href: "/block-acquaintances" },
+    { label: "한일 매칭·자동 번역 채팅", href: "/korea-japan-matching" },
+    { label: "대학생 소개팅 앱 4곳 비교", href: "/dating-app-ranking" },
+    { label: "썸타임 실제 사용 후기", href: "/reviews" },
+    { label: "시간·장소 먼저 정하는 1:1 약속", href: "/college-meeting" },
+    { label: "전체 학교별 안내 보기", href: "/university" },
+  ];
 
   return (
     <ContentShell>
@@ -54,21 +80,42 @@ export default async function UniversityPage({ params }: PageProps) {
         data={[
           breadcrumbJsonLd([
             { name: "홈", path: "/" },
+            { name: "학교별 안내", path: "/university" },
             { name: `${displayName} 소개팅`, path },
           ]),
           {
             "@context": "https://schema.org",
             "@type": "WebPage",
+            "@id": `${absoluteUrl(path)}#webpage`,
             name: `${displayName} 학생을 위한 썸타임 안내`,
             url: absoluteUrl(path),
+            dateModified: STATIC_SITEMAP_LASTMOD["/university"].slice(0, 10),
+            inLanguage: "ko-KR",
+            isPartOf: websiteRef(),
             about: { "@type": "CollegeOrUniversity", name: displayName },
             description: `${displayName} 학생을 위한 학교 인증 기반 대학생 소개팅과 지역 매칭`,
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((faq) => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.answer,
+              },
+            })),
           },
         ]}
       />
       <div className={READING_SHELL}>
         <ContentBreadcrumb
-          items={[{ href: "/", label: "홈" }, { label: `${displayName} 소개팅` }]}
+          items={[
+            { href: "/", label: "홈" },
+            { href: "/university", label: "학교별 안내" },
+            { label: `${displayName} 소개팅` },
+          ]}
         />
         <PageHeader
           eyebrow="UNIVERSITY MATCHING"
@@ -112,6 +159,35 @@ export default async function UniversityPage({ params }: PageProps) {
           <Link href="/verification" className={`mt-3 inline-flex min-h-11 items-center ${READING_LINK}`}>
             학교 인증 방법 보기
           </Link>
+        </section>
+
+        <section className="mt-12 border-t border-[#EEE8FF] pt-8" aria-labelledby="university-faq">
+          <h2 id="university-faq" className={`mb-6 ${READING_H2}`}>
+            자주 묻는 질문
+          </h2>
+          <dl className="space-y-6">
+            {faqs.map((faq) => (
+              <div key={faq.question} className="border-b border-[#EEE8FF] pb-6">
+                <dt className="text-lg font-bold text-[#201823]">{faq.question}</dt>
+                <dd className={`mt-2 ${READING_BODY}`}>{faq.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <section className="mt-10" aria-labelledby="university-related">
+          <h2 id="university-related" className="mb-3 text-[15px] font-bold text-[#625A68]">
+            관련 안내 바로가기
+          </h2>
+          <ul className="grid gap-1 sm:grid-cols-2 sm:gap-x-5">
+            {relatedLinks.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className={`inline-flex min-h-11 items-center py-2 text-[16px] leading-6 ${READING_LINK}`}>
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
     </ContentShell>

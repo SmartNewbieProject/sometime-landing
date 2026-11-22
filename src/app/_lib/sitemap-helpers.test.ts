@@ -13,8 +13,8 @@ import {
 test("static sitemap dates are explicit stable content versions", () => {
   assert.equal(STATIC_SITEMAP_LASTMOD["/download"], "2026-09-08T00:00:00+09:00");
   assert.equal(STATIC_SITEMAP_LASTMOD["/stories"], "2026-09-08T00:00:00+09:00");
-  assert.equal(STATIC_SITEMAP_LASTMOD["/university"], "2026-09-08T00:00:00+09:00");
-  assert.equal(UNIVERSITY_SITEMAP_LIMIT, 18);
+  assert.equal(STATIC_SITEMAP_LASTMOD["/university"], "2026-11-23T00:00:00+09:00");
+  assert.equal(UNIVERSITY_SITEMAP_LIMIT, 40);
   assert.equal(UNIVERSITY_SITEMAP_MIN_VERIFIED_COUNT, 20);
 });
 
