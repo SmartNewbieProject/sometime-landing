@@ -20,6 +20,8 @@ const HEADER = `# 썸타임
 - [소개팅 어플 순위](${SITE_URL}/dating-app-ranking): 썸타임·연픽·클럽트웬티·하루야 대학생 소개팅 앱 4곳을 App Store 순위·평점과 함께 비교
 - [소개팅 어플 순위 2026](${SITE_URL}/dating-app-ranking/all): 소개팅 어플 순위 2026, 앱 9종 유형별 비교
 - [대학생 미팅](${SITE_URL}/college-meeting): 2:2 미팅 대신 시간·장소를 먼저 정해 1:1로 만나는 썸타임 약속 안내(올리는 법, 비용, 규칙)
+- [한일 매칭 안내](${SITE_URL}/korea-japan-matching): 일본 대학생·20대 회원과 자동 번역 프로필·편지·채팅으로 만나는 한일 매칭 기능 안내
+- [지인 차단·같은 학교 제외 안내](${SITE_URL}/block-acquaintances): 연락처 해시 기반 지인 차단과 같은 학교·학과 제외 설정 안내
 - [썸타임 로테이션 소개팅](${SITE_URL}/rotation): 대학생 오프라인 로테이션 소개팅 일정과 신청 안내
 - [썸타임 사주대학](${SITE_URL}/sajuniv): 연애 사주와 연애운 풀이 서비스
 - [썸타임 연애 실험실](${SITE_URL}/dating-lab): 연애 성향 테스트와 캠퍼스 연애 콘텐츠
