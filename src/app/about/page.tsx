@@ -8,8 +8,9 @@ import {
   absoluteUrl,
   breadcrumbJsonLd,
   buildPageMetadata,
-  SITE_NAME,
+  websiteRef,
 } from "../_lib/seo";
+import { STATIC_SITEMAP_LASTMOD } from "../_lib/sitemap-helpers";
 
 const PATH = "/about";
 
@@ -28,15 +29,13 @@ export default function AboutPage() {
           {
             "@context": "https://schema.org",
             "@type": "WebPage",
+            "@id": `${absoluteUrl(PATH)}#webpage`,
             name: PAGE.metaTitle,
             description: PAGE.description,
             url: absoluteUrl(PATH),
+            dateModified: STATIC_SITEMAP_LASTMOD[PATH].slice(0, 10),
             inLanguage: "ko-KR",
-            isPartOf: {
-              "@type": "WebSite",
-              name: SITE_NAME,
-              url: absoluteUrl("/"),
-            },
+            isPartOf: websiteRef(),
           },
           breadcrumbJsonLd([
             { name: "홈", path: "/" },

@@ -202,6 +202,7 @@ export class PublicContentFetchError extends Error {
 async function fetchJson<T>(
   path: string,
   baseUrl = API_BASE_URL,
+  options?: { allowEmptyAsNull?: boolean },
 ): Promise<T | null> {
   let response: Response;
   try {
@@ -232,9 +233,15 @@ async function fetchJson<T>(
     });
   }
 
+  const rawText = await response.text();
+  const trimmed = rawText.trim();
+  if (options?.allowEmptyAsNull && (trimmed === "" || trimmed === "null")) {
+    return null;
+  }
+
   let json: T & ErrorEnvelope;
   try {
-    json = (await response.json()) as T & ErrorEnvelope;
+    json = JSON.parse(rawText) as T & ErrorEnvelope;
   } catch (cause) {
     throw new PublicContentFetchError({
       path,
@@ -319,6 +326,7 @@ export const getUniversityPage = cache(async (code: string) => {
   return fetchJson<UniversityPageData>(
     `/web/university-data/${encodeURIComponent(code)}`,
     webBaseUrl,
+    { allowEmptyAsNull: true },
   );
 });
 

@@ -10,8 +10,8 @@ export const STATIC_SITEMAP_LASTMOD = {
   "/stories": "2026-09-08T00:00:00+09:00",
   "/card-news": "2026-09-08T00:00:00+09:00",
   "/faq": "2026-09-08T00:00:00+09:00",
-  "/safety": "2026-07-22T17:33:19.000Z",
-  "/verification": "2026-07-22T17:33:19.000Z",
+  "/safety": "2026-11-21T00:00:00+09:00",
+  "/verification": "2026-11-21T00:00:00+09:00",
   "/privacy/easy": "2026-09-08T00:00:00+09:00",
   "/community-guidelines": "2026-09-08T00:00:00+09:00",
   "/press": "2026-09-08T00:00:00+09:00",
@@ -20,9 +20,20 @@ export const STATIC_SITEMAP_LASTMOD = {
   "/college-meeting": "2026-11-16T00:00:00+09:00",
   "/dating-app-ranking": "2026-11-18T00:00:00+09:00",
   "/dating-app-ranking/all": "2026-11-20T00:00:00+09:00",
+  "/rotation": "2026-11-22T00:00:00+09:00",
+  "/sajuniv": "2026-11-22T00:00:00+09:00",
+  "/dating-lab": "2026-11-22T00:00:00+09:00",
   "/download": "2026-09-08T00:00:00+09:00",
   "/university": "2026-09-08T00:00:00+09:00",
 } as const;
+
+const OPERATIONAL_NOTICE_TITLE_PATTERN =
+  /이용약관|개인정보처리방침|환불\s*정책\s*개정|약관이\s*이렇게\s*바뀌|약관에\s*적었어요|대규모\s*업데이트|피드백\s*업데이트/;
+
+export function isOperationalNoticeTitle(title?: string | null): boolean {
+  if (!title) return false;
+  return OPERATIONAL_NOTICE_TITLE_PATTERN.test(title);
+}
 
 // Mirrors of Naver posts carry X-Robots-Tag: noindex (app vercel.json /blog/naver-:id), and jp-
 // posts belong to the Japan site. A sitemap must not submit URLs that tell Google not to index.

@@ -8,6 +8,7 @@ import {
 import { getListedUniversities } from "./_lib/university-listing";
 import {
   getStaticSitemapLastmod,
+  isOperationalNoticeTitle,
   isSitemapBlogSlug,
   maxLastmod,
   resolveContentLastmod,
@@ -122,6 +123,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: `${SITE_URL}/rotation`,
+      lastModified: getStaticSitemapLastmod("/rotation"),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/sajuniv`,
+      lastModified: getStaticSitemapLastmod("/sajuniv"),
+      changeFrequency: "weekly",
+      priority: 0.75,
+    },
+    {
+      url: `${SITE_URL}/dating-lab`,
+      lastModified: getStaticSitemapLastmod("/dating-lab"),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
       url: `${SITE_URL}/college-meeting`,
       lastModified: getStaticSitemapLastmod("/college-meeting"),
       changeFrequency: "weekly",
@@ -165,7 +184,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
   const cardNewsEntries: MetadataRoute.Sitemap = cardNews
-    .filter((item) => Boolean(item.id) && !getCardNewsLifecycle(item.id).canonicalId)
+    .filter((item) => {
+      if (!item.id) return false;
+      const lifecycle = getCardNewsLifecycle(item.id);
+      if (lifecycle.canonicalId || lifecycle.intent !== "editorial") return false;
+      return !isOperationalNoticeTitle(item.title);
+    })
     .map((item) => ({
       url: `${SITE_URL}/card-news/${item.id}`,
       lastModified: resolveContentLastmod({
