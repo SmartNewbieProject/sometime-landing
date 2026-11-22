@@ -1,6 +1,18 @@
 import { getCardNewsLifecycle } from "./public-content-lifecycle";
 import { blogArticleUrl, SITE_URL } from "./public-content";
 import type { CardNews, SometimeArticleListItem } from "./public-content";
+import {
+  ABOUT_PAGE,
+  BLOCK_ACQUAINTANCES_FAQS,
+  BLOCK_ACQUAINTANCES_PAGE,
+  COLLEGE_MEETING_PAGE,
+  KOREA_JAPAN_MATCHING_FAQS,
+  KOREA_JAPAN_MATCHING_PAGE,
+  PRIVACY_EASY_PAGE,
+  VERIFICATION_PAGE,
+  type PublicInfoFaq,
+  type PublicInfoPage,
+} from "./public-info-pages";
 import { isOperationalNoticeTitle, isSitemapBlogSlug } from "./sitemap-helpers";
 
 // Facts here are the ones already stated on /about, /faq and /verification.
@@ -42,6 +54,7 @@ const FOOTER = `
 
 ## Optional
 
+- [전체 안내 (llms-full.txt)](${SITE_URL}/llms-full.txt)
 - [블로그 RSS](${SITE_URL}/feed.xml)
 - [사이트맵](${SITE_URL}/sitemap.xml)
 `;
@@ -94,4 +107,51 @@ export function buildLlmsTxt(input: {
   if (cardNews.length) sections.push(`## 카드뉴스\n\n${cardNews.join("\n")}\n`);
   sections.push(FOOTER);
   return sections.join("\n");
+}
+
+function renderInfoPageSection(
+  path: string,
+  page: PublicInfoPage,
+  faqs?: PublicInfoFaq[],
+): string {
+  const lines: string[] = [
+    `## ${page.title} (${SITE_URL}${path})`,
+    "",
+    ...page.answer.map((line) => `> ${line}`),
+    "",
+  ];
+  for (const section of page.sections) {
+    lines.push(`### ${section.heading}`, "");
+    if (section.body) {
+      for (const p of section.body) lines.push(p, "");
+    }
+    if (section.items) {
+      for (const item of section.items) lines.push(`- ${item}`);
+      lines.push("");
+    }
+  }
+  if (faqs?.length) {
+    lines.push("### 자주 묻는 질문", "");
+    for (const faq of faqs) {
+      lines.push(`- **Q. ${faq.question}** ${faq.answer}`);
+    }
+    lines.push("");
+  }
+  return lines.join("\n");
+}
+
+export function buildLlmsFullTxt(input: {
+  articles: SometimeArticleListItem[];
+  cardNews: CardNews[];
+}): string {
+  const base = buildLlmsTxt(input);
+  const fullPages = [
+    renderInfoPageSection("/about", ABOUT_PAGE),
+    renderInfoPageSection("/korea-japan-matching", KOREA_JAPAN_MATCHING_PAGE, KOREA_JAPAN_MATCHING_FAQS),
+    renderInfoPageSection("/block-acquaintances", BLOCK_ACQUAINTANCES_PAGE, BLOCK_ACQUAINTANCES_FAQS),
+    renderInfoPageSection("/college-meeting", COLLEGE_MEETING_PAGE),
+    renderInfoPageSection("/verification", VERIFICATION_PAGE),
+    renderInfoPageSection("/privacy/easy", PRIVACY_EASY_PAGE),
+  ];
+  return `${base}\n---\n\n# 주요 서비스 상세 안내 (Full Context)\n\n${fullPages.join("\n")}`;
 }

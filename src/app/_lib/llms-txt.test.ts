@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildLlmsTxt } from "./llms-txt";
+import { buildLlmsFullTxt, buildLlmsTxt } from "./llms-txt";
 import type { CardNews, SometimeArticleListItem } from "./public-content";
 
 function article(slug: string, publishedAt: string | null): SometimeArticleListItem {
@@ -66,4 +66,14 @@ test("llms.txt drops operational policy/terms notices by title and includes sate
   assert.ok(text.includes("https://some-in-univ.com/rotation"));
   assert.ok(text.includes("https://some-in-univ.com/sajuniv"));
   assert.ok(text.includes("https://some-in-univ.com/feed.xml"));
+  assert.ok(text.includes("https://some-in-univ.com/llms-full.txt"));
+});
+
+test("llms-full.txt includes full feature sections and FAQs for GEO ingestion", () => {
+  const full = buildLlmsFullTxt({ articles: [], cardNews: [] });
+  assert.ok(full.includes("# 주요 서비스 상세 안내 (Full Context)"));
+  assert.ok(full.includes("https://some-in-univ.com/korea-japan-matching"));
+  assert.ok(full.includes("https://some-in-univ.com/block-acquaintances"));
+  assert.ok(full.includes("일본어를 못해도 썸타임 한일 매칭을 이용할 수 있나요?"));
+  assert.ok(full.includes("지인 차단을 쓰면 내 연락처가 서버에 그대로 저장되나요?"));
 });
