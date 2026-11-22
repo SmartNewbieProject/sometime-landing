@@ -87,6 +87,14 @@ const relatedLinks = [
     href: "https://some-in-univ.com/dating-app-ranking",
   },
   {
+    label: "한일 매칭·자동 번역 채팅 안내",
+    href: "https://some-in-univ.com/korea-japan-matching",
+  },
+  {
+    label: "지인 차단·같은 학교 제외 안내",
+    href: "https://some-in-univ.com/block-acquaintances",
+  },
+  {
     label: "한 학교 한 친구 운영 원칙",
     href: "https://some-in-univ.com/blog/하나의-대학교-한-명의-친구-운영은-늘-현실이었어요",
   },
