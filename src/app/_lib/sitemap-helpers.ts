@@ -1,4 +1,4 @@
-export const UNIVERSITY_SITEMAP_LIMIT = 18;
+export const UNIVERSITY_SITEMAP_LIMIT = 40;
 export const UNIVERSITY_SITEMAP_MIN_VERIFIED_COUNT = 20;
 
 // Significant public-content revisions, not build/request timestamps.
@@ -26,7 +26,7 @@ export const STATIC_SITEMAP_LASTMOD = {
   "/sajuniv": "2026-11-22T00:00:00+09:00",
   "/dating-lab": "2026-11-22T00:00:00+09:00",
   "/download": "2026-09-08T00:00:00+09:00",
-  "/university": "2026-09-08T00:00:00+09:00",
+  "/university": "2026-11-23T00:00:00+09:00",
 } as const;
 
 const OPERATIONAL_NOTICE_TITLE_PATTERN =
