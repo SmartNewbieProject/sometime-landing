@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildLlmsTxt } from "./llms-txt";
+import { buildLlmsFullTxt, buildLlmsTxt } from "./llms-txt";
 import type { CardNews, SometimeArticleListItem } from "./public-content";
 
 function article(slug: string, publishedAt: string | null): SometimeArticleListItem {
@@ -50,4 +50,30 @@ test("llms.txt keeps editorial card-news and drops notices, campaigns and duplic
 
   assert.ok(text.includes("/card-news/editorial-id"));
   assert.ok(!text.includes("01a0122f") && !text.includes("01a06231") && !text.includes("518873ef"));
+});
+
+test("llms.txt drops operational policy/terms notices by title and includes satellite hubs", () => {
+  const text = buildLlmsTxt({
+    articles: [],
+    cardNews: [
+      { id: "policy-1", title: "개인정보처리방침이 바뀌어요 (12월 2일 시행)", publishedAt: "2026-11-18T00:00:00Z" },
+      { id: "editorial-2", title: "썸타임 데이터 리포트", publishedAt: "2026-11-18T00:00:00Z" },
+    ],
+  });
+
+  assert.ok(!text.includes("policy-1"));
+  assert.ok(text.includes("/card-news/editorial-2"));
+  assert.ok(text.includes("https://some-in-univ.com/rotation"));
+  assert.ok(text.includes("https://some-in-univ.com/sajuniv"));
+  assert.ok(text.includes("https://some-in-univ.com/feed.xml"));
+  assert.ok(text.includes("https://some-in-univ.com/llms-full.txt"));
+});
+
+test("llms-full.txt includes full feature sections and FAQs for GEO ingestion", () => {
+  const full = buildLlmsFullTxt({ articles: [], cardNews: [] });
+  assert.ok(full.includes("# 주요 서비스 상세 안내 (Full Context)"));
+  assert.ok(full.includes("https://some-in-univ.com/korea-japan-matching"));
+  assert.ok(full.includes("https://some-in-univ.com/block-acquaintances"));
+  assert.ok(full.includes("일본어를 못해도 썸타임 한일 매칭을 이용할 수 있나요?"));
+  assert.ok(full.includes("지인 차단을 쓰면 내 연락처가 서버에 그대로 저장되나요?"));
 });

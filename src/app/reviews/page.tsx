@@ -19,7 +19,8 @@ import {
   formatStoreReviewMeta,
   getPublicReviewsPage,
 } from "../_lib/public-reviews";
-import { absoluteUrl, breadcrumbJsonLd, buildPageMetadata, SITE_NAME } from "../_lib/seo";
+import { absoluteUrl, breadcrumbJsonLd, buildPageMetadata, websiteRef } from "../_lib/seo";
+import { STATIC_SITEMAP_LASTMOD } from "../_lib/sitemap-helpers";
 
 const PATH = "/reviews";
 const TITLE = "썸타임 후기 | 대학생 소개팅 앱 실제 사용 후기";
@@ -54,11 +55,13 @@ export default async function ReviewsPage() {
           {
             "@context": "https://schema.org",
             "@type": "WebPage",
+            "@id": `${absoluteUrl(PATH)}#webpage`,
             name: TITLE,
             description: DESCRIPTION,
             url: absoluteUrl(PATH),
+            dateModified: STATIC_SITEMAP_LASTMOD[PATH].slice(0, 10),
             inLanguage: "ko-KR",
-            isPartOf: { "@type": "WebSite", name: SITE_NAME, url: absoluteUrl("/") },
+            isPartOf: websiteRef(),
           },
           breadcrumbJsonLd([
             { name: "홈", path: "/" },

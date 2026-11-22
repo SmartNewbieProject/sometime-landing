@@ -155,17 +155,23 @@ export function jsonLdScript(data: Record<string, unknown> | Record<string, unkn
 }
 
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+export const WEBSITE_ID = `${SITE_URL}/#website`;
+export const APP_ID = `${SITE_URL}/#app`;
 
 export const ORGANIZATION_SAME_AS = [
   APP_STORE_URL,
   GOOGLE_PLAY_URL,
   "https://www.instagram.com/sometime.in.univ/",
   "https://blog.naver.com/smartnewb",
-  "https://youtube.com/@sometime_in_univ",
+  "https://www.youtube.com/@sometime_in_univ",
 ] as const;
 
 export function organizationRef() {
   return { "@id": ORGANIZATION_ID };
+}
+
+export function websiteRef() {
+  return { "@id": WEBSITE_ID };
 }
 
 export function organizationJsonLd() {
@@ -173,15 +179,20 @@ export function organizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": ORGANIZATION_ID,
-    name: SITE_NAME,
+    name: "스마트뉴비",
+    alternateName: ["썸타임", "Sometime", "some-in-univ"],
     url: SITE_URL,
+    brand: {
+      "@type": "Brand",
+      name: SITE_NAME,
+    },
     logo: absoluteUrl("/images/info-logo.png"),
     sameAs: [...ORGANIZATION_SAME_AS],
     contactPoint: {
       "@type": "ContactPoint",
       email: "notify@smartnewb.com",
       contactType: "customer support",
-      availableLanguage: ["Korean"],
+      availableLanguage: ["ko"],
     },
   };
 }
@@ -190,6 +201,7 @@ export function websiteJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": WEBSITE_ID,
     name: SITE_NAME,
     url: SITE_URL,
     description: SITE_DESCRIPTION,
@@ -205,9 +217,11 @@ export function softwareApplicationJsonLd(rating?: {
   return {
     "@context": "https://schema.org",
     "@type": "MobileApplication",
+    "@id": APP_ID,
     name: SITE_NAME,
-    applicationCategory: "LifestyleApplication",
-    operatingSystem: ["iOS", "Android"],
+    alternateName: ["Sometime", "썸타임 앱"],
+    applicationCategory: "SocialNetworkingApplication",
+    operatingSystem: "iOS, Android",
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     downloadUrl: [APP_STORE_URL, GOOGLE_PLAY_URL],

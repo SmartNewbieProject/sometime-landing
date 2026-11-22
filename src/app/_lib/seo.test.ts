@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  APP_ID,
   articleJsonLd,
   buildPageMetadata,
   DEFAULT_OG_IMAGE,
@@ -8,6 +9,7 @@ import {
   ORGANIZATION_SAME_AS,
   organizationJsonLd,
   softwareApplicationJsonLd,
+  WEBSITE_ID,
   websiteJsonLd,
 } from "./seo";
 import { metadata as eventMetadata } from "../event/layout";
@@ -72,14 +74,18 @@ test("Organization is declared once with a stable @id and unified sameAs", () =>
 
   assert.equal(organization["@id"], ORGANIZATION_ID);
   assert.equal(ORGANIZATION_ID, "https://some-in-univ.com/#organization");
+  assert.equal(organization.name, "스마트뉴비");
+  assert.deepEqual(organization.brand, { "@type": "Brand", name: "썸타임" });
+  assert.equal(website["@id"], WEBSITE_ID);
+  assert.equal(application["@id"], APP_ID);
   assert.deepEqual(organization.sameAs, [
     APP_STORE_URL,
     GOOGLE_PLAY_URL,
     "https://www.instagram.com/sometime.in.univ/",
     "https://blog.naver.com/smartnewb",
-    "https://youtube.com/@sometime_in_univ",
+    "https://www.youtube.com/@sometime_in_univ",
   ]);
-  assert.ok(ORGANIZATION_SAME_AS.includes("https://youtube.com/@sometime_in_univ"));
+  assert.ok(ORGANIZATION_SAME_AS.includes("https://www.youtube.com/@sometime_in_univ"));
   assert.deepEqual(website.publisher, { "@id": ORGANIZATION_ID });
   assert.deepEqual(article.publisher, { "@id": ORGANIZATION_ID });
   assert.deepEqual(application.publisher, { "@id": ORGANIZATION_ID });
