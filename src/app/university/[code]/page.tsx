@@ -11,6 +11,12 @@ import { getUniversityPage } from "../../_lib/public-content";
 import { canonicalUniversityPath } from "../../_lib/university-canonical";
 import { absoluteUrl, breadcrumbJsonLd, buildPageMetadata, websiteRef } from "../../_lib/seo";
 import { STATIC_SITEMAP_LASTMOD } from "../../_lib/sitemap-helpers";
+import {
+  buildUniversityCampusLinks,
+  buildUniversityFaqs,
+  buildUniversityRelatedLinks,
+  UNIVERSITY_PROOF_FACTS,
+} from "../../_lib/university-aeo";
 import { UNIVERSITY_REGION_LABELS, universityDisplayName } from "../../_lib/university-display";
 
 type PageProps = { params: Promise<{ code: string }> };
@@ -48,31 +54,18 @@ export default async function UniversityPage({ params }: PageProps) {
   const path = `/university/${encodeURIComponent(university.code)}`;
   const regionLabel = university.region ? UNIVERSITY_REGION_LABELS[university.region] : undefined;
   const displayName = universityDisplayName(university);
-  const faqs = [
-    {
-      question: `${displayName} 학생은 썸타임 학교 인증을 어떻게 진행하나요?`,
-      answer:
-        "학교 이메일 인증 또는 학생증·재학증명서 제출 두 가지 경로 중 하나를 선택해 인증할 수 있어요. 인증이 끝나기 전에는 프로필이 다른 이용자에게 보이지 않아요.",
-    },
-    {
-      question: `${displayName} 같은 학교나 같은 학과 사람을 피할 수 있나요?`,
-      answer:
-        "네. 앱 안에서 '같은 학교 제외'와 '같은 학과 제외' 설정을 각각 켜고 끌 수 있고, 모바일 앱에서는 연락처 해시 기반 지인 차단도 선택해 이용할 수 있어요.",
-    },
-    {
-      question: `${displayName} 학생도 무료로 시작할 수 있나요?`,
-      answer:
-        "네. 무료로 가입해 시작할 수 있고 일부 기능은 유료예요. 필요한 조건과 비용은 앱에서 사용 전에 안내해요.",
-    },
-  ];
-  const relatedLinks = [
-    { label: "지인 차단·같은 학교 제외 안내", href: "/block-acquaintances" },
-    { label: "한일 매칭·자동 번역 채팅", href: "/korea-japan-matching" },
-    { label: "대학생 소개팅 앱 4곳 비교", href: "/dating-app-ranking" },
-    { label: "썸타임 실제 사용 후기", href: "/reviews" },
-    { label: "시간·장소 먼저 정하는 1:1 약속", href: "/college-meeting" },
-    { label: "전체 학교별 안내 보기", href: "/university" },
-  ];
+  const faqs = buildUniversityFaqs({
+    displayName,
+    region: university.region,
+    regionLabel,
+  });
+  const campusLinks = buildUniversityCampusLinks({
+    code: university.code,
+    displayName,
+  });
+  const relatedLinks = buildUniversityRelatedLinks({
+    region: university.region,
+  });
 
   return (
     <ContentShell>
@@ -146,6 +139,45 @@ export default async function UniversityPage({ params }: PageProps) {
               </div>
             ) : null}
           </dl>
+        </section>
+
+        <section className="mt-10" aria-labelledby="sometime-matching-facts">
+          <h2 id="sometime-matching-facts" className={READING_H2}>
+            {displayName} 학생이 확인하는 썸타임 핵심 기준
+          </h2>
+          <dl className="mt-4 divide-y divide-[#EEE8FF] border-y border-[#EEE8FF]">
+            {UNIVERSITY_PROOF_FACTS.map((fact) => (
+              <div key={fact.label} className="py-4">
+                <dt className="text-sm font-semibold text-[#625A68]">{fact.label}</dt>
+                <dd className="mt-1 break-keep text-[16px] font-semibold leading-6 text-[#201823]">
+                  {fact.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <section className="mt-10" aria-labelledby="campus-life-links">
+          <h2 id="campus-life-links" className={READING_H2}>
+            {displayName} 캠퍼스 생활정보 함께 보기
+          </h2>
+          <p className={`mt-3 break-keep ${READING_BODY}`}>
+            썸타임 캠퍼스 생활정보에서 {displayName}의 최신 학식·공지사항·학사일정도 바로 확인할 수 있어요.
+          </p>
+          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1">
+            {campusLinks.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  rel="noreferrer"
+                  target="_blank"
+                  className={`inline-flex min-h-11 items-center py-2 text-[16px] leading-6 ${READING_LINK}`}
+                >
+                  {link.label} ↗
+                </a>
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section className="mt-10" aria-labelledby="before-starting">
