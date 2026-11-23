@@ -33,9 +33,10 @@ const UTM_LINK_IDS: Record<Store, string | undefined> = {
 };
 
 export const buildStoreAttribution = (surface: StoreCtaSurface) => ({
-  utm_source: `web_${surface}`,
-  utm_medium: "organic",
+  utm_source: "organic_web",
+  utm_medium: "seo",
   utm_campaign: "seo_public_pages",
+  utm_content: surface,
 });
 
 export function buildStoreUrl({ store, surface }: { store: Store; surface: StoreCtaSurface }): string {
@@ -50,7 +51,7 @@ export function buildStoreUrl({ store, surface }: { store: Store; surface: Store
   if (utmLinkId) url.searchParams.set("utm_link_id", utmLinkId);
 
   if (store === "ios") {
-    url.searchParams.set("ct", attribution.utm_source);
+    url.searchParams.set("ct", attribution.utm_campaign);
     url.searchParams.set("mt", "8");
   } else {
     url.searchParams.set(

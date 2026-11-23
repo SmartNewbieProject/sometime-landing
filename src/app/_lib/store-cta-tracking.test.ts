@@ -128,9 +128,10 @@ test("store clicks separate inbound campaign and outbound placement with a canon
   assert.equal(properties?.incoming_utm_medium, "email");
   assert.equal(properties?.incoming_utm_campaign, "fall");
   assert.equal(properties?.incoming_utm_content, "top");
-  assert.equal(properties?.outbound_utm_source, "web_landing_download_hub");
-  assert.equal(properties?.outbound_utm_medium, "organic");
+  assert.equal(properties?.outbound_utm_source, "organic_web");
+  assert.equal(properties?.outbound_utm_medium, "seo");
   assert.equal(properties?.outbound_utm_campaign, "seo_public_pages");
+  assert.equal(properties?.outbound_utm_content, "x".repeat(255));
   assert.equal(properties?.utm_source, undefined);
   assert.equal(properties?.destination_query, undefined);
   assert.notEqual(properties?.destination_url, destination);
