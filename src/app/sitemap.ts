@@ -141,6 +141,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${SITE_URL}/dating-lab/reply-gap-check`,
+      lastModified: getStaticSitemapLastmod("/dating-lab/reply-gap-check"),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${SITE_URL}/college-meeting`,
       lastModified: getStaticSitemapLastmod("/college-meeting"),
       changeFrequency: "weekly",

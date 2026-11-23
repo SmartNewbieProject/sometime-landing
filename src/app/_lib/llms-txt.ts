@@ -37,6 +37,7 @@ const HEADER = `# 썸타임
 - [썸타임 로테이션 소개팅](${SITE_URL}/rotation): 대학생 오프라인 로테이션 소개팅 일정과 신청 안내
 - [썸타임 사주대학](${SITE_URL}/sajuniv): 연애 사주와 연애운 풀이 서비스
 - [썸타임 연애 실험실](${SITE_URL}/dating-lab): 연애 성향 테스트와 캠퍼스 연애 콘텐츠
+- [소개팅 연락 텀 호감도 자가진단](${SITE_URL}/dating-lab/reply-gap-check): 7개 신호로 30초 만에 확인하는 무료 소개팅 호감도·연락 텀 테스트
 - [썸타임 후기](${SITE_URL}/reviews): App Store·Google Play 평점과 대표 후기
 - [학교 인증 안내](${SITE_URL}/verification): 인증 경로와 제출 자료 처리 원칙
 - [안전 안내](${SITE_URL}/safety): 신고·차단, 위반 조치, 미성년자 보호, 위급 연락처
