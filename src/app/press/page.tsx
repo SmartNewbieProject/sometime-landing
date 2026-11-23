@@ -7,7 +7,7 @@ import {
   absoluteUrl,
   breadcrumbJsonLd,
   buildPageMetadata,
-  SITE_NAME,
+  websiteRef,
 } from "../_lib/seo";
 
 const PATH = "/press";
@@ -27,15 +27,13 @@ export default function PressPage() {
           {
             "@context": "https://schema.org",
             "@type": "WebPage",
+            "@id": `${absoluteUrl(PATH)}#webpage`,
             name: PAGE.metaTitle,
             description: PAGE.description,
             url: absoluteUrl(PATH),
+            dateModified: "2026-11-23",
             inLanguage: "ko-KR",
-            isPartOf: {
-              "@type": "WebSite",
-              name: SITE_NAME,
-              url: absoluteUrl("/"),
-            },
+            isPartOf: websiteRef(),
           },
           breadcrumbJsonLd([
             { name: "홈", path: "/" },

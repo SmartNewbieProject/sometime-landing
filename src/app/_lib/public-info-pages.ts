@@ -201,10 +201,18 @@ export const PRESS_PAGE: PublicInfoPage = {
       id: "official",
       heading: "공식 정보",
       items: [
-        "서비스명: 썸타임",
-        "운영사: 스마트뉴비",
+        "서비스명: 썸타임 (Sometime)",
+        "운영사: 주식회사 스마트뉴비",
         "공식 도메인: https://some-in-univ.com",
-        "서비스 형태: 대학생 학교 인증 기반 지역 매칭 앱",
+        "서비스 형태: 대학생·대학원생·졸업생(20대) 학교 인증 기반 지역 매칭 및 한일 매칭 앱",
+        "공식 엔티티: Wikidata Q142258923 · 나무위키 썸타임(어플)",
+      ],
+    },
+    {
+      id: "coverage",
+      heading: "주요 언론 보도",
+      items: [
+        "2026-05-12 · 한국공공정책신문 — 모쏠 대학생활에서 시작된 문제의식, 대학생 소개팅 앱 '썸타임'으로 이어지다",
       ],
     },
     {
@@ -216,6 +224,7 @@ export const PRESS_PAGE: PublicInfoPage = {
     },
   ],
   links: [
+    { label: "한국공공정책신문 보도 기사 (2026-05-12)", href: "http://knpp.co.kr/news/499340" },
     { label: "언론·제휴 문의 메일", href: "mailto:notify@smartnewb.com" },
     { label: "썸타임 공식 웹사이트", href: "https://some-in-univ.com" },
     { label: "App Store 공식 페이지", href: "https://apps.apple.com/kr/app/id6746120889" },
