@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  buildReviewsAggregateRating,
   formatFoundPartnerLine,
   formatStoreRatingLine,
   parseCoupleReviews,
@@ -20,6 +21,7 @@ const summaryPayload = {
 test("summary: 평점 줄과 인연 줄을 앱과 같은 문장으로 만든다", () => {
   const summary = parseReviewSummary(summaryPayload);
   assert.equal(formatStoreRatingLine(summary), "App Store 4.4점(508개), Google Play 4.2점(282개)");
+  assert.deepEqual(buildReviewsAggregateRating(summary), { ratingValue: 4.33, ratingCount: 790 });
   assert.equal(
     formatFoundPartnerLine(summary.foundPartnerCount ?? 0),
     "2025년 5월부터 지금까지 1,031명이 썸타임에서 인연을 찾아 떠났어요",
