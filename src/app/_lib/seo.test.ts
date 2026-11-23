@@ -84,6 +84,7 @@ test("Organization is declared once with a stable @id and unified sameAs", () =>
     "https://www.instagram.com/sometime.in.univ/",
     "https://blog.naver.com/smartnewb",
     "https://www.youtube.com/@sometime_in_univ",
+    "https://namu.wiki/w/%EC%8D%B8%ED%83%80%EC%9E%84(%EC%96%B4%ED%94%8C)",
   ]);
   assert.ok(ORGANIZATION_SAME_AS.includes("https://www.youtube.com/@sometime_in_univ"));
   assert.deepEqual(website.publisher, { "@id": ORGANIZATION_ID });
