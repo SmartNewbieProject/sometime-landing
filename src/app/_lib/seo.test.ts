@@ -91,5 +91,8 @@ test("Organization is declared once with a stable @id and unified sameAs", () =>
   assert.deepEqual(website.publisher, { "@id": ORGANIZATION_ID });
   assert.deepEqual(article.publisher, { "@id": ORGANIZATION_ID });
   assert.deepEqual(application.publisher, { "@id": ORGANIZATION_ID });
+  assert.ok(organization.alternateName.includes("Sometime"));
+  assert.ok(website.alternateName.includes("Sometime"));
+  assert.ok(application.alternateName.includes("Sometime"));
   assert.equal(collectByType(pageGraph, "Organization").length, 1);
 });

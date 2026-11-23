@@ -7,6 +7,7 @@ import {
   parseCoupleReviews,
   parseReviewSummary,
   parseStoreReviews,
+  selectFeaturedStoreReviews,
 } from "./public-reviews";
 
 const summaryPayload = {
@@ -70,4 +71,54 @@ test("couple: 짧은 글과 학교를 모르는 글은 뺀다", () => {
   assert.deepEqual(reviews, [
     { id: "2", body: "진지하게 만나보고 싶은 사람을 만났어요", authorUniversity: "A대학교", partnerUniversity: "B대학교" },
   ]);
+});
+
+test("featured store: 과금 불만·저평점·단문 후기를 거르고 긍정 대표 후기를 유지한다", () => {
+  const featured = selectFeaturedStoreReviews([
+    {
+      id: "complaint",
+      source: "PLAY_STORE",
+      rating: 4,
+      title: null,
+      body: "모든 답장이나 행동에 구슬이 들어가는게 너무 힘들어요.. 이것 때문에 기피하게 될 것 같아요",
+      createdAt: "2026-11-12T00:00:00Z",
+    },
+    {
+      id: "low-rating",
+      source: "PLAY_STORE",
+      rating: 3,
+      title: null,
+      body: "학교 인증은 괜찮은데 아직 사람이 적은 편인 것 같아요",
+      createdAt: "2026-11-11T00:00:00Z",
+    },
+    {
+      id: "short",
+      source: "APP_STORE",
+      rating: 5,
+      title: null,
+      body: "좋아요 추천합니다",
+      createdAt: "2026-11-10T00:00:00Z",
+    },
+    {
+      id: "positive-refund",
+      source: "APP_STORE",
+      rating: 5,
+      title: null,
+      body: "상대분이 답장 안하면 다른 분과 대화할 때 구슬 없이 대화할 수 있도록 환급받는게 진짜 타 어플보다 훨씬 좋아요",
+      createdAt: "2026-11-09T00:00:00Z",
+    },
+    {
+      id: "positive-campus",
+      source: "APP_STORE",
+      rating: 5,
+      title: null,
+      body: "대학생들만 가능해서 신뢰가 가고 같은 지역, 또래들을 볼 수 있어서 좋은 것 같아요.",
+      createdAt: "2026-11-08T00:00:00Z",
+    },
+  ]);
+
+  assert.deepEqual(
+    featured.map((review) => review.id),
+    ["positive-refund", "positive-campus"],
+  );
 });

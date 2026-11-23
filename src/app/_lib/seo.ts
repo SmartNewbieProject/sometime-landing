@@ -7,9 +7,9 @@ export const DEFAULT_OG_IMAGE = `${SITE_URL}${DEFAULT_OG_PATH}`;
 
 export const SITE_NAME = "썸타임";
 export const SITE_TITLE =
-  "썸타임 - 대학생 소개팅 앱 | 학교 인증 캠퍼스 매칭";
+  "썸타임(Sometime) - 대학생 소개팅 앱 | 학교 인증 캠퍼스 매칭";
 export const SITE_DESCRIPTION =
-  "대학 인증 여부와 관심사를 확인하고 가까운 대학생과 새로운 인연을 시작하세요. 썸타임의 이용 안내와 공식 앱 다운로드를 확인할 수 있습니다.";
+  "대학 인증 여부와 관심사를 확인하고 가까운 대학생과 새로운 인연을 시작하세요. 썸타임(Sometime)의 이용 안내와 공식 앱 다운로드를 확인할 수 있습니다.";
 
 export const DEFAULT_KEYWORDS = [
   "대학생 소개팅 앱",
@@ -21,6 +21,7 @@ export const DEFAULT_KEYWORDS = [
   "대학생 연애",
   "AI 취향 분석 매칭",
   "썸타임",
+  "Sometime",
 ];
 
 /** 상대 경로 또는 절대 URL → 절대 URL */
@@ -182,7 +183,7 @@ export function organizationJsonLd() {
     "@type": "Organization",
     "@id": ORGANIZATION_ID,
     name: "스마트뉴비",
-    alternateName: ["썸타임", "Sometime", "some-in-univ"],
+    alternateName: ["썸타임", "Sometime", "썸타임 (Sometime)", "some-in-univ"],
     url: SITE_URL,
     brand: {
       "@type": "Brand",
@@ -205,6 +206,7 @@ export function websiteJsonLd() {
     "@type": "WebSite",
     "@id": WEBSITE_ID,
     name: SITE_NAME,
+    alternateName: ["Sometime", "썸타임 (Sometime)", "some-in-univ"],
     url: SITE_URL,
     description: SITE_DESCRIPTION,
     inLanguage: "ko-KR",
@@ -221,7 +223,7 @@ export function softwareApplicationJsonLd(rating?: {
     "@type": "MobileApplication",
     "@id": APP_ID,
     name: SITE_NAME,
-    alternateName: ["Sometime", "썸타임 앱"],
+    alternateName: ["Sometime", "썸타임 (Sometime)", "썸타임 앱"],
     applicationCategory: "SocialNetworkingApplication",
     operatingSystem: "iOS, Android",
     description: SITE_DESCRIPTION,

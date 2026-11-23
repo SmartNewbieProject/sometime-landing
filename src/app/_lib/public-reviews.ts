@@ -199,6 +199,35 @@ export function formatFoundPartnerLine(count: number): string {
   return `2025년 5월부터 지금까지 ${formatCount(count)}명이 썸타임에서 인연을 찾아 떠났어요`;
 }
 
+/**
+ * 대표 스토어 후기 큐레이션 기준:
+ * - 평점 4점 이상 & 최소 15자 이상
+ * - 과금 불만·이탈 표현·결제 문의 등 대표 후기 취지와 어긋나는 원문 제외
+ * - 전체 평점은 상단 AggregateRating(App Store + Google Play)으로 투명하게 유지
+ */
+const FEATURED_STORE_REVIEW_MIN_RATING = 4;
+const FEATURED_STORE_REVIEW_MIN_LENGTH = 15;
+const FEATURED_STORE_REVIEW_LIMIT = 30;
+const STORE_REVIEW_EXCLUDE_PATTERN =
+  /(너무\s*힘들|기피하게|비싸네요|비싼\s*것|비싼것|비싼감|비싸지고|과금을\s*해서|구슬\s*쓰기도\s*좀|금액적인\s*부담|다소\s*부담스럽|진입장벽이\s*너무|포기하거나\s*탈퇴|신빙성이\s*조금\s*떨어|결제를\s*못했|아쉬운\s*점|아쉬운것|구슬이\s*비싸)/;
+
+export function selectFeaturedStoreReviews(
+  reviews: StoreReview[],
+  limit = FEATURED_STORE_REVIEW_LIMIT,
+): StoreReview[] {
+  const curated = reviews.filter(
+    (review) =>
+      review.rating >= FEATURED_STORE_REVIEW_MIN_RATING &&
+      review.body.length >= FEATURED_STORE_REVIEW_MIN_LENGTH &&
+      !STORE_REVIEW_EXCLUDE_PATTERN.test(review.body),
+  );
+  if (curated.length > 0) return curated.slice(0, limit);
+  const highRated = reviews.filter(
+    (review) => review.rating >= FEATURED_STORE_REVIEW_MIN_RATING,
+  );
+  return (highRated.length > 0 ? highRated : reviews).slice(0, limit);
+}
+
 export function formatStoreReviewMeta(review: StoreReview): string {
   return `${STORE_LABELS[review.source]} · 평점 ${review.rating} · ${review.createdAt.slice(0, 10)}`;
 }
