@@ -14,12 +14,19 @@ import {
 } from "../_components/public-content/reading-styles";
 import { StoreInstallCta } from "../_components/public-content/StoreInstallCta";
 import {
+  buildReviewsAggregateRating,
   formatFoundPartnerLine,
   formatStoreRatingLine,
   formatStoreReviewMeta,
   getPublicReviewsPage,
 } from "../_lib/public-reviews";
-import { absoluteUrl, breadcrumbJsonLd, buildPageMetadata, websiteRef } from "../_lib/seo";
+import {
+  absoluteUrl,
+  breadcrumbJsonLd,
+  buildPageMetadata,
+  softwareApplicationJsonLd,
+  websiteRef,
+} from "../_lib/seo";
 import { STATIC_SITEMAP_LASTMOD } from "../_lib/sitemap-helpers";
 
 const PATH = "/reviews";
@@ -47,6 +54,7 @@ const RELATED_LINKS = [
 
 export default async function ReviewsPage() {
   const { summary, coupleReviews, storeReviews } = await getPublicReviewsPage();
+  const aggregateRating = buildReviewsAggregateRating(summary);
 
   return (
     <ContentShell>
@@ -63,6 +71,7 @@ export default async function ReviewsPage() {
             inLanguage: "ko-KR",
             isPartOf: websiteRef(),
           },
+          ...(aggregateRating ? [softwareApplicationJsonLd(aggregateRating)] : []),
           breadcrumbJsonLd([
             { name: "홈", path: "/" },
             { name: "후기", path: PATH },

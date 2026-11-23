@@ -45,6 +45,23 @@ export type PublicReviewsPage = {
   storeReviews: StoreReview[];
 };
 
+/** 가시 평점 요약(App Store + Google Play)과 일치하는 가중 평균 AggregateRating 을 계산한다. */
+export function buildReviewsAggregateRating(
+  summary: ReviewSummary,
+): { ratingValue: number; ratingCount: number } | undefined {
+  const stores = [summary.appStore, summary.playStore].filter(
+    (s) => s.count > 0 && Number.isFinite(s.average) && s.average > 0,
+  );
+  const ratingCount = stores.reduce((sum, s) => sum + s.count, 0);
+  if (ratingCount <= 0) return undefined;
+  const weighted =
+    stores.reduce((sum, s) => sum + s.average * s.count, 0) / ratingCount;
+  return {
+    ratingValue: Math.round(weighted * 100) / 100,
+    ratingCount,
+  };
+}
+
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;
 
