@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ContentShell } from "../_components/public-content/ContentShell";
 import { InfoPageBody } from "../_components/public-content/InfoPageBody";
 import { JsonLd } from "../_components/public-content/JsonLd";
+import { PublicProofStrip } from "../_components/public-content/PublicProofStrip";
 import {
   READING_BODY,
   READING_H2,
@@ -20,6 +21,8 @@ import {
 import { STATIC_SITEMAP_LASTMOD } from "../_lib/sitemap-helpers";
 
 const PATH = "/block-acquaintances";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = buildPageMetadata({
   title: PAGE.metaTitle,
@@ -72,6 +75,7 @@ export default function BlockAcquaintancesPage() {
         storeCtaSurface="landing_public_guide"
         showMobileSticky
       />
+      <PublicProofStrip headingId="block-real-proof" />
       <section aria-labelledby="block-faq" className={`${READING_SHELL} pt-0`}>
         <h2 id="block-faq" className={`mb-6 ${READING_H2}`}>
           자주 묻는 질문
