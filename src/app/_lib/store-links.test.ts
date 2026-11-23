@@ -17,9 +17,10 @@ test("store CTA URLs use official stores and preserve the attribution contract",
     assert.equal(url.hostname, store === "ios" ? "apps.apple.com" : "play.google.com");
     assert.equal(url.searchParams.get("store"), store);
     assert.equal(url.searchParams.get("surface"), "landing_home_hero");
-    assert.equal(url.searchParams.get("utm_source"), "web_landing_home_hero");
-    assert.equal(url.searchParams.get("utm_medium"), "organic");
+    assert.equal(url.searchParams.get("utm_source"), "organic_web");
+    assert.equal(url.searchParams.get("utm_medium"), "seo");
     assert.equal(url.searchParams.get("utm_campaign"), "seo_public_pages");
+    assert.equal(url.searchParams.get("utm_content"), "landing_home_hero");
   }
 });
 
@@ -43,13 +44,17 @@ test("download hero and final CTA positions remain distinct in both store URLs",
     for (const surface of ["landing_download_hub", "landing_download_final"] as const) {
       const url = new URL(buildStoreUrl({ store, surface }));
       assert.equal(url.searchParams.get("surface"), surface);
-      assert.equal(url.searchParams.get("utm_source"), `web_${surface}`);
+      assert.equal(url.searchParams.get("utm_source"), "organic_web");
+      assert.equal(url.searchParams.get("utm_medium"), "seo");
+      assert.equal(url.searchParams.get("utm_content"), surface);
       if (store === "ios") {
-        assert.equal(url.searchParams.get("ct"), `web_${surface}`);
+        assert.equal(url.searchParams.get("ct"), "seo_public_pages");
       } else {
         const referrer = new URLSearchParams(url.searchParams.get("referrer") ?? "");
         assert.equal(referrer.get("surface"), surface);
-        assert.equal(referrer.get("utm_source"), `web_${surface}`);
+        assert.equal(referrer.get("utm_source"), "organic_web");
+        assert.equal(referrer.get("utm_medium"), "seo");
+        assert.equal(referrer.get("utm_content"), surface);
       }
     }
   }

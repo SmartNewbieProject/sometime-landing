@@ -1,7 +1,7 @@
 "use client";
 
 import mixpanel from "mixpanel-browser";
-import { classifyReferrer } from "./referrer-channel";
+import { classifyReferrer, type ReferrerClassification } from "./referrer-channel";
 import {
   appendStoreClickIds,
   buildStoreAttribution,
@@ -15,6 +15,7 @@ import {
 let initialized = false;
 // document.referrer 는 클라이언트 라우팅으로 바뀌지 않는다. 첫 조회만 외부 유입으로 센다.
 let entryViewPending = true;
+let entryReferrer: ReferrerClassification | undefined;
 
 const TRACKING_VALUE_LIMIT = 255;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -109,6 +110,7 @@ export function trackLandingPageView({
   const referrer = isEntryView
     ? classifyReferrer(typeof document !== "undefined" ? document.referrer : undefined, page?.host)
     : undefined;
+  if (isEntryView) entryReferrer = referrer;
   mixpanel.track("Landing_Page_Viewed", {
     env: resolveLandingEnvironment(page?.hostname),
     attribution_id: attributionId ?? undefined,
@@ -167,6 +169,10 @@ export function trackStoreCtaClick(input: {
       trackedQueryValue(attributedClickUrl.searchParams, "utm_medium") ?? attribution.utm_medium,
     outbound_utm_campaign:
       trackedQueryValue(attributedClickUrl.searchParams, "utm_campaign") ?? attribution.utm_campaign,
+    outbound_utm_content:
+      trackedQueryValue(attributedClickUrl.searchParams, "utm_content") ?? attribution.utm_content,
+    entry_referrer_channel: entryReferrer?.channel,
+    entry_referrer_source: entryReferrer?.source,
   });
   return attributedClickUrl.toString();
 }
