@@ -56,6 +56,8 @@ const FOOTER = `
 ## Optional
 
 - [전체 안내 (llms-full.txt)](${SITE_URL}/llms-full.txt)
+- [일본어 안내 (ja/llms.txt)](${SITE_URL}/ja/llms.txt)
+- [일본어 공식 페이지 (Sometime JP)](${SITE_URL}/ja)
 - [블로그 RSS](${SITE_URL}/feed.xml)
 - [사이트맵](${SITE_URL}/sitemap.xml)
 `;

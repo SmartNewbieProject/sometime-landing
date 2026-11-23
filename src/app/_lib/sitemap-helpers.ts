@@ -26,6 +26,9 @@ export const STATIC_SITEMAP_LASTMOD = {
   "/sajuniv": "2026-11-22T00:00:00+09:00",
   "/dating-lab": "2026-11-22T00:00:00+09:00",
   "/dating-lab/reply-gap-check": "2026-11-23T00:00:00+09:00",
+  "/ja": "2026-11-23T00:00:00+09:00",
+  "/ja/korean-language-exchange": "2026-11-23T00:00:00+09:00",
+  "/ja/safety": "2026-11-23T00:00:00+09:00",
   "/download": "2026-09-08T00:00:00+09:00",
   "/university": "2026-11-23T00:00:00+09:00",
 } as const;

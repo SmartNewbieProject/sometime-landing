@@ -147,6 +147,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: `${SITE_URL}/ja`,
+      lastModified: getStaticSitemapLastmod("/ja"),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/ja/korean-language-exchange`,
+      lastModified: getStaticSitemapLastmod("/ja/korean-language-exchange"),
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    {
+      url: `${SITE_URL}/ja/safety`,
+      lastModified: getStaticSitemapLastmod("/ja/safety"),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${SITE_URL}/college-meeting`,
       lastModified: getStaticSitemapLastmod("/college-meeting"),
       changeFrequency: "weekly",
