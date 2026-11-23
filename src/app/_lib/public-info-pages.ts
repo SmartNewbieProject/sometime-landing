@@ -213,6 +213,7 @@ export const PRESS_PAGE: PublicInfoPage = {
       heading: "주요 언론 보도",
       items: [
         "2026-05-12 · 한국공공정책신문 — 모쏠 대학생활에서 시작된 문제의식, 대학생 소개팅 앱 '썸타임'으로 이어지다",
+        "2025-11-15 · 브릿지경제 — 한밭대 학생창업 '스마트뉴비', AI 기반 지역 대학생 소개팅 플랫폼 '썸타임' 눈길",
       ],
     },
     {
@@ -225,6 +226,7 @@ export const PRESS_PAGE: PublicInfoPage = {
   ],
   links: [
     { label: "한국공공정책신문 보도 기사 (2026-05-12)", href: "http://knpp.co.kr/news/499340" },
+    { label: "브릿지경제 보도 기사 (2025-11-15)", href: "https://www.viva100.com/article/20251115500186" },
     { label: "언론·제휴 문의 메일", href: "mailto:notify@smartnewb.com" },
     { label: "썸타임 공식 웹사이트", href: "https://some-in-univ.com" },
     { label: "App Store 공식 페이지", href: "https://apps.apple.com/kr/app/id6746120889" },
