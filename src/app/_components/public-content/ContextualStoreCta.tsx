@@ -6,11 +6,15 @@ export function ContextualStoreCta({
   category,
   keywords,
   description,
+  contentKey,
+  showMobileSticky = false,
 }: {
   title: string;
   category?: string | null;
   keywords?: string[] | null;
   description?: string | null;
+  contentKey?: string;
+  showMobileSticky?: boolean;
 }) {
   const copy = resolveContentStoreCta({ title, category, keywords, description });
 
@@ -18,9 +22,11 @@ export function ContextualStoreCta({
     <div className="not-prose my-10" data-cta-intent={copy.kind}>
       <StoreInstallCta
         surface="landing_content_detail"
+        contentKey={contentKey}
         heading={copy.heading}
         description={copy.description}
         compact
+        showMobileSticky={showMobileSticky}
       />
     </div>
   );

@@ -10,6 +10,7 @@ import { ContentBreadcrumb } from "../../_components/public-content/ContentBread
 import { ContentBanner } from "../../_components/public-content/ContentBanner";
 import { ReadingProgress } from "../../_components/public-content/ReadingProgress";
 import { ArticleHeader } from "../../_components/public-content/ArticleHeader";
+import { ContextualStoreCta } from "../../_components/public-content/ContextualStoreCta";
 import { NoticeHtmlFrame } from "../../_components/public-content/NoticeHtmlFrame";
 import { buildNoticeDocument } from "../../_lib/notice-document";
 import { readingMinutes } from "../../_lib/reading-time";
@@ -78,6 +79,7 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
   const description = textExcerpt(item.description ?? item.subtitle ?? item.body);
   const path = `/card-news/${item.id}`;
   const sectionLabel = item.layoutMode === "longform" ? "롱폼" : "카드뉴스";
+  const showStoreCta = !lifecycle.archive && !noticeDocument && lifecycle.intent !== "notice";
 
   return (
     <ContentShell>
@@ -101,7 +103,7 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
         ]}
       />
 
-      <article className="mx-auto w-full max-w-[728px] px-6 pb-20 pt-10 sm:pt-16">
+      <article className={`mx-auto w-full max-w-[728px] px-6 pt-10 sm:pb-20 sm:pt-16 ${showStoreCta ? "pb-28" : "pb-20"}`}>
         <ContentBreadcrumb
           items={[
             { href: "/", label: "홈" },
@@ -187,6 +189,16 @@ export default async function CardNewsDetailPage({ params }: PageProps) {
               </section>
             ))}
           </div>
+        ) : null}
+
+        {showStoreCta ? (
+          <ContextualStoreCta
+            title={item.title}
+            category="카드뉴스"
+            description={description}
+            contentKey={`card-news-${item.id}`}
+            showMobileSticky
+          />
         ) : null}
 
         <nav aria-label="이 글 다음으로" className="mt-10 border-t border-[#EEE8FF] pt-6">

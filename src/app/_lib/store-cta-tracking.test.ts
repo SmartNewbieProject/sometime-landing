@@ -195,3 +195,46 @@ test("environment classification prefers Vercel and safely falls back to the bro
   assert.equal(resolveLandingEnvironment("localhost"), "local");
   assert.equal(resolveLandingEnvironment("unknown.example"), "local");
 });
+
+test("trackStoreCtaClick forwards per-content utm_content when contentKey is supplied", (t) => {
+  const previousToken = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+  const previousWindow = Object.getOwnPropertyDescriptor(globalThis, "window");
+  t.after(() => {
+    if (previousToken === undefined) delete process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+    else process.env.NEXT_PUBLIC_MIXPANEL_TOKEN = previousToken;
+    if (previousWindow) Object.defineProperty(globalThis, "window", previousWindow);
+    else Reflect.deleteProperty(globalThis, "window");
+  });
+
+  process.env.NEXT_PUBLIC_MIXPANEL_TOKEN = "test-token";
+  Object.defineProperty(globalThis, "window", {
+    configurable: true,
+    value: {
+      location: new URL("https://some-in-univ.com/blog/blind-date-aepteo-guide"),
+      localStorage: {
+        getItem: () => ATTRIBUTION_ID,
+        setItem: () => {},
+      },
+    },
+  });
+
+  t.mock.method(mixpanel, "init", () => {});
+  const track = t.mock.method(mixpanel, "track", () => {});
+  const destination = trackStoreCtaClick({
+    store: "ios",
+    surface: "landing_content_detail",
+    contentKey: "blog-blind-date-aepteo-guide",
+  });
+
+  const [eventName, properties] = track.mock.calls[0].arguments;
+  assert.equal(eventName, "Store_CTA_Clicked");
+  assert.equal(properties?.page_path, "/blog/blind-date-aepteo-guide");
+  assert.equal(
+    properties?.outbound_utm_content,
+    "landing_content_detail:blog-blind-date-aepteo-guide",
+  );
+  assert.equal(
+    new URL(destination).searchParams.get("utm_content"),
+    "landing_content_detail:blog-blind-date-aepteo-guide",
+  );
+});

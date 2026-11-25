@@ -81,3 +81,28 @@ test("store URL builder never sends users through the removed 404 redirect", () 
     /api\.some-in-univ\.com\/api\/go/,
   );
 });
+
+test("contentKey scopes utm_content per article on both iOS and Android store URLs", () => {
+  const iosUrl = new URL(
+    buildStoreUrl({
+      store: "ios",
+      surface: "landing_content_detail",
+      contentKey: "blog-blind-date-aepteo-guide",
+    }),
+  );
+  assert.equal(
+    iosUrl.searchParams.get("utm_content"),
+    "landing_content_detail:blog-blind-date-aepteo-guide",
+  );
+
+  const androidUrl = new URL(
+    buildStoreUrl({
+      store: "android",
+      surface: "landing_content_sticky",
+      contentKey: "Blog / Guide #1",
+    }),
+  );
+  assert.equal(androidUrl.searchParams.get("utm_content"), "landing_content_sticky:blog-guide-1");
+  const referrer = new URLSearchParams(androidUrl.searchParams.get("referrer") ?? "");
+  assert.equal(referrer.get("utm_content"), "landing_content_sticky:blog-guide-1");
+});
