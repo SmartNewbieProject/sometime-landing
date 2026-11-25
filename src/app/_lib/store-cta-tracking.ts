@@ -127,15 +127,16 @@ export function trackLandingPageView({
 export function trackStoreCtaClick(input: {
   store: Store;
   surface: StoreCtaSurface;
+  contentKey?: string;
   href?: string;
   legacyLocation?: string;
   legacyType?: string;
 }): string {
-  const { store, surface, href } = input;
+  const { store, surface, contentKey, href } = input;
   initializeLandingMixpanel();
 
-  const clickUrl = new URL(href ?? buildStoreUrl({ store, surface }));
-  const attribution = buildStoreAttribution(surface);
+  const clickUrl = new URL(href ?? buildStoreUrl({ store, surface, contentKey }));
+  const attribution = buildStoreAttribution(surface, contentKey);
   const attributionId =
     validClickId(clickUrl.searchParams.get("attribution_id")) ??
     getOrCreateLandingAttributionId() ??
@@ -189,7 +190,7 @@ type StoreAnchorClickEvent = {
 
 export function openStoreCtaInNewTab(
   event: StoreAnchorClickEvent,
-  input: { store: Store; surface: StoreCtaSurface },
+  input: { store: Store; surface: StoreCtaSurface; contentKey?: string },
 ) {
   const href = trackStoreCtaClick({ ...input, href: event.currentTarget.href });
   event.currentTarget.href = href;

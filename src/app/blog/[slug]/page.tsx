@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContentShell } from "../../_components/public-content/ContentShell";
 import { MarkdownBody } from "../../_components/public-content/MarkdownBody";
@@ -7,6 +6,7 @@ import { JsonLd } from "../../_components/public-content/JsonLd";
 import { ContentBreadcrumb } from "../../_components/public-content/ContentBreadcrumb";
 import { ContentBanner } from "../../_components/public-content/ContentBanner";
 import { ArticleHeader } from "../../_components/public-content/ArticleHeader";
+import { ContextualStoreCta } from "../../_components/public-content/ContextualStoreCta";
 import { RelatedArticles } from "../../_components/public-content/RelatedArticles";
 import { ReadingProgress } from "../../_components/public-content/ReadingProgress";
 import {
@@ -109,7 +109,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
         ]}
       />
 
-      <article className="mx-auto w-full max-w-[728px] px-6 pb-20 pt-10 sm:pt-16">
+      <article className="mx-auto w-full max-w-[728px] px-6 pb-28 pt-10 sm:pb-20 sm:pt-16">
         <ContentBreadcrumb
           items={[
             { href: "/", label: "홈" },
@@ -138,15 +138,14 @@ export default async function BlogArticlePage({ params }: PageProps) {
 
         <MarkdownBody content={content} />
 
-        <aside aria-label="앱 안내" className="mt-12 flex flex-col gap-4 border-y border-[#EEE8FF] py-7 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-lg font-bold leading-[1.5] tracking-[-0.02em] text-[#201823]">
-            썸타임
-            <span className="block text-[15px] font-medium text-[#625A68]">학교 인증 표시를 확인하는 대학생 소개팅 앱</span>
-          </p>
-          <Link href="/download" className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl bg-[#7A4AE2] px-5 text-[15px] font-semibold text-white transition-colors duration-150 hover:bg-[#5B35B5]">
-            앱 다운로드
-          </Link>
-        </aside>
+        <ContextualStoreCta
+          title={article.title}
+          category={article.category}
+          keywords={article.seo?.keywords}
+          description={description}
+          contentKey={`blog-${article.slug}`}
+          showMobileSticky
+        />
 
         <RelatedArticles articles={related} />
 

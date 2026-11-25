@@ -32,16 +32,38 @@ const UTM_LINK_IDS: Record<Store, string | undefined> = {
   android: process.env.NEXT_PUBLIC_STORE_CTA_ANDROID_UTM_LINK_ID,
 };
 
-export const buildStoreAttribution = (surface: StoreCtaSurface) => ({
-  utm_source: "organic_web",
-  utm_medium: "seo",
-  utm_campaign: "seo_public_pages",
-  utm_content: surface,
-});
+function sanitizeContentKey(contentKey?: string): string | undefined {
+  if (!contentKey) return undefined;
+  const normalized = contentKey
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+  return normalized || undefined;
+}
 
-export function buildStoreUrl({ store, surface }: { store: Store; surface: StoreCtaSurface }): string {
+export const buildStoreAttribution = (surface: StoreCtaSurface, contentKey?: string) => {
+  const safeKey = sanitizeContentKey(contentKey);
+  return {
+    utm_source: "organic_web",
+    utm_medium: "seo",
+    utm_campaign: "seo_public_pages",
+    utm_content: safeKey ? `${surface}:${safeKey}` : surface,
+  };
+};
+
+export function buildStoreUrl({
+  store,
+  surface,
+  contentKey,
+}: {
+  store: Store;
+  surface: StoreCtaSurface;
+  contentKey?: string;
+}): string {
   const url = new URL(STORE_URLS[store]);
-  const attribution = buildStoreAttribution(surface);
+  const attribution = buildStoreAttribution(surface, contentKey);
 
   url.searchParams.set("store", store);
   url.searchParams.set("surface", surface);
